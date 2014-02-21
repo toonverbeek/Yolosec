@@ -11,5 +11,19 @@ package spaceclient.game;
  * @author Toon
  */
 public class WorldTileMap {
+    int amountOfTiles, tileWidth, tileHeight;
+
+    public WorldTileMap(int amountOfTiles, int tileWidth, int tileHeight) {
+        this.amountOfTiles = amountOfTiles;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+    }
+    
+    private boolean generateMap(){
+        
+        return false;
+    }
+    
+    
     
 }
