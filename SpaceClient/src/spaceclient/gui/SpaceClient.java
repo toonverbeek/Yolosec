@@ -8,14 +8,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
 import spaceclient.game.Spaceship;
-
+ 
 public class SpaceClient extends BasicGame {
 
-    private static int FPS = 60;
+    private static final int FPS = 60;
     private User player;
 
     public SpaceClient(String gamename) {
@@ -32,12 +30,12 @@ public class SpaceClient extends BasicGame {
 
     @Override
     public void update(GameContainer gc, int i) throws SlickException {
-        player.getSpaceship().update(gc);
+        player.update(gc);
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
-        player.getSpaceship().render(g);
+        player.render(g);
     }
 
     public static void main(String[] args) {

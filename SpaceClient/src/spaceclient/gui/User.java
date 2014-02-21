@@ -5,13 +5,16 @@
  */
 package spaceclient.gui;
 
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.game.Spaceship;
 
 /**
  *
  * @author Toon
  */
-public class User {
+public class User implements DrawableComponent {
 
     private Spaceship spaceship;
     private String username;
@@ -27,5 +30,15 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public void update(GameContainer gc) {
+        this.spaceship.update(gc);
+    }
+
+    @Override
+    public void render(Graphics g) {
+        this.spaceship.render(g);
     }
 }
