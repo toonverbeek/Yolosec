@@ -1,5 +1,6 @@
 package com.server;
 
+import com.objects.User;
 import java.sql.*;
 
 /**
@@ -16,12 +17,13 @@ public class DbConnector {
     private static final String db_name = "inspace";
     private static final String db_username = "inspaceserver";
     private static final String db_password = "toor";
+    private static final String connectionString = "jdbc:mysql://" + db_location + "/" + db_name + "?" + "user=" + db_username + "&password=" + db_password;
 
     public static void readDataBase() throws Exception {
         try {
             System.out.println("Setting up connection...");
             Class.forName("com.mysql.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://" + db_location + "/" + db_name + "?" + "user=" + db_username + "&password=" + db_password);
+            connect = DriverManager.getConnection(connectionString);
             System.out.println("Connection established");
 
             // Statements allow to issue SQL queries to the database
@@ -91,22 +93,37 @@ public class DbConnector {
         }
     }
 
-    // You need to close the resultSet
+    public static boolean SetUser(User obj) {
+        try {
+            System.out.println("Setting up connection...");
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(connectionString);
+            System.out.println("Connection established");
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            close();
+        }
+        return false;
+    }
+
+    /**
+     * close method to end all open connections
+     */
     private static void close() {
         try {
             if (resultSet != null) {
                 resultSet.close();
             }
-
             if (statement != null) {
                 statement.close();
             }
-
             if (connect != null) {
                 connect.close();
             }
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
     }
 }
