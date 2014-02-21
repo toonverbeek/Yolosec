@@ -1,0 +1,36 @@
+/* 
+    Created on : Feb 21, 2014, 2:18:10 PM
+    Author     : Jamy
+*/
+
+body,html {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5em;
+    font-family: sans-serif;
+    height:100%;
+    background-color: #ECECEC;
+}
+
+#topsection {
+    background: #FFFFFF;
+    height: 70px; /*Height of top section*/
+    width: 100%;
+    position: fixed;
+    border-width: 0 0 2px;
+}
+
+#allContent {
+    width: 840px; /*Width of main container*/
+    margin: 0 auto; /*Center container on page*/
+}
+
+#rightcolumn {
+    float: left;
+    width: 240px; /*Width of right column -10px*/
+    padding: 10px 0 10px 0;
+    margin: 10px 0px 10px -250px; /*Set left margin to -(RightColumnWidth) */
+    border-radius: 10px 10px 10px 10px;
+    background: #aeaa90;
+}
+
