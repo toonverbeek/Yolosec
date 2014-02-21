@@ -92,6 +92,37 @@ public class User {
     }
 
     /**
+     * Add a resource to the player
+     *
+     * @param resource the resource to add
+     * @return
+     */
+    public boolean addResource(Resource resource) {
+        if (resource != null) {
+            return this.resources.add(resource);
+        }
+        return false;
+    }
+
+    /**
+     * Update a resource
+     * @param resource the resource to update
+     * @param amount the amount to add to the resource
+     * @return 
+     */
+    public boolean updateResource(Resource resource, long amount) {
+        if (resource != null) {
+            if (resources.contains(resource)) {
+                resources.remove(resource);
+                resource.increaseAmount(amount);
+                resources.add(resource);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Set the resources of the user
      *
      * @param resources

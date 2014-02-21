@@ -50,5 +50,13 @@ public class Resource {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+    
+    /**
+     * Increase the amount with <amount> 
+     * @param amount 
+     */
+    public void increaseAmount(long amount){
+        this.amount += amount;
+    }
 
 }

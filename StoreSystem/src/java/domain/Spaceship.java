@@ -31,4 +31,16 @@ public class Spaceship {
     public void setInventory(Collection<Item> inventory) {
         this.inventory = inventory;
     }
+    
+    /**
+     * Add an item to the inventory
+     * @param item the item to add
+     * @return 
+     */
+    public boolean addItemToInventory(Item item){
+        if(item != null){
+            return this.inventory.add(item);
+        }
+        return false;
+    }
 }
