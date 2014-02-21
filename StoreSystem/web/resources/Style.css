@@ -2,7 +2,6 @@
     Created on : Feb 21, 2014, 2:18:10 PM
     Author     : Jamy
 */
-
 body,html {
     margin: 0;
     padding: 0;
@@ -13,24 +12,49 @@ body,html {
 }
 
 #topsection {
-    background: #FFFFFF;
-    height: 70px; /*Height of top section*/
+    background: #aeaa90;
+    height: 50px; /*Height of top section*/
     width: 100%;
     position: fixed;
     border-width: 0 0 2px;
 }
 
-#allContent {
-    width: 840px; /*Width of main container*/
-    margin: 0 auto; /*Center container on page*/
+#contentwrapper {
+    margin-right: 5px;
+    margin-left: 5px; /*Set right margin to RightColumnWidth*/
+    padding-top: 55px;
 }
 
-#rightcolumn {
+#leftsection {
     float: left;
-    width: 240px; /*Width of right column -10px*/
+    width: 250px;
     padding: 10px 0 10px 0;
-    margin: 10px 0px 10px -250px; /*Set left margin to -(RightColumnWidth) */
-    border-radius: 10px 10px 10px 10px;
     background: #aeaa90;
+}
+
+#content{
+    margin-left:255px;
+    width: auto; /*Width of right column -10px*/
+    padding: 10px 0 10px 0;
+    background: #aeaa90;
+}
+
+tr.inputtable > td{
+    padding-bottom: 10px;
+}
+
+.innertube {
+    margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+    margin-top: 0;
+}
+
+#loginformcontent {
+    width: 400px;
+    height: auto;
+    margin: 10px auto; /*Center container on page*/
+}
+
+.loginButton, .registerButton {
+    width:100%;
 }
 

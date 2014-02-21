@@ -1,0 +1,37 @@
+<ui:composition template="templates/loginTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="topsection">
+        <h2>Header</h2>
+    </ui:define>
+
+    <ui:define name="loginform">
+        <div id="loginformcontent">
+            <h:form>
+                <p:panel id="panel" header="Register" style="margin-bottom:10px;">  
+                    <p:messages id="messages" />  
+                    <h:panelGrid columns="3">  
+                        <h:outputLabel for="username" value="Username *" />  
+                        <p:inputText id="username" value="" required="true" label="Firstname">  
+                            <f:validateLength minimum="2" />  
+                        </p:inputText>  
+                        <p:message for="username" />  
+
+                        <h:outputLabel for="password" value="Password: *" />  
+                        <p:inputText id="password" value="" required="true" label="Password"/>  
+                        <p:message for="password" />  
+                    </h:panelGrid>  
+
+                    <p:commandButton value="Submit" id="submit"  update="panel"  />  
+                </p:panel> 
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
