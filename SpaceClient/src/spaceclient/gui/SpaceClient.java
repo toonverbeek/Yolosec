@@ -1,4 +1,4 @@
-package spaceclient;
+package spaceclient.gui;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,8 +22,7 @@ public class SpaceClient extends BasicGame {
     private Direction prevDirection;
     private float resistance = .001f;
     //rotation in degrees
-    private int rotationInDegrees;
-
+    private static int FPS = 60;
     //spaceship
     private Polygon spaceship;
 
@@ -45,8 +44,10 @@ public class SpaceClient extends BasicGame {
         spaceship = new Polygon(polygonPoints);
         position = new Vector2f(0, 0);
         velocity = new Vector2f(0, 0);
-        acceleration = new Vector2f(0,0);
+        acceleration = new Vector2f(0, 0);
         prevDirection = Direction.NEUTRAL;
+        gc.setTargetFrameRate(FPS);
+        gc.setFullscreen(true);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class SpaceClient extends BasicGame {
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new SpaceClient("Simple Slick Game"));
-            appgc.setDisplayMode(1366, 768, true);
+            appgc.setDisplayMode(appgc.getScreenWidth(), appgc.getScreenHeight(), true);
             appgc.start();
         } catch (SlickException ex) {
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,7 +98,7 @@ public class SpaceClient extends BasicGame {
     private void leftKey() {
         acceleration.y = 0;
         acceleration.x -= .0015;
-        if(acceleration.x < -.01) {
+        if (acceleration.x < -.01) {
             acceleration.x = -.01f;
         }
         velocity.x += acceleration.x;
@@ -106,10 +107,10 @@ public class SpaceClient extends BasicGame {
     private void rightKey() {
         acceleration.y = 0;
         acceleration.x += .0015;
-        if(acceleration.x > .01) {
+        if (acceleration.x > .01) {
             acceleration.x = .01f;
         }
-        
+
         velocity.x += acceleration.x;
     }
 
@@ -119,7 +120,7 @@ public class SpaceClient extends BasicGame {
             acceleration.y = -2f;
         }
         velocity.y += acceleration.y;
-        if(velocity.y > .8) {
+        if (velocity.y > .8) {
             velocity.y = .8f;
         }
         prevDirection = Direction.UP;
@@ -131,7 +132,7 @@ public class SpaceClient extends BasicGame {
             acceleration.y = 2f;
         }
         velocity.y += acceleration.y;
-        if(velocity.y > .2) {
+        if (velocity.y > .2) {
             velocity.y = .8f;
         }
         prevDirection = Direction.DOWN;
@@ -144,12 +145,12 @@ public class SpaceClient extends BasicGame {
         acceleration.y -= .001f;
         if (acceleration.y < 0) {
             acceleration.y += 0.01f;
-            if(acceleration.y > -.01f) {
+            if (acceleration.y > -.01f) {
                 acceleration.y = 0;
             }
-        } else if(acceleration.y > 0) {
+        } else if (acceleration.y > 0) {
             acceleration.y -= .01f;
-            if(acceleration.y < .01f) {
+            if (acceleration.y < .01f) {
                 acceleration.y = 0;
             }
         }

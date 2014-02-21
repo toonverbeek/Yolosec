@@ -4,16 +4,12 @@
  * and open the template in the editor.
  */
 
-package spaceclient;
+package spaceclient.dao;
 
 /**
  *
- * @author Tim
+ * @author Toon
  */
-public enum Direction {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-    NEUTRAL;
+public interface ItemDAO {
+    
 }
