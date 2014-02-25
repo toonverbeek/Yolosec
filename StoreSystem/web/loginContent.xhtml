@@ -6,36 +6,29 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    
+
     <ui:define name="topsection">
         <h2>Header</h2>
     </ui:define>
-    
+
     <ui:define name="loginform">
         <div id="loginformcontent">
             <h:form>
-                <table style="width:100%;">
-                    <tr class="inputtable">
-                        <td>
-                            Username:
-                        </td>                
-                        <td>
-                            <p:inputText/>
-                        </td>
-                    </tr>
-                    <tr >
-                        <td>
-                            Password:
-                        </td>                
-                        <td>
-                            <p:inputText/>
-                        </td>
-                    </tr>
-                </table>
+                <p:panel id="panel" header="Login" >  
+                    <p:messages id="messages" autoUpdate="true"/>  
+                    <h:panelGrid columns="3">  
+                        <h:outputLabel for="username" value="Username" />  
+                        <p:inputText id="username" value="" required="true" requiredMessage="Please enter your username" label="Username" style="width:150%;"/>
+                        <br/>
+                        <h:outputText value="Password" />  
+                        <p:password id="password" label="Password" requiredMessage="Please enter your password" required="true" style="width:150%;"/>  
+                    </h:panelGrid> 
+                    <p:commandButton value="Login" id="submit" update="panel"  />
+                    <br/><br/> 
+                    <h:link value="No account yet? Click here!" outcome="registerContent"/>
+                </p:panel> 
             </h:form>
             <br/>
-            <p:button value="Login" styleClass="loginButton"/><br/>
-            <h:link value="No account yet? Click here!" outcome="registerContent" />
         </div>
     </ui:define>
 </ui:composition>

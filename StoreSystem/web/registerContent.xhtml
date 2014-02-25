@@ -14,23 +14,22 @@
     <ui:define name="loginform">
         <div id="loginformcontent">
             <h:form>
-                <p:panel id="panel" header="Register" style="margin-bottom:10px;">  
-                    <p:messages id="messages" />  
+                <p:panel id="panel" header="Register" >  
+                    <p:messages id="messages" showDetail="true" autoUpdate="true"/>  
                     <h:panelGrid columns="3">  
                         <h:outputLabel for="username" value="Username *" />  
-                        <p:inputText id="username" value="" required="true" label="Firstname">  
-                            <f:validateLength minimum="2" />  
+                        <p:inputText id="username" value="" required="true" validatorMessage="Username is not long enough (5+)" requiredMessage="Username is required" label="Username" style="width:150%;">  
+                            <f:validateLength minimum="5" />  
                         </p:inputText>  
-                        <p:message for="username" />  
-
-                        <h:outputLabel for="password" value="Password: *" />  
-                        <p:inputText id="password" value="" required="true" label="Password"/>  
-                        <p:message for="password" />  
+                        <br/>
+                        <h:outputText value="Password *" />  
+                        <p:password id="password" label="Password 1" required="true" match="matchingpassword" feedback="true" inline="false" style="width:150%;"/>  
+                        <br/>
+                        <h:outputText value="Password *" />  
+                        <p:password id="matchingpassword" label="Password 2" required="true" style="width:150%;"/>  
                     </h:panelGrid>  
-
-                    <p:commandButton value="Submit" id="submit"  update="panel"  />  
+                    <p:commandButton value="Register" id="submit" update="panel"  />  
                 </p:panel> 
-
             </h:form>
         </div>
     </ui:define>
