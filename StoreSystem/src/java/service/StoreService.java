@@ -154,6 +154,7 @@ public class StoreService {
         return createUser(user);
     }
 
+    //Comment van Jamy
     public boolean login(String username, String password) {
         for (User u : getUsers()) {
             if (u.getUsername().equals(username)) {
