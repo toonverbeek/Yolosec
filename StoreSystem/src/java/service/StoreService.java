@@ -1,6 +1,7 @@
 package service;
 
 import dao.UserDAO;
+import dao.UserDAOCollectionImpl;
 import domain.Item;
 import domain.Resource;
 import domain.Spaceship;
@@ -14,7 +15,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class StoreService {
 
-    private UserDAO userDAO;
+    private UserDAO userDAO = new UserDAOCollectionImpl();
 
     private List<Item> mockupItems = new ArrayList<>();
 
@@ -26,8 +27,11 @@ public class StoreService {
     private void initUsers() {
         User u1 = new User("Demo", "Demo", new Spaceship(), new ArrayList<Resource>());
         User u2 = new User("Demo2", "Demo", new Spaceship(), new ArrayList<Resource>());
+        User u3 = new User("asdfasdf", "asdfasdf", new Spaceship(), new ArrayList<Resource>());
+
         userDAO.create(u1);
         userDAO.create(u2);
+        userDAO.create(u3);
     }
 
     private void initItems() {
@@ -36,13 +40,19 @@ public class StoreService {
         item1Resources.add(new Resource("Iron", 50));
         List<Stat> item1Stats = new ArrayList<>();
         item1Stats.add(new Stat("Stamina", 10));
-        Item item1 = new Item(0, "Test1", "Lorem ipsum", item1Resources, item1Stats, false, "");
-        Item item2 = new Item(1, "Test2", "Lorem ipsum", item1Resources, item1Stats, false, "");
-        Item item3 = new Item(2, "Test3", "Lorem ipsum", item1Resources, item1Stats, false, "");
+
+        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis hendrerit velit sit amet ligula faucibus, a aliquam dui consequat. Sed egestas mauris gravida sem commodo tristique. Maecenas sed mauris metus. Vestibulum nunc nunc, pretium et interdum eget, tincidunt ut eros. Suspendisse in urna nec enim cursus fermentum. Quisque ultricies eros laoreet, molestie odio vitae, congue nisl. Praesent eget eleifend lectus.";
+
+        Item item1 = new Item(0, "Item 1", lorem, item1Resources, item1Stats, false, "");
+        Item item2 = new Item(1, "Item 2", lorem, item1Resources, item1Stats, false, "");
+        Item item3 = new Item(2, "Item 3", lorem, item1Resources, item1Stats, false, "");
+        Item item4 = new Item(3, "Item 4", lorem, item1Resources, item1Stats, false, "");
 
         this.mockupItems.add(item1);
         this.mockupItems.add(item2);
         this.mockupItems.add(item3);
+        this.mockupItems.add(item4);
+
     }
 
     /**

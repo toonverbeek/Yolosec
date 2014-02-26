@@ -14,15 +14,15 @@ import service.StoreService;
  *
  * @author Lisanne
  */
-@Named(value="loginBean")
+@Named(value = "loginBean")
 @RequestScoped
 public class LoginBean {
 
     @Inject
     private StoreService storeService;
 
-    private String username;
-    private String password;
+    private String username = "";
+    private String password = "";
 
     public LoginBean() {
 
@@ -48,7 +48,7 @@ public class LoginBean {
         if (username != null && password != null) {
             if (storeService.login(username, password)) {
                 System.out.println("------------StoreContent laden.....!!!");
-                return "storeContent.xhtml";
+                return "storeContent.xhtml?faces-redirect=true";
             } else {
                 return "";
             }
