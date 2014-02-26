@@ -149,6 +149,7 @@ public class StoreService {
         return user.getSpaceship().findItem(id);
     }
 
+    //Comment van Lisanne
     public boolean registerUser(String username, String password1, String password2) {
         User user = new User(username, password1, new Spaceship(), new ArrayList<Resource>());
         return createUser(user);
