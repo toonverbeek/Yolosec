@@ -21,6 +21,9 @@ import spaceclient.gui.Direction;
  */
 public class Spaceship implements DrawableComponent {
 
+    private int id = 1;
+
+    
     private float[] polygonPoints;
     private Polygon polygon;
     private Vector2f position;
@@ -32,6 +35,7 @@ public class Spaceship implements DrawableComponent {
     private float resistance = .001f;
     private int width, height;
     private Rectangle boundingRectangle;
+    private int direction;
 
     public Spaceship(int width, int height, Rectangle boundingRectangle) {
         this.width = width;
@@ -85,6 +89,10 @@ public class Spaceship implements DrawableComponent {
     private void setLocation() {
         //set x and y
         position.add(velocity);
+    }
+    
+    public int getId() {
+        return id;
     }
 
     private void leftKey() {
@@ -155,6 +163,10 @@ public class Spaceship implements DrawableComponent {
 
     public Polygon getPolygon() {
         return polygon;
+    }
+
+    public void setDirection(int direction) {
+        direction = 1;
     }
 
     

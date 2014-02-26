@@ -9,6 +9,8 @@ package spaceclient.communication;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import spaceclient.game.Spaceship;
 
 /**
@@ -23,5 +25,13 @@ public class Serializer {
         SpaceshipComm sComm = new SpaceshipComm(spaceship);
         String json = gson.toJson(sComm, SpaceshipComm.class);
         return json;
+    }
+    
+    public static Spaceship deserializeSpaceship(String json) {
+        SpaceshipComm sComm = (SpaceshipComm) gson.fromJson(json, SpaceshipComm.class);
+        Spaceship sShip = new Spaceship(50, 50, new Rectangle(0, 0, 50, 50));
+        sShip.setPosition(new Vector2f(sComm.getX(), sComm.getY()));
+        sShip.setDirection(sComm.getDirection());
+        return sShip;
     }
 }

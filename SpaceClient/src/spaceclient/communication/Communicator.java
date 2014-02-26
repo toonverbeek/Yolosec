@@ -36,7 +36,7 @@ public class Communicator {
     
     public boolean initiate() {
         try {
-            socket = new Socket("145.93.64.80", 1337);
+            socket = new Socket("145.93.58.88", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);
             reader = new BufferedReader(new InputStreamReader(

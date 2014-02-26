@@ -14,13 +14,14 @@ import spaceclient.game.Spaceship;
 public class SpaceshipComm {
 
     private float x, y;
-    private int d;
+    private int d, id;
 
     public SpaceshipComm(Spaceship spaceship) {
 
         this.x = spaceship.getPosition().x;
         this.y = spaceship.getPosition().y;
         this.d = 0;
+        this.id = spaceship.getId();
 
     }
 
