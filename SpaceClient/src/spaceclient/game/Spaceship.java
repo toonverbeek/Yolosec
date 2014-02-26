@@ -106,6 +106,14 @@ public class Spaceship implements DrawableComponent {
         velocity.x += acceleration.x;
     }
 
+    public Vector2f getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2f position) {
+        this.position = position;
+    }
+
     private void upKey() {
         acceleration.y -= .015;
         if (acceleration.y < -2) {
