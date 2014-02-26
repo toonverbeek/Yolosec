@@ -6,7 +6,8 @@ package com.server;
  */
 public class LoadModules {
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
+         
+        DbConnector.readDataBase();
     }
 }
