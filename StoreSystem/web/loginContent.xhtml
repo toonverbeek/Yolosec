@@ -18,12 +18,12 @@
                     <p:messages id="messages" autoUpdate="true"/>  
                     <h:panelGrid columns="3">  
                         <h:outputLabel for="username" value="Username" />  
-                        <p:inputText id="username" value="" required="true" requiredMessage="Please enter your username" label="Username" style="width:150%;"/>
+                        <p:inputText id="username" value="#{loginBean.username}" required="true" requiredMessage="Please enter your username" label="Username" style="width:150%;"/>
                         <br/>
                         <h:outputText value="Password" />  
-                        <p:password id="password" label="Password" requiredMessage="Please enter your password" required="true" style="width:150%;"/>  
+                        <p:password id="password" value="#{loginBean.password}" label="Password" requiredMessage="Please enter your password" required="true" style="width:150%;"/>  
                     </h:panelGrid> 
-                    <p:commandButton value="Login" id="submit" update="panel"  />
+                    <p:commandButton value="Login" id="submit" action="#{loginBean.login()}" update="panel"  />
                     <br/><br/> 
                     <h:link value="No account yet? Click here!" outcome="registerContent"/>
                 </p:panel> 

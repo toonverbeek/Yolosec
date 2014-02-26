@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
-import dao.SpaceshipDAO;
-import dao.SpaceshipDAOCollectionImpl;
 import dao.UserDAO;
-import dao.UserDAOCollectionImpl;
 import domain.Item;
 import domain.Resource;
 import domain.Spaceship;
 import domain.Stat;
 import domain.User;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,8 +14,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class StoreService {
 
-    private UserDAO userDAO = new UserDAOCollectionImpl();
-    private SpaceshipDAO spaceshipDAO;
+    private UserDAO userDAO;
 
     private List<Item> mockupItems = new ArrayList<>();
 
@@ -114,8 +104,7 @@ public class StoreService {
      * @return
      */
     public Collection<Item> getItemsFromUser(User user) {
-        spaceshipDAO = new SpaceshipDAOCollectionImpl(user.getSpaceship());
-        return spaceshipDAO.findAll();
+        return user.getSpaceship().getAllItems();
     }
 
     /**
@@ -125,8 +114,7 @@ public class StoreService {
      * @param item the item to add
      */
     public void addItemToSpaceship(User user, Item item) {
-        spaceshipDAO = new SpaceshipDAOCollectionImpl(user.getSpaceship());
-        spaceshipDAO.addItem(item);
+        user.getSpaceship().addItemToInventory(item);
     }
 
     /**
@@ -136,8 +124,7 @@ public class StoreService {
      * @return
      */
     public long getItemCount(User user) {
-        spaceshipDAO = new SpaceshipDAOCollectionImpl(user.getSpaceship());
-        return spaceshipDAO.getCount();
+        return user.getSpaceship().getItemCount();
     }
 
     /**
@@ -148,8 +135,7 @@ public class StoreService {
      * @return
      */
     public Collection<Item> getItemsWithName(User user, String name) {
-        spaceshipDAO = new SpaceshipDAOCollectionImpl(user.getSpaceship());
-        return spaceshipDAO.findItem(name);
+        return user.getSpaceship().findItem(name);
     }
 
     /**
@@ -160,8 +146,7 @@ public class StoreService {
      * @return
      */
     public Item getItemWithId(User user, long id) {
-        spaceshipDAO = new SpaceshipDAOCollectionImpl(user.getSpaceship());
-        return spaceshipDAO.findItem(id);
+        return user.getSpaceship().findItem(id);
     }
 
     public boolean registerUser(String username, String password1, String password2) {

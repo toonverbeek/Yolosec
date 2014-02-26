@@ -18,17 +18,17 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true"/>  
                     <h:panelGrid columns="3">  
                         <h:outputLabel for="username" value="Username *" />  
-                        <p:inputText id="username" value="" required="true" validatorMessage="Username is not long enough (5+)" requiredMessage="Username is required" label="Username" style="width:150%;">  
+                        <p:inputText id="username" value="#{registerBean.username}" required="true" validatorMessage="Username is not long enough (5+)" requiredMessage="Username is required" label="Username" style="width:150%;">  
                             <f:validateLength minimum="5" />  
                         </p:inputText>  
                         <br/>
                         <h:outputText value="Password *" />  
-                        <p:password id="password" label="Password 1" required="true" match="matchingpassword" feedback="true" inline="false" style="width:150%;"/>  
+                        <p:password id="password" value="#{registerBean.password1}" label="Password 1" required="true" match="matchingpassword" feedback="true" inline="false" style="width:150%;"/>  
                         <br/>
                         <h:outputText value="Password *" />  
-                        <p:password id="matchingpassword" label="Password 2" required="true" style="width:150%;"/>  
+                        <p:password id="matchingpassword" value="#{registerBean.password2}"  label="Password 2" required="true" style="width:150%;"/>  
                     </h:panelGrid>  
-                    <p:commandButton value="Register" id="submit" update="panel"  />  
+                    <p:commandButton value="Register" id="submit" action="#{registerBean.register()}" update="panel"  />  
                 </p:panel> 
             </h:form>
         </div>
