@@ -1,8 +1,8 @@
 package com.server;
 
 import com.objects.User;
-import com.objects.Spaceship;
 import java.sql.*;
+import shared.SpaceshipComm;
 
 /**
  *
@@ -148,8 +148,8 @@ public class DbConnector {
      * @return
      * @throws Exception 
      */
-        public static Spaceship getSpaceship(String username) throws Exception {
-        Spaceship result = null;
+        public static SpaceshipComm getSpaceship(String username) throws Exception {
+        SpaceshipComm result = null;
         try {
             System.out.println(connectionString);
             System.out.println("Setting up connection...");
@@ -161,11 +161,11 @@ public class DbConnector {
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.isBeforeFirst()) {
-                double x = resultSet.getInt("position_x");
-                double y = resultSet.getInt("position_y");
+                float x = resultSet.getFloat("position_x");
+                float y = resultSet.getFloat("position_y");
                 int direction = resultSet.getInt("direction");
                 int id = resultSet.getInt("spaceship_id");
-                result = new Spaceship(id, x, y, direction);
+                result = new SpaceshipComm("SpaceshipComm", x, y, direction, id);
             }
         } catch (Exception e) {
             throw e;

@@ -1,11 +1,11 @@
 package com.modules;
 
-import com.objects.Spaceship;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.Map;
+import shared.SpaceshipComm;
 
 /**
  *
@@ -67,11 +67,11 @@ public class ClientConnectionModule implements Runnable {
         return loginModule.login(username, password, connection);
     }
 
-    public synchronized void updateSpaceship(int id, double x, double y, int direction) {
+    public synchronized void updateSpaceship(int id, float x, float y, int direction) {
         locationModule.updateSpaceship(id, x, y, direction);
     }
 
-    public void addSpaceship(Spaceship spaceship, ClientConnection connection) {
+    public void addSpaceship(SpaceshipComm spaceship, ClientConnection connection) {
         locationModule.addSpaceship(spaceship, connection);
     }
     
@@ -80,13 +80,13 @@ public class ClientConnectionModule implements Runnable {
     }
     
     public String getStatusInformation(){
-        Map<ClientConnection, Spaceship> clientSpaceships = locationModule.getClientSpaceships();
+        Map<ClientConnection, SpaceshipComm> clientSpaceships = locationModule.getClientSpaceships();
         StringBuilder builder = new StringBuilder();
         
         builder.append(String.format("Status information { %s } \n", new Date().toString()));
         
-        for(Map.Entry<ClientConnection, Spaceship> connection : clientSpaceships.entrySet()){
-            Spaceship key = connection.getValue();
+        for(Map.Entry<ClientConnection, SpaceshipComm> connection : clientSpaceships.entrySet()){
+            SpaceshipComm key = connection.getValue();
             builder.append(String.format("Spaceship ID {%s} X {%s} Y {%s} DIRECTION {%s}", new Object[]{key.getId(), key.getX(), key.getY(), key.getDirection()}));
             
             ClientConnection value = connection.getKey();

@@ -68,8 +68,8 @@ public class ClientConnection implements Runnable {
             switch (header) {
             case "SpaceshipComm":
                 int spaceshipID = ((Double)recievedObject.get("id")).intValue();
-                double x = (double) recievedObject.get("x");
-                double y = (double) recievedObject.get("y");
+                float x = (float) recievedObject.get("x");
+                float y = (float) recievedObject.get("y");
                 int d = ((Double)recievedObject.get("d")).intValue();
                 this.server.updateSpaceship(spaceshipID, x, y, d);
                 break;

@@ -1,9 +1,10 @@
 package com.modules;
 
-import com.objects.Spaceship;
+
 import com.objects.User;
 import java.util.HashMap;
 import java.util.Map;
+import shared.SpaceshipComm;
 
 /**
  *
@@ -33,7 +34,7 @@ public class PlayerLoginModule {
         if (checkPassword != null && checkPassword.equals(password)) {
                //Get Spaceship from user
             //Spaceship spaceship = DbConnector.getSpaceship(username);
-            Spaceship spaceship = new Spaceship(2, 0.0f, 0.0f, 0);
+            SpaceshipComm spaceship = new SpaceshipComm("SpaceshipComm",0.0f, 0.0f, 0, 2);
 
             //Add the spaceship to the location module
             this.server.addSpaceship(spaceship, connection);
