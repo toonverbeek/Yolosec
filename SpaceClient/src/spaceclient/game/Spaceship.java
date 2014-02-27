@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.gui.Direction;
@@ -19,9 +18,9 @@ import spaceclient.gui.Direction;
  *
  * @author Toon
  */
-public class Spaceship implements DrawableComponent {
+public class Spaceship extends GameObject implements DrawableComponent {
 
-    private int id = 1;
+    private int id = 2;
 
     
     private float[] polygonPoints;

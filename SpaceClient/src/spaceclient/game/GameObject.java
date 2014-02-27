@@ -10,6 +10,6 @@ package spaceclient.game;
  *
  * @author Toon
  */
-public class GameObject {
+public abstract class GameObject {
     
 }

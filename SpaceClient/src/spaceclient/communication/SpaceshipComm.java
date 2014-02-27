@@ -11,13 +11,13 @@ import spaceclient.game.Spaceship;
  *
  * @author Tim
  */
-public class SpaceshipComm {
+public class SpaceshipComm extends GamePacket{
 
     private float x, y;
     private int d, id;
 
-    public SpaceshipComm(Spaceship spaceship) {
-
+    public SpaceshipComm(String header, Spaceship spaceship) {
+        super(header);
         this.x = spaceship.getPosition().x;
         this.y = spaceship.getPosition().y;
         this.d = 0;

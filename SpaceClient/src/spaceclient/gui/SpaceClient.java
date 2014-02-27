@@ -1,7 +1,5 @@
 package spaceclient.gui;
 
-import com.google.gson.Gson;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,9 +14,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import spaceclient.communication.BroadcastHandler;
-import spaceclient.communication.Communicator;
-import spaceclient.communication.Serializer;
-import spaceclient.communication.SpaceshipComm;
 import spaceclient.dao.interfaces.DrawCallback;
 import spaceclient.game.Spaceship;
 
@@ -39,7 +34,7 @@ public class SpaceClient extends BasicGame implements DrawCallback {
         gc.setFullscreen(true);
         player = new User(new Spaceship(50, 50, new Rectangle(0, 0, 50, 50)), "Space_Invader1337");
         Thread t = new Thread(new BroadcastHandler(this, player.getSpaceship()));
-        t.run();
+        t.start();
     }
 
     @Override
