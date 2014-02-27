@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spaceclient.communication;
+package shared;
 
-import spaceclient.game.Spaceship;
 
 /**
  *
@@ -16,12 +15,12 @@ public class SpaceshipComm extends GamePacket{
     private float x, y;
     private int d, id;
 
-    public SpaceshipComm(String header, Spaceship spaceship) {
+    public SpaceshipComm(String header, float x, float y, int d, int id) {
         super(header);
-        this.x = spaceship.getPosition().x;
-        this.y = spaceship.getPosition().y;
-        this.d = 0;
-        this.id = spaceship.getId();
+        this.x = x;
+        this.y = y;
+        this.d = d;
+        this.id = id;
 
     }
 
