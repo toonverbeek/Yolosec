@@ -1,10 +1,12 @@
 package com.modules;
 
+import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Map;
 
 /**
  *
@@ -15,6 +17,8 @@ public class ClientConnection implements Runnable {
     private final Socket socket;
     private InputStream inputStream;
     private final ClientConnectionModule server;
+    
+    private Gson gson;
 
     public Socket getSocket() {
         return socket;
@@ -23,6 +27,7 @@ public class ClientConnection implements Runnable {
     public ClientConnection(Socket socket, ClientConnectionModule server) {
         this.server = server;
         this.socket = socket;
+        this.gson = new Gson();
         
         try {
             inputStream = this.socket.getInputStream();
@@ -51,35 +56,30 @@ public class ClientConnection implements Runnable {
                 //System.out.println("Connection lost");
             }
         }
+        server.logout(this);
     }
 
     private void readGson(JsonReader reader) {
-       try {
-            reader.beginObject();
+            Map recievedObject = gson.fromJson(reader, Map.class);
+            //System.out.println(recievedObject.toString());
+            
+            String header = (String) recievedObject.get("header");
+            
+            switch (header) {
+            case "SpaceshipComm":
+                int spaceshipID = ((Double)recievedObject.get("id")).intValue();
+                double x = (double) recievedObject.get("x");
+                double y = (double) recievedObject.get("y");
+                int d = ((Double)recievedObject.get("d")).intValue();
+                this.server.updateSpaceship(spaceshipID, x, y, d);
+                break;
 
-            while (reader.hasNext()) {
-                String nextName = reader.nextName();
+            case "LoginComm":
+                String username = (String) recievedObject.get("username");
+                String password = (String) recievedObject.get("password");
+                this.server.login(username, password, this);
+                break;
 
-                switch (nextName) {
-                    
-                    case "SpaceshipComm":
-                        this.server.updateSpaceship(reader);
-                        break;
-                    
-                    case "Account":
-                        this.server.login(reader, this);
-                        break;
-                        
-                    default:
-                        reader.skipValue();
-                        break;
-
-                }
-            }
-            reader.endObject();
-        } catch (IOException ex) {
-            System.out.println("Could not readGson");
-            System.out.println(String.format("Error in PlayerLocationThread.readGson() : %s", ex.getMessage()));
         }
     }
 }

@@ -1,15 +1,11 @@
 package com.modules;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import com.google.gson.reflect.TypeToken;
 import com.objects.Spaceship;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,42 +20,50 @@ import java.util.logging.Logger;
 public class PlayerLocationModule {
 
     private final Gson gson;
-    private Map<Spaceship, ClientConnection> clientSpaceships;
+    private Map<ClientConnection, Spaceship> clientSpaceships;
 
     public PlayerLocationModule() {
         gson = new Gson();
         this.clientSpaceships = new HashMap<>();
     }
     
-    public void addSpaceship(Spaceship newShip, ClientConnection user){
-        if(!clientSpaceships.containsKey(newShip)){
-            clientSpaceships.put(newShip, user);
+    public void addSpaceship(Spaceship newShip, ClientConnection connection){
+        if(!clientSpaceships.containsValue(newShip)){
+            System.out.println("added spaceship");
+            clientSpaceships.put(connection, newShip);
         }
     }
+    
+    public Map<ClientConnection, Spaceship> getClientSpaceships() {
+        return clientSpaceships;
+    }
 
-    private String getAllPositions(Spaceship requestor) {
-        List<String> positions = new ArrayList<>();
+    private List<Spaceship> getAllPositions(Spaceship requestor) {
+        List<Spaceship> positions = new ArrayList<>();
 
-        for (Map.Entry<Spaceship, ClientConnection> sender : this.clientSpaceships.entrySet()) {
+        for (Map.Entry<ClientConnection, Spaceship> sender : this.clientSpaceships.entrySet()) {
             //If the same as the requestor space ship ignore
-            if (requestor != sender.getKey()) {
-                positions.add(gson.toJson(sender.getKey(), Spaceship.class));
-            }
+            //if (requestor != sender.getKey()) {
+            positions.add(sender.getValue());
+            //}
         }
         
-        String positionString = gson.toJson(positions, List.class);
-        return positionString;
+        return positions;
     }
 
     public void sendPositions() {
-        for (Map.Entry<Spaceship, ClientConnection> client : this.clientSpaceships.entrySet()) {
+        for (Map.Entry<ClientConnection, Spaceship> client : this.clientSpaceships.entrySet()) {
             try {
-                if (client.getValue() != null) {
+                if (client.getKey() != null) {
                     //the writer which needs to send a list of positions
-                    PrintWriter writer = new PrintWriter(client.getValue().getSocket().getOutputStream(), true);
-
-                    String positions = getAllPositions(client.getKey());
-                    writer.write(positions);
+                    PrintWriter writer = new PrintWriter(client.getKey().getSocket().getOutputStream(), true);
+                    
+                    List<Spaceship> positions = getAllPositions(client.getValue());
+                    //System.out.println(String.format("Broadcasted positions %s", positions));
+                    
+                    Type com = new TypeToken<List<Spaceship>>(){}.getType();
+                    String json = gson.toJson(positions, com);
+                    writer.println(json);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(PlayerLocationModule.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,49 +71,20 @@ public class PlayerLocationModule {
         }
     }
     
-
-    public void updateSpaceship(JsonReader reader) {
-        try {
-            int spaceshipID = -1;
-            double x = 0.0f;
-            double y = 0.0f;
-            int direction = 0;
-            
-            reader.beginObject();
-            while(reader.hasNext()){
-                String tagName = reader.nextName();
-                switch(tagName){
-                    case "id":
-                        spaceshipID = reader.nextInt();
-                        break;
-
-                    case "x":
-                        x = reader.nextDouble();
-                        break;
-
-                    case "y":
-                        y = reader.nextDouble();
-                        break;
-
-                    case "d":
-                        direction = reader.nextInt();
-                        break;
-                        
-                    default:
-                        reader.skipValue();
-                        break;
-                }
+    public void updateSpaceship(int spaceshipID, double x, double y, int direction) {
+        //System.out.println(String.format("%s %s %s %s ", new Object[]{spaceshipID,x , y, direction}));
+        for (Map.Entry<ClientConnection, Spaceship> client : this.clientSpaceships.entrySet()) {
+            if (client.getValue().getId() == spaceshipID) {
+                Spaceship updateShip = client.getValue();
+                updateShip.update(x, y, direction);
+                
             }
-            reader.endObject();
-            
-            for (Map.Entry<Spaceship, ClientConnection> client : this.clientSpaceships.entrySet()) {
-                if (client.getKey().getId() == spaceshipID) {
-                    Spaceship updateShip = client.getKey();
-                    updateShip.update(x, y, direction);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(PlayerLocationModule.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void logout(ClientConnection connection) {
+        if(this.clientSpaceships.containsKey(connection)){
+            this.clientSpaceships.remove(connection);
         }
     }
 }
