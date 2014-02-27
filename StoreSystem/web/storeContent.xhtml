@@ -6,17 +6,85 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    
+
+
     <ui:define name="topsection">
-        
+        <h:form>  
+            <p:growl id="messages" />  
+            <p:toolbar styleClass="toolbar">  
+                <p:toolbarGroup align="left" >  
+                </p:toolbarGroup>  
+                <p:separator />  
+                <p:toolbarGroup align="left" styleClass="buttons">  
+                    <p:commandButton type="button" value="My Inventory" icon="ui-icon-suitcase" styleClass="selected"/>  
+                    <p:commandButton type="button" value="My Ship" icon="ui-icon-home"/>  
+                    <p:commandButton type="button" value="Store" icon="ui-icon-cart"/>  
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">  
+                    <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                </p:toolbarGroup>  
+            </p:toolbar>  
+        </h:form>
     </ui:define>
 
     <ui:define name="leftsection">
-        
+        <p:panel header="Filters" >  
+        </p:panel>  
     </ui:define>
 
     <ui:define name="content">
-       
+        <p:panel header="My Items" >  
+            <h:form id="form">  
+                <p:dataGrid var="item" value="#{storeBean.allItems}" columns="3"  
+                            rows="12" paginator="true" paginatorAlwaysVisible="false"
+                            paginatorTemplate="{PageLinks}" >  
+                    <p:panel header="#{item.name}" style="text-align:center">  
+                        <h:panelGrid columns="1" style="width:100%" > 
+                            <h:column>
+                                <h:dataTable value="#{item.resources}" var="res" width="100%" >
+                                    <h:column>
+                                        <f:facet name="header">Resource Type</f:facet>
+                                        <h:outputText value="#{res.type}" class="tweetcontent"/>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Amount</f:facet>
+                                        <h:outputText value="#{res.amount}" class="tweetcontent"/>
+
+                                    </h:column>
+                                </h:dataTable>
+                            </h:column>
+                            <h:column>
+                                <p:graphicImage value="/images/items/spaceship.png" width="100px" height="100px"/>  
+                            </h:column>
+                            <p:commandLink update=":form:carDetail" oncomplete="carDialog.show()" title="View Detail">  
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
+                                <f:setPropertyActionListener value="#{item}"   
+                                                             target="#{storeBean.selectedItem}" />  
+                            </p:commandLink>  
+                        </h:panelGrid>  
+                    </p:panel>  
+                </p:dataGrid>  
+
+                <p:dialog id="dialog" header="Item Details" widgetVar="carDialog" modal="true">  
+                    <p:outputPanel id="carDetail" style="text-align:center;">  
+
+                        <p:graphicImage value="/images/items/spaceship.png"/>  
+
+                        <h:panelGrid  columns="2" cellpadding="5">  
+                            <h:outputLabel for="modelNo" value="Name " />  
+                            <h:outputText id="modelNo" value="#{storeBean.selectedItem.name}" />  
+
+                            <h:outputLabel for="year" value="Description: " />  
+                            <h:outputText id="year" value="#{storeBean.selectedItem.description}" />  
+
+                            <h:outputLabel for="color" value="Id " />  
+                            <h:outputText id="color" value="#{storeBean.selectedItem.id}" />  
+                        </h:panelGrid>
+                    </p:outputPanel>  
+                </p:dialog>  
+
+            </h:form>  
+        </p:panel>  
     </ui:define>
 
 </ui:composition>
