@@ -20,7 +20,6 @@ public class WorldTileMap {
     }
     
     private boolean generateMap(){
-        
         return false;
     }
     

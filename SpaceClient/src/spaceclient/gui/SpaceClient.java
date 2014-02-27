@@ -13,6 +13,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.tiled.TiledMap;
 import spaceclient.communication.BroadcastHandler;
 import spaceclient.dao.interfaces.DrawCallback;
 import spaceclient.game.Spaceship;
@@ -21,11 +22,12 @@ public class SpaceClient extends BasicGame implements DrawCallback {
 
     private static final int FPS = 60;
     private User player;
-    private List<Spaceship> spaceships = Collections.synchronizedList(new ArrayList<Spaceship>()); 
+    private List<Spaceship> spaceships = Collections.synchronizedList(new ArrayList<Spaceship>());
+    private BroadcastHandler broadcastHandler;
+    private TiledMap tileMap;
 
     public SpaceClient(String gamename) {
         super(gamename);
-        
     }
 
     @Override
@@ -33,13 +35,18 @@ public class SpaceClient extends BasicGame implements DrawCallback {
         gc.setTargetFrameRate(FPS);
         gc.setFullscreen(true);
         player = new User(new Spaceship(50, 50, new Rectangle(0, 0, 50, 50)), "Space_Invader1337");
-        Thread t = new Thread(new BroadcastHandler(this, player.getSpaceship()));
+        broadcastHandler = new BroadcastHandler(this, player.getSpaceship());
+        //tileMap = new TiledMap("map.tmx");
+        Thread t = new Thread(broadcastHandler);
         t.start();
+        //broadcastHandler.login(this.player.getUsername(), "asdf");
+
     }
 
     @Override
     public void update(GameContainer gc, int i) throws SlickException {
         player.update(gc);
+        broadcastHandler.sendData(player.getSpaceship());
     }
 
     @Override
@@ -70,9 +77,10 @@ public class SpaceClient extends BasicGame implements DrawCallback {
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(Spaceship spaceShip) {
+        System.out.println("Got new list: " + spaceShip);
         for (Iterator<Spaceship> it = spaceships.iterator(); it.hasNext();) {
             Spaceship spaceship = it.next();
-            if(spaceship.equals(spaceShip)) {
+            if (spaceship.equals(spaceShip)) {
                 spaceships.remove(spaceship);
                 spaceships.add(spaceShip);
             }

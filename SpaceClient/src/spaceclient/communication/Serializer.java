@@ -28,10 +28,13 @@ public class Serializer {
     public static String serializeSpaceship(Spaceship spaceship) {
         SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship);
         String json = gson.toJson(sComm, SpaceshipComm.class);
-        System.out.println(json);
         return json;
     }
 
+    public static String serializeLogin(LoginComm lc){
+        return gson.toJson(lc, LoginComm.class);
+    }
+    
     public static GameObject desirializePacket(JsonElement json) {
         GamePacket gp = (GamePacket) gson.fromJson(json, GamePacket.class);
         JsonObject jobject = json.getAsJsonObject();
@@ -41,6 +44,7 @@ public class Serializer {
         System.out.println("JSON entry: " + entry.getKey());
         switch (entry.getKey()) {
             case "SpaceshipComm":
+                System.out.println("got spaceshipcomm");
                 Type listOfTestObject = new TypeToken<List<GamePacket>>() {
                 }.getType();
                 List<GamePacket> list2 = gson.fromJson(json, listOfTestObject);

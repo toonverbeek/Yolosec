@@ -23,17 +23,21 @@ public class Communicator {
     private static BufferedReader reader;
 
     public Communicator() {
-        
+
     }
-    
+
     public void sendData(String json) {
         writer.println(json);
     }
-    
+
     public String retrieveData() throws IOException {
         return reader.readLine();
     }
-    
+
+    public void login(String json) {
+        writer.println(json);
+    }
+
     public boolean initiate() {
         try {
             socket = new Socket("145.93.58.255", 1337);
