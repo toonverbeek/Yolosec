@@ -23,6 +23,10 @@ public class SpaceshipComm extends GamePacket{
         this.id = id;
 
     }
+    
+    public int getId(){
+        return id;
+    }
 
     public float getX() {
         return x;
