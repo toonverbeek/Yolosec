@@ -16,6 +16,10 @@ public abstract class GamePacket {
     public GamePacket(String header) {
         this.header = header;
     }
+    
+    public GamePacket(){
+        
+    }
 
     public String getHeader() {
         return header;

@@ -27,7 +27,8 @@ public class Serializer {
 
     public static String serializeSpaceship(Spaceship spaceship) {
         SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship);
-        String json = gson.toJson(sComm, GamePacket.class);
+        String json = gson.toJson(sComm, SpaceshipComm.class);
+        System.out.println(json);
         return json;
     }
 
