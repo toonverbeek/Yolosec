@@ -5,14 +5,31 @@
  */
 package domain;
 
+import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.*;
 
-public class User {
+@Entity
+@Table(name = "user")
+public class User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private long id;
+
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
-    private Spaceship spaceship;
-    private Collection<Resource> resources;
+    //private Spaceship spaceship;
+    //private Collection<Resource> resources;
+
+    public User() {
+    }
 
     /**
      *
@@ -24,8 +41,8 @@ public class User {
     public User(String username, String password, Spaceship spaceship, Collection<Resource> resources) {
         this.username = username;
         this.password = password;
-        this.spaceship = spaceship;
-        this.resources = resources;
+//        this.spaceship = spaceship;
+//        this.resources = resources;
     }
 
     /**
@@ -70,7 +87,7 @@ public class User {
      * @return
      */
     public Spaceship getSpaceship() {
-        return spaceship;
+        return null;//spaceship;
     }
 
     /**
@@ -79,7 +96,7 @@ public class User {
      * @param spaceship
      */
     public void setSpaceship(Spaceship spaceship) {
-        this.spaceship = spaceship;
+        //this.spaceship = spaceship;
     }
 
     /**
@@ -88,7 +105,7 @@ public class User {
      * @return
      */
     public Collection<Resource> getResources() {
-        return resources;
+        return null;//resources;
     }
 
     /**
@@ -99,25 +116,26 @@ public class User {
      */
     public boolean addResource(Resource resource) {
         if (resource != null) {
-            return this.resources.add(resource);
+            //return this.resources.add(resource);
         }
         return false;
     }
 
     /**
      * Update a resource
+     *
      * @param resource the resource to update
      * @param amount the amount to add to the resource
-     * @return 
+     * @return
      */
     public boolean updateResource(Resource resource, long amount) {
         if (resource != null) {
-            if (resources.contains(resource)) {
-                resources.remove(resource);
-                resource.increaseAmount(amount);
-                resources.add(resource);
-                return true;
-            }
+//            if (resources.contains(resource)) {
+//                resources.remove(resource);
+//                resource.increaseAmount(amount);
+//                resources.add(resource);
+//                return true;
+//            }
         }
         return false;
     }
@@ -128,7 +146,7 @@ public class User {
      * @param resources
      */
     public void setResources(Collection<Resource> resources) {
-        this.resources = resources;
+        //this.resources = resources;
     }
 
 }

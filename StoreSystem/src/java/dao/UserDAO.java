@@ -24,5 +24,7 @@ public interface UserDAO {
 
     User find(String username);
 
+    User find(Long id);
+
     void remove(User user);
 }
