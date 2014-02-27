@@ -1,6 +1,7 @@
 package com.server;
 
 import com.objects.User;
+import com.objects.Spaceship;
 import java.sql.*;
 
 /**
@@ -114,6 +115,7 @@ public class DbConnector {
      *
      * @param username String username
      * @return If user != exists then null, else password
+     * @throws java.lang.Exception
      */
     public static String identifyUser(String username) throws Exception {
         String result = null;
@@ -137,6 +139,41 @@ public class DbConnector {
             System.out.println("Connection closed");
         }
         //returns null if doesnt exist, else return password;
+        return result;
+    }
+    
+    /**
+     * 
+     * @param username
+     * @return
+     * @throws Exception 
+     */
+        public static Spaceship getSpaceship(String username) throws Exception {
+        Spaceship result = null;
+        try {
+            System.out.println(connectionString);
+            System.out.println("Setting up connection...");
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(connectionString);
+            System.out.println("Connection established");
+
+            preparedStatement = connect.prepareStatement("SELECT * FROM spaceship s WHERE s.spaceship_id = (SELECT u.spaceship_id FROM account u WHERE u.username = ?)");
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                double x = resultSet.getInt("position_x");
+                double y = resultSet.getInt("position_y");
+                int direction = resultSet.getInt("direction");
+                int id = resultSet.getInt("spaceship_id");
+                result = new Spaceship(id, x, y, direction);
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            close();
+            System.out.println("Connection closed");
+        }
+        //returns null if doesnt exist, else return spaceship object;
         return result;
     }
 
