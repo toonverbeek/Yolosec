@@ -13,14 +13,15 @@ public class DbConnector {
     private static Statement statement = null;
     private static PreparedStatement preparedStatement = null;
     private static ResultSet resultSet = null;
-    private static final String db_location = "145.93.57.101";
+    private static final String db_location = "145.93.58.255";
     private static final String db_name = "inspace";
     private static final String db_username = "inspaceserver";
     private static final String db_password = "toor";
-    private static final String connectionString = "jdbc:mysql://" + db_location + "/" + db_name + "?" + "user=" + db_username + "&password=" + db_password;
+    private static final String connectionString = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", new Object[]{db_location, db_name, db_username, db_password });
 
     public static void readDataBase() throws Exception {
         try {
+            System.out.println(connectionString);
             System.out.println("Setting up connection...");
             Class.forName("com.mysql.jdbc.Driver");
             connect = DriverManager.getConnection(connectionString);
