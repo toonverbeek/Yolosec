@@ -17,7 +17,7 @@ public class DbConnector {
     private static final String db_name = "inspace";
     private static final String db_username = "inspaceserver";
     private static final String db_password = "toor";
-    private static final String connectionString = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", new Object[]{db_location, db_name, db_username, db_password });
+    private static final String connectionString = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", new Object[]{db_location, db_name, db_username, db_password});
 
     public static void readDataBase() throws Exception {
         try {
@@ -59,7 +59,6 @@ public class DbConnector {
         } finally {
             close();
         }
-
     }
 
     private static void writeMetaData(ResultSet resultSet) throws SQLException {
@@ -100,13 +99,45 @@ public class DbConnector {
             Class.forName("com.mysql.jdbc.Driver");
             connect = DriverManager.getConnection(connectionString);
             System.out.println("Connection established");
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             close();
         }
         return false;
+    }
+
+    /**
+     * Checks if a username exists, if so returns the password. Else returns
+     * null value.
+     *
+     * @param username String username
+     * @return If user != exists then null, else password
+     */
+    public static String identifyUser(String username) throws Exception {
+        String result = null;
+        try {
+            System.out.println(connectionString);
+            System.out.println("Setting up connection...");
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(connectionString);
+            System.out.println("Connection established");
+
+            preparedStatement = connect.prepareStatement("SELECT password FROM account WHERE username = ?");
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.isBeforeFirst()) {
+                result = resultSet.getString("password");
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            close();
+            System.out.println("Connection closed");
+        }
+        //returns null if doesnt exist, else return password;
+        return result;
     }
 
     /**
