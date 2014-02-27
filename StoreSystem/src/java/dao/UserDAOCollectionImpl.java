@@ -104,4 +104,9 @@ public class UserDAOCollectionImpl implements UserDAO {
         }
     }
 
+    @Override
+    public User find(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

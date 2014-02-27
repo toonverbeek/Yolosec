@@ -1,5 +1,6 @@
 package service;
 
+import JPA.UserDAO_JPAImpl;
 import dao.UserDAO;
 import dao.UserDAOCollectionImpl;
 import domain.Item;
@@ -15,7 +16,8 @@ import javax.ejb.Stateless;
 @Stateless
 public class StoreService {
 
-    private UserDAO userDAO = new UserDAOCollectionImpl();
+    //private UserDAO userDAO = new UserDAOCollectionImpl();
+    private UserDAO userDAO = new UserDAO_JPAImpl();
 
     private List<Item> mockupItems = new ArrayList<>();
 
