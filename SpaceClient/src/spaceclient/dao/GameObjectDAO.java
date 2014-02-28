@@ -6,10 +6,14 @@
 
 package spaceclient.dao;
 
+import java.util.List;
+import spaceclient.game.GameObject;
+
 /**
  *
  * @author Toon
  */
 public interface GameObjectDAO {
-    
+    List<GameObject> getGameObjects();
+    void setGameObjects(List<GameObject> objects);
 }

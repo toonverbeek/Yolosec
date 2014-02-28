@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.AppGameContainer;
@@ -14,8 +15,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
+import shared.SpaceshipComm;
 import spaceclient.communication.BroadcastHandler;
 import spaceclient.dao.interfaces.DrawCallback;
+import spaceclient.game.GameObject;
 import spaceclient.game.Spaceship;
 
 public class SpaceClient extends BasicGame implements DrawCallback {
@@ -76,13 +79,12 @@ public class SpaceClient extends BasicGame implements DrawCallback {
     }
 
     @Override
-    public void drawAfterDataReadFromSocketFromServer(Spaceship spaceShip) {
-        System.out.println("Got new list: " + spaceShip);
-        for (Iterator<Spaceship> it = spaceships.iterator(); it.hasNext();) {
-            Spaceship spaceship = it.next();
-            if (spaceship.equals(spaceShip)) {
-                spaceships.remove(spaceship);
-                spaceships.add(spaceShip);
+    public void drawAfterDataReadFromSocketFromServer(List<GameObject> gameObjects) {
+        System.out.println("Got new list: " + gameObjects);
+        for (GameObject go : gameObjects) {
+            if (go instanceof Spaceship) {
+                Spaceship s = (Spaceship) go;
+                
             }
         }
     }

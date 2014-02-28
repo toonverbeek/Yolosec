@@ -7,6 +7,8 @@ package spaceclient.communication;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import spaceclient.dao.interfaces.DrawCallback;
@@ -22,7 +24,7 @@ public class BroadcastHandler implements Runnable {
 
     private DrawCallback callBack;
     private Communicator communicator;
-    private String retrievedJson;
+    private List<GameObject> retrievedObjectList;
     private static final Gson gson = new Gson();
 
     public BroadcastHandler(DrawCallback callBack, Spaceship spaceship) {
@@ -52,15 +54,13 @@ public class BroadcastHandler implements Runnable {
 
     private void handleData() {
         try {
-            System.out.println("In handle data");
-            retrievedJson = communicator.retrieveData();
-            System.out.println("Recieved: " + retrievedJson);
-            if (retrievedJson != null && !retrievedJson.equals("")) {
+            retrievedObjectList = communicator.retrieveData();
+            System.out.println("Recieved: " + retrievedObjectList);
+            if (retrievedObjectList != null) {
                 System.out.println("Got something");
-                GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
-                callBack.drawAfterDataReadFromSocketFromServer((Spaceship) sToAdd);
+                //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
+                callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             }
-            System.out.println("finished handledata()");
         } catch (IOException ex) {
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }

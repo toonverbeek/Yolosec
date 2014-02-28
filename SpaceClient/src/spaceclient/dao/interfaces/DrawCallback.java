@@ -6,7 +6,9 @@
 
 package spaceclient.dao.interfaces;
 
-import spaceclient.communication.SpaceshipComm;
+import java.util.List;
+import java.util.Map;
+import spaceclient.game.GameObject;
 import spaceclient.game.Spaceship;
 
 /**
@@ -14,5 +16,5 @@ import spaceclient.game.Spaceship;
  * @author Tim
  */
 public interface DrawCallback {
-    void drawAfterDataReadFromSocketFromServer(Spaceship sShip);
+    void drawAfterDataReadFromSocketFromServer(List<GameObject> objects);
 }

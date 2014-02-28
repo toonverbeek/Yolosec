@@ -5,6 +5,8 @@
  */
 package spaceclient.communication;
 
+import shared.GamePacket;
+
 /**
  *
  * @author Toon
