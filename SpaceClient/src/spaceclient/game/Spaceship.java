@@ -13,6 +13,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.gui.Direction;
+import spaceclient.gui.SpaceClient;
 
 /**
  *
@@ -22,10 +23,9 @@ public class Spaceship extends GameObject implements DrawableComponent {
 
     private int id = 2;
 
-    
     private float[] polygonPoints;
     private Polygon polygon;
-    private Vector2f position;
+    private Vector2f position, relPosition;
     private float speed = 10;
     private Vector2f velocity;
     private Vector2f acceleration;
@@ -40,7 +40,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         this.width = width;
         this.height = height;
         this.boundingRectangle = boundingRectangle;
-        
+
         polygonPoints = new float[8];
         polygonPoints[0] = 0;
         polygonPoints[1] = 0;
@@ -64,7 +64,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
 
     @Override
     public void render(Graphics g) {
-        polygon.setLocation(position);
+        polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
         g.drawString("Accel: " + acceleration, 100, 100);
         g.draw(polygon);
@@ -89,7 +89,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         //set x and y
         position.add(velocity);
     }
-    
+
     public int getId() {
         return id;
     }
@@ -122,25 +122,25 @@ public class Spaceship extends GameObject implements DrawableComponent {
     }
 
     private void upKey() {
-        acceleration.y -= .015;
-        if (acceleration.y < -2) {
-            acceleration.y = -2f;
+        acceleration.y -= .0015;
+        if (acceleration.y < -.2) {
+            acceleration.y = -.2f;
         }
         velocity.y += acceleration.y;
-        if (velocity.y > .8) {
-            velocity.y = .8f;
+        if (velocity.y > .08) {
+            velocity.y = .08f;
         }
         prevDirection = Direction.UP;
     }
 
     private void downKey() {
-        acceleration.y += .015;
-        if (acceleration.y > 2) {
-            acceleration.y = 2f;
+        acceleration.y += .0015;
+        if (acceleration.y > .2) {
+            acceleration.y = .2f;
         }
         velocity.y += acceleration.y;
-        if (velocity.y > .2) {
-            velocity.y = .8f;
+        if (velocity.y > .02) {
+            velocity.y = .08f;
         }
         prevDirection = Direction.DOWN;
     }
@@ -168,5 +168,4 @@ public class Spaceship extends GameObject implements DrawableComponent {
         direction = 1;
     }
 
-    
 }
