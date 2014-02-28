@@ -28,6 +28,7 @@ public class ConsoleApp {
                     System.out.println("((getstatus))");
                     break;
                 case "exit":
+                    System.out.println("Exit runtime...");
                     //Runtime.getRuntime().exit(0);
                     System.exit(0);
                 default:
