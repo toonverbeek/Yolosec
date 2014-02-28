@@ -14,7 +14,7 @@ public class DbConnector {
     private static Statement statement = null;
     private static PreparedStatement preparedStatement = null;
     private static ResultSet resultSet = null;
-    private static final String db_location = "145.93.58.255";
+    private static final String db_location = "145.93.56.202";
     private static final String db_name = "inspace";
     private static final String db_username = "inspaceserver";
     private static final String db_password = "toor";

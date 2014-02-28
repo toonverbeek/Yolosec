@@ -1,6 +1,7 @@
 package com.modules;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.GamePacket;
 import shared.SpaceshipComm;
 
 /**
@@ -61,7 +63,7 @@ public class PlayerLocationModule {
                     List<SpaceshipComm> positions = getAllPositions(client.getValue());
                     //System.out.println(String.format("Broadcasted positions %s", positions));
                     
-                    Type com = new TypeToken<List<SpaceshipComm>>(){}.getType();
+                    Type com = new TypeToken<List<GamePacket>>(){}.getType();
                     String json = gson.toJson(positions, com);
                     writer.println(json);
                 }

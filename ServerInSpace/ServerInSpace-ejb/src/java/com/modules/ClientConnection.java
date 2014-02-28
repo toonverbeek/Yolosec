@@ -18,7 +18,7 @@ public class ClientConnection implements Runnable {
     private InputStream inputStream;
     private final ClientConnectionModule server;
     
-    private Gson gson;
+    private final Gson gson;
 
     public Socket getSocket() {
         return socket;
@@ -47,13 +47,14 @@ public class ClientConnection implements Runnable {
     public void run() {
         JsonReader reader = new JsonReader(new InputStreamReader(this.inputStream));
         reader.setLenient(true);
-        while (socket.isConnected()) {
+        while (!socket.isClosed()) {
             try {
                 if (reader.hasNext()) {
                     this.readGson(reader);
                 }
             } catch (IOException ex) {
-                //System.out.println("Connection lost");
+                  System.out.println("Connection lost");
+                  break;
             }
         }
         server.logout(this);
@@ -68,8 +69,10 @@ public class ClientConnection implements Runnable {
             switch (header) {
             case "SpaceshipComm":
                 int spaceshipID = ((Double)recievedObject.get("id")).intValue();
-                float x = (float) recievedObject.get("x");
-                float y = (float) recievedObject.get("y");
+                double dX = (Double) recievedObject.get("x");
+                double dY = (Double) recievedObject.get("y");
+                float x = (float)dX;
+                float y = (float)dY;
                 int d = ((Double)recievedObject.get("d")).intValue();
                 this.server.updateSpaceship(spaceshipID, x, y, d);
                 break;
