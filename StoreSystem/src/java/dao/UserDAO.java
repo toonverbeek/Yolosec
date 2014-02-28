@@ -5,7 +5,8 @@
  */
 package dao;
 
-import domain.User;
+import domain.Account;
+import domain.Test;
 import java.util.List;
 
 /**
@@ -15,16 +16,18 @@ import java.util.List;
 public interface UserDAO {
 
     int count();
+    
+    void createTest(Test test);
 
-    void create(User user);
+    void create(Account user);
 
-    void edit(User user, User user2);
+    void edit(Account user, Account user2);
 
-    List<User> findAll();
+    List<Account> findAll();
 
-    User find(String username);
+    Account find(String username);
 
-    User find(Long id);
+    Account find(Long id);
 
-    void remove(User user);
+    void remove(Account user);
 }

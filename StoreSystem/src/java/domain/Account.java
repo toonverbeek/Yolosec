@@ -10,15 +10,15 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
-public class User implements Serializable {
+@Table
+public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 
     @Column(name = "username")
     private String username;
@@ -28,7 +28,7 @@ public class User implements Serializable {
     //private Spaceship spaceship;
     //private Collection<Resource> resources;
 
-    public User() {
+    public Account() {
     }
 
     /**
@@ -38,7 +38,7 @@ public class User implements Serializable {
      * @param spaceship
      * @param resources
      */
-    public User(String username, String password, Spaceship spaceship, Collection<Resource> resources) {
+    public Account(String username, String password, Spaceship spaceship, Collection<Resource> resources) {
         this.username = username;
         this.password = password;
 //        this.spaceship = spaceship;
@@ -147,6 +147,11 @@ public class User implements Serializable {
      */
     public void setResources(Collection<Resource> resources) {
         //this.resources = resources;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(id: " + id + " user: " + username + " pass: " + password + ")");
     }
 
 }

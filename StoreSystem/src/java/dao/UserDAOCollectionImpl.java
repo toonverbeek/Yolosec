@@ -5,7 +5,8 @@
  */
 package dao;
 
-import domain.User;
+import domain.Account;
+import domain.Test;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class UserDAOCollectionImpl implements UserDAO {
 
-    private List<User> users = new ArrayList<>();
+    private List<Account> users = new ArrayList<>();
 
     public UserDAOCollectionImpl() {
     }
@@ -37,10 +38,10 @@ public class UserDAOCollectionImpl implements UserDAO {
      * @param user 
      */
     @Override
-    public void create(User user) {
+    public void create(Account user) {
         if (user != null) {
             if (!users.contains(user)) {
-                for (User u : users) {
+                for (Account u : users) {
                     if (u.getUsername().equals(user.getUsername())) {
                         break;
                     }
@@ -56,7 +57,7 @@ public class UserDAOCollectionImpl implements UserDAO {
      * @param user2 the new user
      */
     @Override
-    public void edit(User user, User user2) {
+    public void edit(Account user, Account user2) {
         if (user != null && user2 != null) {
             if (users.contains(user)) {
                 users.remove(user);
@@ -70,7 +71,7 @@ public class UserDAOCollectionImpl implements UserDAO {
      * @return 
      */
     @Override
-    public List<User> findAll() {
+    public List<Account> findAll() {
         return this.users;
     }
 
@@ -80,9 +81,9 @@ public class UserDAOCollectionImpl implements UserDAO {
      * @return 
      */
     @Override
-    public User find(String username) {
+    public Account find(String username) {
         if (!username.isEmpty()) {
-            for (User u : users) {
+            for (Account u : users) {
                 if (u.getUsername().equals(username)) {
                     return u;
                 }
@@ -96,7 +97,7 @@ public class UserDAOCollectionImpl implements UserDAO {
      * @param user the user to remove
      */
     @Override
-    public void remove(User user) {
+    public void remove(Account user) {
         if (user != null) {
             if (users.contains(user)) {
                 users.remove(user);
@@ -105,7 +106,12 @@ public class UserDAOCollectionImpl implements UserDAO {
     }
 
     @Override
-    public User find(Long id) {
+    public Account find(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void createTest(Test test) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

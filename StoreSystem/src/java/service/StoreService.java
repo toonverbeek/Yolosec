@@ -7,8 +7,10 @@ import domain.Item;
 import domain.Resource;
 import domain.Spaceship;
 import domain.Stat;
-import domain.User;
+import domain.Account;
+import domain.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -22,14 +24,16 @@ public class StoreService {
     private List<Item> mockupItems = new ArrayList<>();
 
     public StoreService() {
-        initUsers();
+//        initUsers();
         initItems();
+        
+        userDAO.createTest(new Test());
     }
 
     private void initUsers() {
-        User u1 = new User("Demo", "Demo", new Spaceship(), new ArrayList<Resource>());
-        User u2 = new User("Demo2", "Demo", new Spaceship(), new ArrayList<Resource>());
-        User u3 = new User("asdfasdf", "asdfasdf", new Spaceship(), new ArrayList<Resource>());
+        Account u1 = new Account("Demo", "Demo", new Spaceship(), new ArrayList<Resource>());
+        Account u2 = new Account("Demo2", "Demo", new Spaceship(), new ArrayList<Resource>());
+        Account u3 = new Account("asdfasdf", "asdfasdf", new Spaceship(), new ArrayList<Resource>());
 
         userDAO.create(u1);
         userDAO.create(u2);
@@ -71,7 +75,7 @@ public class StoreService {
      *
      * @return
      */
-    public List<User> getUsers() {
+    public Collection<Account> getUsers() {
         return this.userDAO.findAll();
     }
 
@@ -80,8 +84,8 @@ public class StoreService {
      *
      * @param user the user to create
      */
-    public boolean createUser(User user) {
-        for (User u : getUsers()) {
+    public boolean createUser(Account user) {
+        for (Account u : getUsers()) {
             if (u.getUsername().equals(user.getUsername())) {
                 return false;
             }
@@ -105,7 +109,7 @@ public class StoreService {
      * @param username the name to search
      * @return
      */
-    public User getUser(String username) {
+    public Account getUser(String username) {
         return userDAO.find(username);
     }
 
@@ -115,7 +119,7 @@ public class StoreService {
      * @param user a user which contains a spaceship
      * @return
      */
-    public Collection<Item> getItemsFromUser(User user) {
+    public Collection<Item> getItemsFromUser(Account user) {
         return user.getSpaceship().getAllItems();
     }
 
@@ -125,7 +129,7 @@ public class StoreService {
      * @param user a user which contains a spaceship
      * @param item the item to add
      */
-    public void addItemToSpaceship(User user, Item item) {
+    public void addItemToSpaceship(Account user, Item item) {
         user.getSpaceship().addItemToInventory(item);
     }
 
@@ -135,7 +139,7 @@ public class StoreService {
      * @param user a user which contains a spaceship
      * @return
      */
-    public long getItemCount(User user) {
+    public long getItemCount(Account user) {
         return user.getSpaceship().getItemCount();
     }
 
@@ -146,7 +150,7 @@ public class StoreService {
      * @param name the name to search
      * @return
      */
-    public Collection<Item> getItemsWithName(User user, String name) {
+    public Collection<Item> getItemsWithName(Account user, String name) {
         return user.getSpaceship().findItem(name);
     }
 
@@ -157,19 +161,25 @@ public class StoreService {
      * @param id the id to search
      * @return
      */
-    public Item getItemWithId(User user, long id) {
+    public Item getItemWithId(Account user, long id) {
         return user.getSpaceship().findItem(id);
     }
 
     public boolean registerUser(String username, String password1, String password2) {
-        User user = new User(username, password1, new Spaceship(), new ArrayList<Resource>());
-        return createUser(user);
+//        Account user = new Account(username, password1, new Spaceship(), new ArrayList<Resource>());
+//        return createUser(user);
+        System.out.println("CALLING CREATETEST");
+        userDAO.createTest(new Test());
+        return true;
     }
 
     public boolean login(String username, String password) {
-        for (User u : getUsers()) {
-            if (u.getUsername().equals(username)) {
-                return u.getPassword().equals(password);
+        List<Account> users = userDAO.findAll();
+        for (Account u : users) {
+            System.out.println(u.getClass().getClassLoader().toString());
+            System.out.println("USER: " + ((Account) u).getUsername());
+            if (((Account) u).getUsername().equals(username)) {
+                return ((Account) u).getPassword().equals(password);
             }
         }
         return false;
