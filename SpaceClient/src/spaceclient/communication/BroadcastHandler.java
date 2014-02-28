@@ -28,16 +28,14 @@ public class BroadcastHandler implements Runnable {
     private static final Gson gson = new Gson();
 
     public BroadcastHandler(DrawCallback callBack, Spaceship spaceship) {
-        System.out.println("initiating constructor");
         this.callBack = callBack;
     }
 
     @Override
     public void run() {
-        System.out.println("initiating communicator");
         communicator = new Communicator();
         //communicator.initiate();
-        login("asdf", "asdf");
+        login("asdf2", "asdf2");
         while (true) {
             handleData();
         }
@@ -50,7 +48,6 @@ public class BroadcastHandler implements Runnable {
     }
 
     public void sendData(Spaceship spaceship) {
-        System.out.println("broadcasthandler reached");
         String json = Serializer.serializeSpaceship(spaceship);
         if (communicator != null) {
             communicator.sendData(json);
@@ -60,9 +57,7 @@ public class BroadcastHandler implements Runnable {
     private void handleData() {
         try {
             retrievedObjectList = communicator.retrieveData();
-            System.out.println("Recieved: " + retrievedObjectList);
             if (retrievedObjectList != null) {
-                System.out.println("Got something");
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
                 callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             }

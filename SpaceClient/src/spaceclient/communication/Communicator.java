@@ -33,7 +33,6 @@ public class Communicator {
     }
 
     public void sendData(String json) {
-        System.out.println("communicator reached");
         writer.println(json);
     }
 
@@ -45,7 +44,6 @@ public class Communicator {
     }
 
     public void login(String json) {
-        System.out.println("logged in");
         writer.println(json);
     }
 
@@ -59,10 +57,8 @@ public class Communicator {
                     socket.getInputStream()));
             return true;
         } catch (UnknownHostException e) {
-            System.out.println("Unknown host: kq6py");
             return false;
         } catch (IOException e) {
-            System.out.println("No I/O");
             return false;
         }
     }
