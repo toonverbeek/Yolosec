@@ -17,17 +17,19 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
 import shared.SpaceshipComm;
 import spaceclient.communication.BroadcastHandler;
+import spaceclient.dao.GameObjectDAOImpl;
 import spaceclient.dao.interfaces.DrawCallback;
 import spaceclient.game.GameObject;
 import spaceclient.game.Spaceship;
 
-public class SpaceClient extends BasicGame implements DrawCallback {
+public class SpaceClient extends BasicGame {
 
     private static final int FPS = 60;
     private User player;
     private List<Spaceship> spaceships = Collections.synchronizedList(new ArrayList<Spaceship>());
     private BroadcastHandler broadcastHandler;
     private TiledMap tileMap;
+    private GameObjectDAOImpl gameObjectDAO;
 
     public SpaceClient(String gamename) {
         super(gamename);
@@ -37,8 +39,9 @@ public class SpaceClient extends BasicGame implements DrawCallback {
     public void init(GameContainer gc) throws SlickException {
         gc.setTargetFrameRate(FPS);
         gc.setFullscreen(true);
+        gameObjectDAO = new GameObjectDAOImpl();
         player = new User(new Spaceship(50, 50, new Rectangle(0, 0, 50, 50)), "Space_Invader1337");
-        broadcastHandler = new BroadcastHandler(this, player.getSpaceship());
+        broadcastHandler = new BroadcastHandler(gameObjectDAO, player.getSpaceship());
         //tileMap = new TiledMap("map.tmx");
         Thread t = new Thread(broadcastHandler);
         t.start();
@@ -55,7 +58,7 @@ public class SpaceClient extends BasicGame implements DrawCallback {
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
         player.render(g);
-        for (Spaceship spaceship : spaceships) {
+        for (Spaceship spaceship : gameObjectDAO.getSpaceships()) {
             spaceship.render(g);
         }
     }
@@ -75,17 +78,6 @@ public class SpaceClient extends BasicGame implements DrawCallback {
     public void keyPressed(int key, char c) {
         if (key == Input.KEY_ESCAPE) {
             System.exit(0);
-        }
-    }
-
-    @Override
-    public void drawAfterDataReadFromSocketFromServer(List<GameObject> gameObjects) {
-        System.out.println("Got new list: " + gameObjects);
-        for (GameObject go : gameObjects) {
-            if (go instanceof Spaceship) {
-                Spaceship s = (Spaceship) go;
-                
-            }
         }
     }
 }

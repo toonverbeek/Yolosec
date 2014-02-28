@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import shared.GamePacket;
 import shared.SpaceshipComm;
 import spaceclient.game.GameObject;
 import spaceclient.game.Spaceship;
@@ -30,8 +31,10 @@ public class Serializer {
     private static final Gson gson = new Gson();
 
     public static String serializeSpaceship(Spaceship spaceship) {
+        System.out.println("serialize reached");
         SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship.getPosition().x, spaceship.getPosition().y, 1, spaceship.getId());
         String json = gson.toJson(sComm, SpaceshipComm.class);
+        System.out.println(json);
         return json;
     }
 
@@ -40,15 +43,22 @@ public class Serializer {
     }
 
     public static List<GameObject> deserializePackets(JsonReader reader) throws IOException {
-        Type com = new TypeToken<List<Map>>() {}.getType();
-        List<Map> objectList = gson.fromJson(reader, com);
         List<GameObject> gameobjects = new ArrayList<>();
-        for (Map map : objectList) {
-            for (Iterator it = map.entrySet().iterator(); it.hasNext();) {
-                SpaceshipComm scomm = (SpaceshipComm) it.next();
+        if (reader.hasNext()) {
+            List<Map> retrievedObjects = gson.fromJson(reader, List.class);
+            System.out.println("deserializePackets: " + retrievedObjects);
+
+            for (Map map : retrievedObjects) {
+                System.out.println(map.get("header"));
+                int id = ((Double) map.get("id")).intValue();
+                double x = (Double) map.get("x");
+                double y = (Double) map.get("y");
+                float xx = (float) x;
+                float yy = (float) y;
+                int d = ((Double) map.get("d")).intValue();
+                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id);
                 gameobjects.add(deserializeSpaceship(scomm));
             }
-            //SpaceshipComm sm = (SpaceshipComm) map.entrySet().iterator().next();
         }
         return gameobjects;
     }

@@ -29,10 +29,11 @@ public class Communicator {
     private static Gson gson = new Gson();
 
     public Communicator() {
-
+        initiate();
     }
 
     public void sendData(String json) {
+        System.out.println("communicator reached");
         writer.println(json);
     }
 
@@ -44,13 +45,14 @@ public class Communicator {
     }
 
     public void login(String json) {
+        System.out.println("logged in");
         writer.println(json);
     }
 
     public boolean initiate() {
         try {
-            //socket = new Socket("145.93.58.255", 1337);
-            socket = new Socket("localhost", 1337);
+            socket = new Socket("145.93.56.202", 1337);
+            //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);
             reader = new BufferedReader(new InputStreamReader(

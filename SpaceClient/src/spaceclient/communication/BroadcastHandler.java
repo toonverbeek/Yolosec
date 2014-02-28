@@ -36,20 +36,25 @@ public class BroadcastHandler implements Runnable {
     public void run() {
         System.out.println("initiating communicator");
         communicator = new Communicator();
-        communicator.initiate();
+        //communicator.initiate();
         login("asdf", "asdf");
         while (true) {
             handleData();
         }
     }
 
-    public void login(String username, String password){
+    public void login(String username, String password) {
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password);
         communicator.login(Serializer.serializeLogin(lc));
-        
+
     }
+
     public void sendData(Spaceship spaceship) {
-        communicator.sendData(Serializer.serializeSpaceship(spaceship));
+        System.out.println("broadcasthandler reached");
+        String json = Serializer.serializeSpaceship(spaceship);
+        if (communicator != null) {
+            communicator.sendData(json);
+        }
     }
 
     private void handleData() {
@@ -64,7 +69,7 @@ public class BroadcastHandler implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
 }

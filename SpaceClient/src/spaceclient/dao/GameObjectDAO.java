@@ -8,6 +8,7 @@ package spaceclient.dao;
 
 import java.util.List;
 import spaceclient.game.GameObject;
+import spaceclient.game.Spaceship;
 
 /**
  *
@@ -16,4 +17,5 @@ import spaceclient.game.GameObject;
 public interface GameObjectDAO {
     List<GameObject> getGameObjects();
     void setGameObjects(List<GameObject> objects);
+    List<Spaceship> getSpaceships();
 }

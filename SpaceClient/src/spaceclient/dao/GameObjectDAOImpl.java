@@ -8,13 +8,15 @@ package spaceclient.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import spaceclient.dao.interfaces.DrawCallback;
 import spaceclient.game.GameObject;
+import spaceclient.game.Spaceship;
 
 /**
  *
  * @author Toon
  */
-public class GameObjectDAOImpl implements GameObjectDAO{
+public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     private List<GameObject> gameObjects;
 
@@ -30,6 +32,25 @@ public class GameObjectDAOImpl implements GameObjectDAO{
     @Override
     public void setGameObjects(List<GameObject> objects) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void drawAfterDataReadFromSocketFromServer(List<GameObject> objects) {
+        if(objects != null && objects.size() > 0) {
+            gameObjects = objects;
+        }
+    }
+
+    @Override
+    public List<Spaceship> getSpaceships() {
+        List<Spaceship> spaceships = new ArrayList<>();
+        for(GameObject gObject : gameObjects) {
+            if(gObject instanceof Spaceship) {
+                spaceships.add((Spaceship)gObject);
+            }
+        }
+        
+        return spaceships;
     }
     
 }
