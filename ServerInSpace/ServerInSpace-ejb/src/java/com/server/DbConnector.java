@@ -129,7 +129,8 @@ public class DbConnector {
             preparedStatement = connect.prepareStatement("SELECT password FROM account WHERE username = ?");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.isBeforeFirst()) {
+            
+            while(resultSet.next()){
                 result = resultSet.getString("password");
             }
         } catch (Exception e) {
@@ -160,7 +161,7 @@ public class DbConnector {
             preparedStatement = connect.prepareStatement("SELECT * FROM spaceship s WHERE s.spaceship_id = (SELECT u.spaceship_id FROM account u WHERE u.username = ?)");
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.isBeforeFirst()) {
+            while (resultSet.next()) {
                 float x = resultSet.getFloat("position_x");
                 float y = resultSet.getFloat("position_y");
                 int direction = resultSet.getInt("direction");

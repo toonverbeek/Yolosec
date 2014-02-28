@@ -1,31 +1,36 @@
 package com.console;
 
+import com.modules.ClientConnectionModule;
 import java.util.Scanner;
 
 /**
  *
  * @author Administrator
  */
-public class ConsoleApp {
+public class ConsoleApp implements Runnable {
     
     private final Boolean isRunning;
-    public ConsoleApp() {
+    private final ClientConnectionModule clientConnectionModule;
+    
+    public ConsoleApp(ClientConnectionModule clientConnectionModule) {
+        this.clientConnectionModule = clientConnectionModule;
         System.out.println("Starting console...");
         System.out.println("Available commands are:");
         System.out.println("-getStatus");
         System.out.println("-exit");
+        System.out.println("\n-----------------");
         isRunning = true;
-        init();
     }
-    
-    private void init(){
+
+    @Override
+    public void run() {
         String input = "";
         while(isRunning) {
             Scanner sc = new Scanner(System.in);
             input = sc.next();
             switch(input) {
                 case "getStatus":
-                    System.out.println("((getstatus))");
+                    System.out.println(clientConnectionModule.getStatusInformation());
                     break;
                 case "exit":
                     System.out.println("Exit runtime...");

@@ -45,9 +45,9 @@ public class ClientConnectionModule implements Runnable {
             try {
                 Socket newClient = server.accept();
                 newClient.setKeepAlive(true);
-
+                
                 ClientConnection runnable = new ClientConnection(newClient, this);
-
+                
                 Thread t = new Thread(runnable);
                 t.start();
                 System.out.println("\n");
@@ -83,7 +83,7 @@ public class ClientConnectionModule implements Runnable {
         Map<ClientConnection, SpaceshipComm> clientSpaceships = locationModule.getClientSpaceships();
         StringBuilder builder = new StringBuilder();
         
-        builder.append(String.format("Status information { %s } \n", new Date().toString()));
+        builder.append(String.format("\n Status information { %s } \n", new Date().toString()));
         
         for(Map.Entry<ClientConnection, SpaceshipComm> connection : clientSpaceships.entrySet()){
             SpaceshipComm key = connection.getValue();
@@ -91,6 +91,7 @@ public class ClientConnectionModule implements Runnable {
             
             ClientConnection value = connection.getKey();
             builder.append(String.format("Connection IP {%s} PORT {%s} \n" , new Object[]{value.getSocket().getLocalAddress().toString(), value.getSocket().getPort()}));
+            builder.append("-----------------------------------------------------------");
         }
         
         return builder.toString();

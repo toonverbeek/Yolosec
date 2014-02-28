@@ -1,5 +1,6 @@
 package com.server;
 
+import com.console.ConsoleApp;
 import com.modules.ClientBroadcastModule;
 import com.modules.ClientConnectionModule;
 
@@ -23,9 +24,9 @@ public class LoadModules {
         
         broadcastThread.start();
         
-        ServerStatusModule statusModule = new ServerStatusModule(serverModule);
-        Thread statusThread = new Thread(statusModule);
+        ConsoleApp consoleApp = new ConsoleApp(serverModule);
+        Thread consoleThread = new Thread(consoleApp);
         
-        statusThread.start();
+        consoleThread.start();
     }
 }

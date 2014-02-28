@@ -2,8 +2,11 @@ package com.modules;
 
 
 import com.objects.User;
+import com.server.DbConnector;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import shared.SpaceshipComm;
 
 /**
@@ -17,34 +20,33 @@ public class PlayerLoginModule {
     private final ClientConnectionModule server;
 
     public PlayerLoginModule(ClientConnectionModule clientConnectionModule) {
-
         clientConnections = new HashMap<>();
-
         server = clientConnectionModule;
     }
 
     public synchronized boolean login(String username, String password, ClientConnection connection) {
         System.out.println("Login request");
         boolean isLoggedIn = false;
+        try {
+            String checkPassword = DbConnector.identifyUser(username);
 
-        System.out.println(password);
-        //String checkPassword = DbConnector.identifyUser(username);
-        String checkPassword = "asdf";
+            if (checkPassword != null && checkPassword.equals(password)) {
 
-        if (checkPassword != null && checkPassword.equals(password)) {
-               //Get Spaceship from user
-            //Spaceship spaceship = DbConnector.getSpaceship(username);
-            SpaceshipComm spaceship = new SpaceshipComm("SpaceshipComm",0.0f, 0.0f, 0, 2);
+                //Get Spaceship from user
+                SpaceshipComm spaceship = DbConnector.getSpaceship(username);
 
-            //Add the spaceship to the location module
-            this.server.addSpaceship(spaceship, connection);
+                //Add the spaceship to the location module
+                this.server.addSpaceship(spaceship, connection);
 
-            //Set logged in true
-            isLoggedIn = true;
+                //Set logged in true
+                isLoggedIn = true;
+            }
+
+            System.out.println(String.format("Returned logged in is [%s]", isLoggedIn));
+            //Always return the login request
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerLoginModule.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        System.out.println(String.format("Returned loggin is %s ", isLoggedIn));
-        //Always return the login request
         return isLoggedIn;
     }
 

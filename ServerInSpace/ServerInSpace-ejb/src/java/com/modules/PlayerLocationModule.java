@@ -45,9 +45,9 @@ public class PlayerLocationModule {
 
         for (Map.Entry<ClientConnection, SpaceshipComm> sender : this.clientSpaceships.entrySet()) {
             //If the same as the requestor space ship ignore
-            //if (requestor != sender.getKey()) {
-            positions.add(sender.getValue());
-            //}
+            if (requestor != sender.getValue()) {
+                positions.add(sender.getValue());
+            }
         }
         
         return positions;
