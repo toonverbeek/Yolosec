@@ -1,33 +1,29 @@
 package service;
 
-import JPA.UserDAO_JPAImpl;
+import annotations.JPAImpl;
 import dao.UserDAO;
-import dao.UserDAOCollectionImpl;
 import domain.Item;
 import domain.Resource;
 import domain.Spaceship;
 import domain.Stat;
 import domain.Account;
-import domain.Test;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 @Stateless
-public class StoreService {
+public class StoreService implements Serializable {
 
-    //private UserDAO userDAO = new UserDAOCollectionImpl();
-    private UserDAO userDAO = new UserDAO_JPAImpl();
+    @Inject
+    @JPAImpl
+    private UserDAO userDAO;
 
     private List<Item> mockupItems = new ArrayList<>();
 
     public StoreService() {
-//        initUsers();
-        initItems();
-        
-        userDAO.createTest(new Test());
     }
 
     private void initUsers() {
@@ -83,6 +79,7 @@ public class StoreService {
      * Create a user
      *
      * @param user the user to create
+     * @return 
      */
     public boolean createUser(Account user) {
         for (Account u : getUsers()) {
@@ -166,11 +163,8 @@ public class StoreService {
     }
 
     public boolean registerUser(String username, String password1, String password2) {
-//        Account user = new Account(username, password1, new Spaceship(), new ArrayList<Resource>());
-//        return createUser(user);
-        System.out.println("CALLING CREATETEST");
-        userDAO.createTest(new Test());
-        return true;
+        Account user = new Account(username, password1, new Spaceship(), new ArrayList<Resource>());
+        return createUser(user);
     }
 
     public boolean login(String username, String password) {

@@ -6,7 +6,6 @@
 package dao;
 
 import domain.Account;
-import domain.Test;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,16 +53,15 @@ public class UserDAOCollectionImpl implements UserDAO {
     /**
      * Edit a user
      * @param user the old user
-     * @param user2 the new user
      */
     @Override
-    public void edit(Account user, Account user2) {
-        if (user != null && user2 != null) {
-            if (users.contains(user)) {
-                users.remove(user);
-                users.add(user2);
-            }
-        }
+    public void edit(Account user) {
+//        if (user != null && user2 != null) {
+//            if (users.contains(user)) {
+//                users.remove(user);
+//                users.add(user2);
+//            }
+//        }
     }
 
     /**
@@ -107,11 +105,6 @@ public class UserDAOCollectionImpl implements UserDAO {
 
     @Override
     public Account find(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void createTest(Test test) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

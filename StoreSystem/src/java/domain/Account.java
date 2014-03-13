@@ -10,7 +10,6 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity
-@Table
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,9 +21,12 @@ public class Account implements Serializable {
 
     @Column(name = "username")
     private String username;
-
+    
     @Column(name = "password")
     private String password;
+    
+    @Column(name = "spaceship_id")
+    private int spaceshipid;
     //private Spaceship spaceship;
     //private Collection<Resource> resources;
 

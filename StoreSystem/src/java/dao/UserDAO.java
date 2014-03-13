@@ -16,12 +16,10 @@ import java.util.List;
 public interface UserDAO {
 
     int count();
-    
-    void createTest(Test test);
 
     void create(Account user);
 
-    void edit(Account user, Account user2);
+    void edit(Account user);
 
     List<Account> findAll();
 

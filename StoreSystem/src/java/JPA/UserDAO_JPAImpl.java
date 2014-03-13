@@ -5,66 +5,46 @@
  */
 package JPA;
 
+import annotations.JPAImpl;
 import dao.UserDAO;
 import domain.Account;
-import domain.Spaceship;
-import domain.Test;
 import java.util.*;
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Alternative;
-import javax.faces.bean.SessionScoped;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 /**
  *
  * @author Lisanne
  */
 @Stateless
+@JPAImpl
 public class UserDAO_JPAImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager em;
 
-    @PersistenceUnit
-    EntityManagerFactory emf;
-
     List<Account> users = new ArrayList<Account>();
-
-    public UserDAO_JPAImpl() {
-        emf = Persistence.createEntityManagerFactory("StoreSystemPU");
-        em = emf.createEntityManager();
-        em.setFlushMode(FlushModeType.COMMIT);
-    }
 
     @Override
     public int count() {
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return findAll().size();
     }
 
     @Override
-    @Transactional
     public void create(Account user) {
-        System.out.println("persisting");
         em.persist(user);
-        System.out.println(user.toString());
-        System.out.println("persisting DONE");
     }
 
     @Override
-    public void edit(Account user, Account user2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void edit(Account user) {
+        em.merge(user);
     }
 
     @Override
-    @Transactional
     public List<Account> findAll() {
-//        TypedQuery<Account> q = em.createQuery("select a from accountentity a", Account.class);
-//        List<Account> result = q.getResultList();
 
         CriteriaBuilder cBuilder = em.getCriteriaBuilder();
         CriteriaQuery cQuery = cBuilder.createQuery(Account.class);
@@ -80,12 +60,17 @@ public class UserDAO_JPAImpl implements UserDAO {
 
     @Override
     public Account find(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Account a : findAll()) {
+            if (a.getUsername().equals(username)) {
+                return em.find(Account.class, username);
+            }
+        }
+        return null;
     }
 
     @Override
     public void remove(Account user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.remove(user);
     }
 
     @Override
@@ -97,13 +82,4 @@ public class UserDAO_JPAImpl implements UserDAO {
             throw ex;
         }
     }
-
-    @Override
-    @Transactional
-    public void createTest(Test test) {
-        System.out.println("persisting");
-        em.merge(test);
-        System.out.println("PERSISTED");
-    }
-
 }
