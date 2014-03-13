@@ -16,5 +16,5 @@ import org.newdawn.slick.Graphics;
 public interface DrawableComponent {
     void update(GameContainer gc);
     
-    void render(Graphics g);
+    void render(Graphics g, boolean self);
 }

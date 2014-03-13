@@ -38,7 +38,7 @@ public class User implements DrawableComponent {
     }
 
     @Override
-    public void render(Graphics g) {
-        this.spaceship.render(g);
+    public void render(Graphics g, boolean self) {
+        this.spaceship.render(g, self);
     }
 }

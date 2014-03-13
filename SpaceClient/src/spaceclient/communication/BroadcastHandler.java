@@ -58,6 +58,7 @@ public class BroadcastHandler implements Runnable {
         try {
             retrievedObjectList = communicator.retrieveData();
             if (retrievedObjectList != null) {
+                System.out.println(retrievedObjectList);
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
                 callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             }

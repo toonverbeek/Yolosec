@@ -49,7 +49,7 @@ public class Communicator {
 
     public boolean initiate() {
         try {
-            socket = new Socket("145.93.56.202", 1337);
+            socket = new Socket("145.93.60.128", 1337);
             //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);

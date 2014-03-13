@@ -54,11 +54,10 @@ public class SpaceClient extends BasicGame {
         tileHeight = tileMap.getTileHeight();
         tileWidth = tileMap.getTileWidth();
         gameObjectDAO = new GameObjectDAOImpl();
-        player = new User(new Spaceship(50, 50, new Rectangle(0, 0, 50, 50)), "Space_Invader1337");
+        player = new User(new Spaceship(60, 60, new Rectangle(60, 60, 50, 50)), "Space_Invader1337");
         camera = new Camera(tileMap, mapWidth, mapHeight);
         broadcastHandler = new BroadcastHandler(gameObjectDAO, player.getSpaceship());
 
-        //tileMap = new TiledMap("map.tmx");
         Thread t = new Thread(broadcastHandler);
         t.start();
         //broadcastHandler.login(this.player.getUsername(), "asdf");
@@ -105,10 +104,11 @@ public class SpaceClient extends BasicGame {
         int tileCountWidth = screenWidth / tileWidth;
         int tileCountHeight = screenHeight / tileHeight;
         tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
-        camera.translate(g, player.getSpaceship());
-        player.render(g);
+        //camera.translate(g, player.getSpaceship());
+        player.render(g, true);
         for (Spaceship spaceship : gameObjectDAO.getSpaceships()) {
-            spaceship.render(g);
+            
+            spaceship.render(g, false);
         }
     }
 

@@ -63,8 +63,13 @@ public class Spaceship extends GameObject implements DrawableComponent {
     }
 
     @Override
-    public void render(Graphics g) {
-        polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
+    public void render(Graphics g, boolean self) {
+        if (self) {
+            polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
+        } else {
+            polygon.setLocation(position.x, position.y);
+        }
+        //polygon.setLocation(position.x, position.y);
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
         g.drawString("Accel: " + acceleration, 100, 100);
         g.draw(polygon);
