@@ -17,9 +17,9 @@ public class PlayerLoginModule {
 
     private Map<ClientConnection, User> clientConnections;
 
-    private final ClientConnectionModule server;
+    private final ConnectionServer server;
 
-    public PlayerLoginModule(ClientConnectionModule clientConnectionModule) {
+    public PlayerLoginModule(ConnectionServer clientConnectionModule) {
         clientConnections = new HashMap<>();
         server = clientConnectionModule;
     }

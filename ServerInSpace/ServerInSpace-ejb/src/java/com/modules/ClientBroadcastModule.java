@@ -8,9 +8,9 @@ package com.modules;
 public class ClientBroadcastModule implements Runnable{
     
     private boolean isRunning = false;
-    private final ClientConnectionModule connectionModule;
+    private final ConnectionServer connectionModule;
     
-    public ClientBroadcastModule(ClientConnectionModule connectionModule){
+    public ClientBroadcastModule(ConnectionServer connectionModule){
         this.connectionModule = connectionModule;
         this.isRunning = true;
     }

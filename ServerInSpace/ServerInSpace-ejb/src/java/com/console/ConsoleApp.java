@@ -1,6 +1,6 @@
 package com.console;
 
-import com.modules.ClientConnectionModule;
+import com.modules.ConnectionServer;
 import java.util.Scanner;
 
 /**
@@ -10,10 +10,10 @@ import java.util.Scanner;
 public class ConsoleApp implements Runnable {
     
     private final Boolean isRunning;
-    private final ClientConnectionModule clientConnectionModule;
+    private final ConnectionServer connServer;
     
-    public ConsoleApp(ClientConnectionModule clientConnectionModule) {
-        this.clientConnectionModule = clientConnectionModule;
+    public ConsoleApp(ConnectionServer connServer) {
+        this.connServer = connServer;
         System.out.println("Starting console...");
         System.out.println("Available commands are:");
         System.out.println("-getStatus");
@@ -30,7 +30,7 @@ public class ConsoleApp implements Runnable {
             input = sc.next();
             switch(input) {
                 case "getStatus":
-                    System.out.println(clientConnectionModule.getStatusInformation());
+                    System.out.println(connServer.getStatusInformation());
                     break;
                 case "exit":
                     System.out.println("Exit runtime...");

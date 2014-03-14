@@ -90,4 +90,11 @@ public class PlayerLocationModule {
             this.clientSpaceships.remove(connection);
         }
     }
+
+    public SpaceshipComm getClientSpaceship(ClientConnection conn) {
+        if(this.clientSpaceships.containsKey(conn)){
+            return this.clientSpaceships.get(conn);
+        }
+        return null;
+    }
 }

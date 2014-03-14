@@ -2,7 +2,7 @@ package com.server;
 
 import com.console.ConsoleApp;
 import com.modules.ClientBroadcastModule;
-import com.modules.ClientConnectionModule;
+import com.modules.ConnectionServer;
 
 /**
  *
@@ -14,7 +14,7 @@ public class LoadModules {
          
         DbConnector.readDataBase();
         
-        ClientConnectionModule serverModule = new ClientConnectionModule();
+        ConnectionServer serverModule = new ConnectionServer();
         Thread receiverThread = new Thread(serverModule);
         
         receiverThread.start();

@@ -11,7 +11,7 @@ import shared.SpaceshipComm;
  *
  * @author user
  */
-public class ClientConnectionModule implements Runnable {
+public class ConnectionServer implements Runnable {
 
     private ServerSocket server;
 
@@ -22,9 +22,13 @@ public class ClientConnectionModule implements Runnable {
 
     //Module responsible for keeping track of the logged in users
     private PlayerLoginModule loginModule;
+    
+    //Module responsible for updating the resources of a user
+    private PlayerResourceModule resourceModule;
 
-    public ClientConnectionModule() {
+    public ConnectionServer() {
         locationModule = new PlayerLocationModule();
+        resourceModule = new PlayerResourceModule(locationModule);
         loginModule = new PlayerLoginModule(this);
 
         try {
@@ -73,6 +77,10 @@ public class ClientConnectionModule implements Runnable {
 
     public void addSpaceship(SpaceshipComm spaceship, ClientConnection connection) {
         locationModule.addSpaceship(spaceship, connection);
+    }
+    
+    public void addResources(ClientConnection connection, int resourceAmount){
+        resourceModule.addResourceToClient(connection, resourceAmount);
     }
     
     public void broadcastPositions(){

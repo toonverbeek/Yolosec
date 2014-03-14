@@ -16,7 +16,7 @@ public class ClientConnection implements Runnable {
 
     private final Socket socket;
     private InputStream inputStream;
-    private final ClientConnectionModule server;
+    private final ConnectionServer server;
     
     private final Gson gson;
 
@@ -24,7 +24,7 @@ public class ClientConnection implements Runnable {
         return socket;
     }
 
-    public ClientConnection(Socket socket, ClientConnectionModule server) {
+    public ClientConnection(Socket socket, ConnectionServer server) {
         this.server = server;
         this.socket = socket;
         this.gson = new Gson();
