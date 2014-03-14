@@ -5,7 +5,7 @@
  */
 package JPA;
 
-import annotations.JPAImpl;
+import annotations.AccountJPAImpl;
 import dao.UserDAO;
 import domain.Account;
 import java.util.*;
@@ -20,7 +20,7 @@ import javax.persistence.criteria.Root;
  * @author Lisanne
  */
 @Stateless
-@JPAImpl
+@AccountJPAImpl
 public class UserDAO_JPAImpl implements UserDAO {
 
     @PersistenceContext
@@ -62,7 +62,7 @@ public class UserDAO_JPAImpl implements UserDAO {
     public Account find(String username) {
         for (Account a : findAll()) {
             if (a.getUsername().equals(username)) {
-                return em.find(Account.class, username);
+                return em.find(Account.class, a.getId());
             }
         }
         return null;

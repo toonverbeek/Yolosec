@@ -6,7 +6,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -15,7 +17,7 @@ public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -25,10 +27,11 @@ public class Account implements Serializable {
     @Column(name = "password")
     private String password;
     
-    @Column(name = "spaceship_id")
-    private int spaceshipid;
-    //private Spaceship spaceship;
-    //private Collection<Resource> resources;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Spaceship spaceship;
+    
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private Collection<Resource> resources;
 
     public Account() {
     }
@@ -43,8 +46,8 @@ public class Account implements Serializable {
     public Account(String username, String password, Spaceship spaceship, Collection<Resource> resources) {
         this.username = username;
         this.password = password;
-//        this.spaceship = spaceship;
-//        this.resources = resources;
+        this.spaceship = spaceship;
+        this.resources = resources;
     }
 
     /**
@@ -89,7 +92,7 @@ public class Account implements Serializable {
      * @return
      */
     public Spaceship getSpaceship() {
-        return null;//spaceship;
+        return spaceship;
     }
 
     /**
@@ -98,7 +101,7 @@ public class Account implements Serializable {
      * @param spaceship
      */
     public void setSpaceship(Spaceship spaceship) {
-        //this.spaceship = spaceship;
+        this.spaceship = spaceship;
     }
 
     /**
@@ -107,7 +110,15 @@ public class Account implements Serializable {
      * @return
      */
     public Collection<Resource> getResources() {
-        return null;//resources;
+        return resources;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -118,7 +129,7 @@ public class Account implements Serializable {
      */
     public boolean addResource(Resource resource) {
         if (resource != null) {
-            //return this.resources.add(resource);
+            return this.resources.add(resource);
         }
         return false;
     }
@@ -132,12 +143,12 @@ public class Account implements Serializable {
      */
     public boolean updateResource(Resource resource, long amount) {
         if (resource != null) {
-//            if (resources.contains(resource)) {
-//                resources.remove(resource);
-//                resource.increaseAmount(amount);
-//                resources.add(resource);
-//                return true;
-//            }
+            if (resources.contains(resource)) {
+                resources.remove(resource);
+                resource.increaseAmount(amount);
+                resources.add(resource);
+                return true;
+            }
         }
         return false;
     }
@@ -148,12 +159,20 @@ public class Account implements Serializable {
      * @param resources
      */
     public void setResources(Collection<Resource> resources) {
-        //this.resources = resources;
+        this.resources = resources;
     }
 
     @Override
     public String toString() {
         return String.format("(id: " + id + " user: " + username + " pass: " + password + ")");
+    }
+
+    public void addItemToSpaceShipInventory(Item item) {
+        this.spaceship.addItemToInventory(item);
+    }
+
+    public List<Item> getSpaceShipItems() {
+        return new ArrayList<>(this.spaceship.getAllItems());
     }
 
 }

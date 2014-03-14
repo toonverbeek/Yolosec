@@ -16,9 +16,9 @@
                 </p:toolbarGroup>  
                 <p:separator />  
                 <p:toolbarGroup align="left" styleClass="buttons">  
-                    <p:commandButton type="button" value="My Inventory" icon="ui-icon-suitcase" action="#{myInventoryBean.goToMyInventory()}"/>  
+                    <p:commandButton type="button" value="My Inventory" icon="ui-icon-suitcase" styleClass="selected" action="#{myInventoryBean.goToMyInventory()}"/>  
                     <p:commandButton type="button" value="My Ship" icon="ui-icon-home"/>
-                    <p:commandButton type="button" value="Store" icon="ui-icon-cart" styleClass="selected" action="#{myInventoryBean.goToStoreContent()}"/>  
+                    <p:commandButton type="button" value="Store" icon="ui-icon-cart" action="#{myInventoryBean.goToStoreContent()}"/>  
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">  
                     <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
@@ -35,7 +35,7 @@
     <ui:define name="content">
         <p:panel header="My Items" >  
             <h:form id="form">  
-                <p:dataGrid var="item" value="#{storeBean.allItems}" columns="3"  
+                <p:dataGrid var="item" value="#{myInventoryBean.myItems}" columns="3"  
                             rows="12" paginator="true" paginatorAlwaysVisible="false"
                             paginatorTemplate="{PageLinks}" >  
                     <p:panel header="#{item.name}" style="text-align:center">  
@@ -59,7 +59,7 @@
                             <p:commandLink update=":form:carDetail" oncomplete="carDialog.show()" title="View Detail">  
                                 <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />   
                                 <f:setPropertyActionListener value="#{item}"   
-                                                             target="#{storeBean.selectedItem}" />  
+                                                             target="#{myInventoryBean.selectedItem}" />  
                             </p:commandLink>  
                         </h:panelGrid>  
                     </p:panel>  
@@ -72,14 +72,13 @@
 
                         <h:panelGrid  columns="2" cellpadding="5">  
                             <h:outputLabel for="modelNo" value="Name " />  
-                            <h:outputText id="modelNo" value="#{storeBean.selectedItem.name}" />  
+                            <h:outputText id="modelNo" value="#{myInventoryBean.selectedItem.name}" />  
 
                             <h:outputLabel for="year" value="Description: " />  
-                            <h:outputText id="year" value="#{storeBean.selectedItem.description}" />  
+                            <h:outputText id="year" value="#{myInventoryBean.selectedItem.description}" />  
 
                             <h:outputLabel for="color" value="Id " />  
-                            <h:outputText id="color" value="#{storeBean.selectedItem.id}" />
-                            <p:commandButton id="buyItem" value="Buy item" action="#{storeBean.buyItem()}"/>
+                            <h:outputText id="color" value="#{myInventoryBean.selectedItem.id}" />  
                         </h:panelGrid>
                     </p:outputPanel>  
                 </p:dialog>  

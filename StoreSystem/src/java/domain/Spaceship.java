@@ -5,14 +5,31 @@
  */
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
-public class Spaceship {
+@Entity
+public class Spaceship implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String name="hdksaldhalk";
+    
+    @ManyToMany
     private Collection<Item> inventory;
 
     public Spaceship() {
+    }
+    public Spaceship(Collection<Item> inventory) {
+        this.inventory = inventory;
     }
 
     /**
@@ -101,5 +118,13 @@ public class Spaceship {
      */
     public long getItemCount() {
         return this.inventory.size();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

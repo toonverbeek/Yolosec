@@ -48,7 +48,7 @@ public class LoginBean {
         if (username != null && password != null) {
             if (storeService.login(username, password)) {
                 System.out.println("------------StoreContent laden.....!!!");
-                return "storeContent.xhtml?faces-redirect=true";
+                return "myInventoryContent.xhtml?faces-redirect=true";
             } else {
                 return "";
             }

@@ -5,26 +5,26 @@
  */
 package dao;
 
-import domain.Account;
+import domain.Item;
 import java.util.List;
 
 /**
  *
  * @author Lisanne
  */
-public interface UserDAO {
+public interface ItemDAO {
 
     int count();
 
-    void create(Account user);
+    void create(Item item);
 
-    void edit(Account user);
+    void edit(Item item);
 
-    List<Account> findAll();
+    List<Item> findAll();
 
-    Account find(String username);
+    Item find(String itemname);
 
-    Account find(Long id);
+    Item find(Long id);
 
-    void remove(Account user);
+    void remove(Item item);
 }

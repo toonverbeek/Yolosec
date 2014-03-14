@@ -17,14 +17,14 @@ import service.StoreService;
  *
  * @author Lisanne
  */
-@Named(value = "storeBean")
+@Named(value = "myInventoryBean")
 @RequestScoped
-public class StoreBean {
+public class MyInventoryBean {
 
     @Inject
     private StoreService storeService;
 
-    List<Item> allItems = new ArrayList<>();
+    List<Item> myItems = new ArrayList<>();
 
     private Item selectedItem;
 
@@ -36,19 +36,18 @@ public class StoreBean {
         this.selectedItem = selectedItem;
     }
 
-    public StoreBean() {
+    public MyInventoryBean() {
     }
 
-    public List<Item> getAllItems() {
-        return storeService.getAllItems();
+    public List<Item> getMyItems() {
+        return storeService.getMyItems();
     }
 
-    public void setAllItems(List<Item> allItems) {
-        this.allItems = allItems;
+    public String goToMyInventory() {
+        return "myInventoryContent.xhtml?faces-redirect=true";
     }
     
-    public void buyItem(){
-        storeService.buyItem(selectedItem);
+    public String goToStoreContent() {
+        return "storeContent.xhtml?faces-redirect=true";
     }
-    
 }

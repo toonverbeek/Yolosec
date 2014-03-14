@@ -1,6 +1,8 @@
 package service;
 
-import annotations.JPAImpl;
+import annotations.ItemJPAImpl;
+import annotations.AccountJPAImpl;
+import dao.ItemDAO;
 import dao.UserDAO;
 import domain.Item;
 import domain.Resource;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -18,25 +21,21 @@ import javax.inject.Inject;
 public class StoreService implements Serializable {
 
     @Inject
-    @JPAImpl
+    @AccountJPAImpl
     private UserDAO userDAO;
 
-    private List<Item> mockupItems = new ArrayList<>();
+    @Inject
+    @ItemJPAImpl
+    private ItemDAO itemDAO;
+
+    private Account loggedInAccount;
 
     public StoreService() {
     }
 
-    private void initUsers() {
-        Account u1 = new Account("Demo", "Demo", new Spaceship(), new ArrayList<Resource>());
-        Account u2 = new Account("Demo2", "Demo", new Spaceship(), new ArrayList<Resource>());
-        Account u3 = new Account("asdfasdf", "asdfasdf", new Spaceship(), new ArrayList<Resource>());
-
-        userDAO.create(u1);
-        userDAO.create(u2);
-        userDAO.create(u3);
-    }
-
+    @PostConstruct
     private void initItems() {
+
         List<Resource> item1Resources = new ArrayList<>();
         item1Resources.add(new Resource("Mineral", 100));
         item1Resources.add(new Resource("Iron", 50));
@@ -45,16 +44,15 @@ public class StoreService implements Serializable {
 
         String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis hendrerit velit sit amet ligula faucibus, a aliquam dui consequat. Sed egestas mauris gravida sem commodo tristique. Maecenas sed mauris metus. Vestibulum nunc nunc, pretium et interdum eget, tincidunt ut eros. Suspendisse in urna nec enim cursus fermentum. Quisque ultricies eros laoreet, molestie odio vitae, congue nisl. Praesent eget eleifend lectus.";
 
-        Item item1 = new Item(0, "Item 1", lorem, item1Resources, item1Stats, false, "");
-        Item item2 = new Item(1, "Item 2", lorem, item1Resources, item1Stats, false, "");
-        Item item3 = new Item(2, "Item 3", lorem, item1Resources, item1Stats, false, "");
-        Item item4 = new Item(3, "Item 4", lorem, item1Resources, item1Stats, false, "");
+        Item item1 = new Item("Item 1", lorem, item1Resources, item1Stats, false, "");
+        Item item2 = new Item("Item 2", lorem, item1Resources, item1Stats, false, "");
+        Item item3 = new Item("Item 3", lorem, item1Resources, item1Stats, false, "");
+        Item item4 = new Item("Item 4", lorem, item1Resources, item1Stats, false, "");
 
-        this.mockupItems.add(item1);
-        this.mockupItems.add(item2);
-        this.mockupItems.add(item3);
-        this.mockupItems.add(item4);
-
+//        this.itemDAO.create(item1);
+//        this.itemDAO.create(item2);
+//        this.itemDAO.create(item3);
+//        this.itemDAO.create(item4);
     }
 
     /**
@@ -63,7 +61,7 @@ public class StoreService implements Serializable {
      * @return
      */
     public List<Item> getMockupItems() {
-        return this.mockupItems;
+        return itemDAO.findAll();
     }
 
     /**
@@ -79,7 +77,7 @@ public class StoreService implements Serializable {
      * Create a user
      *
      * @param user the user to create
-     * @return 
+     * @return
      */
     public boolean createUser(Account user) {
         for (Account u : getUsers()) {
@@ -127,7 +125,8 @@ public class StoreService implements Serializable {
      * @param item the item to add
      */
     public void addItemToSpaceship(Account user, Item item) {
-        user.getSpaceship().addItemToInventory(item);
+        user.addItemToSpaceShipInventory(item);
+        userDAO.edit(user);
     }
 
     /**
@@ -163,19 +162,51 @@ public class StoreService implements Serializable {
     }
 
     public boolean registerUser(String username, String password1, String password2) {
-        Account user = new Account(username, password1, new Spaceship(), new ArrayList<Resource>());
+        List<Resource> item1Resources = new ArrayList<>();
+        item1Resources.add(new Resource("Mineral", 200));
+        item1Resources.add(new Resource("Iron", 100));
+
+        Account user = new Account(username, password1, new Spaceship(new ArrayList<Item>()), item1Resources);
         return createUser(user);
     }
 
     public boolean login(String username, String password) {
         List<Account> users = userDAO.findAll();
         for (Account u : users) {
-            System.out.println(u.getClass().getClassLoader().toString());
-            System.out.println("USER: " + ((Account) u).getUsername());
-            if (((Account) u).getUsername().equals(username)) {
-                return ((Account) u).getPassword().equals(password);
+            if (u.getUsername().equals(username)) {
+                this.loggedInAccount = u;
+                return u.getPassword().equals(password);
             }
         }
         return false;
+    }
+
+    public Account getLoggedInAccount() {
+        return loggedInAccount;
+    }
+
+    public List<Item> getMyItems() {
+        return this.loggedInAccount.getSpaceShipItems();
+    }
+
+    public List<Item> getAllItems() {
+        return itemDAO.findAll();
+    }
+
+    public void buyItem(Item selectedItem) {
+        for (Resource ritem : selectedItem.getResources()) {
+            for (Resource raccount : loggedInAccount.getResources()) {
+                //if the type of the resources match ...
+                if (ritem.getType().equals(raccount.getType())) {
+                    if (raccount.getAmount() >= ritem.getAmount()) {
+                        //add the item to the inventory of the currently loggedin user
+                        loggedInAccount.addItemToSpaceShipInventory(selectedItem);
+                        //reduce the resource of the player by the amount of resources of the item
+                        raccount.setAmount(raccount.getAmount() - ritem.getAmount());
+                        userDAO.edit(loggedInAccount);
+                    }
+                }
+            }
+        }
     }
 }
