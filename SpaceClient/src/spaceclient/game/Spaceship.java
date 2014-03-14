@@ -51,7 +51,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         polygonPoints[6] = 10;
         polygonPoints[7] = 10;
         polygon = new Polygon(polygonPoints);
-        position = new Vector2f(0, 0);
+        position = new Vector2f(50, 0);
         velocity = new Vector2f(0, 0);
         acceleration = new Vector2f(0, 0);
         prevDirection = Direction.NEUTRAL;
@@ -67,7 +67,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         if (self) {
             polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
         } else {
-            polygon.setLocation(position.x, position.y);
+            polygon.setLocation(position.x + (SpaceClient.screenWidth /2), position.y + (SpaceClient.screenHeight /2));
         }
         //polygon.setLocation(position.x, position.y);
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);

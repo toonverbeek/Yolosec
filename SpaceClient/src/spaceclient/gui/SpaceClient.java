@@ -79,6 +79,7 @@ public class SpaceClient extends BasicGame {
         Vector2f p = player.getSpaceship().getPosition();
         int xTile = (int) (p.x * tileCountHeight) / screenWidth;
         System.out.println(xTile);
+       
         if (xTile < 0) {
             mapX++;
             //p.x = tileWidth;
@@ -104,10 +105,10 @@ public class SpaceClient extends BasicGame {
         int tileCountWidth = screenWidth / tileWidth;
         int tileCountHeight = screenHeight / tileHeight;
         tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
-        //camera.translate(g, player.getSpaceship());
+        camera.translate(g, player.getSpaceship());
         player.render(g, true);
         for (Spaceship spaceship : gameObjectDAO.getSpaceships()) {
-            
+            camera.translate(g, spaceship);
             spaceship.render(g, false);
         }
     }
