@@ -48,6 +48,7 @@ public class StoreBean {
     }
     
     public void buyItem(){
+        System.out.println("BUY");
         storeService.buyItem(selectedItem);
     }
     

@@ -207,6 +207,7 @@ public class StoreService implements Serializable {
                         //reduce the resource of the player by the amount of resources of the item
                         raccount.setAmount(raccount.getAmount() - ritem.getAmount());
                         userDAO.edit(loggedInAccount);
+                        return;
                     }
                 }
             }

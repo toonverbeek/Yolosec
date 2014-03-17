@@ -61,6 +61,12 @@
                                 <f:setPropertyActionListener value="#{item}"   
                                                              target="#{storeBean.selectedItem}" />  
                             </p:commandLink>  
+                            <p:column>
+                                <p:commandLink styleClass="ui-icon ui-icon-plus" action="#{storeBean.buyItem()}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{storeBean.selectedItem}" />   
+                                </p:commandLink> 
+                            </p:column>
+
                         </h:panelGrid>  
                     </p:panel>  
                 </p:dataGrid>  
