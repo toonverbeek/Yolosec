@@ -115,7 +115,7 @@ public class StoreService implements Serializable {
      * @return
      */
     public Collection<Item> getItemsFromUser(Account user) {
-        return user.getSpaceship().getAllItems();
+        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
     }
 
     /**
@@ -136,7 +136,7 @@ public class StoreService implements Serializable {
      * @return
      */
     public long getItemCount(Account user) {
-        return user.getSpaceship().getItemCount();
+        return this.userDAO.find(user.getUsername()).getSpaceShipItems().size();
     }
 
     /**
@@ -147,7 +147,7 @@ public class StoreService implements Serializable {
      * @return
      */
     public Collection<Item> getItemsWithName(Account user, String name) {
-        return user.getSpaceship().findItem(name);
+        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
     }
 
     /**
@@ -189,7 +189,7 @@ public class StoreService implements Serializable {
     }
 
     public List<Item> getMyItems() {
-        return this.loggedInAccount.getSpaceShipItems();
+        return this.userDAO.find(loggedInAccount.getUsername()).getSpaceShipItems();
     }
 
     public List<Item> getAllItems() {
@@ -197,6 +197,7 @@ public class StoreService implements Serializable {
     }
 
     public void buyItem(Item selectedItem) {
+        loggedInAccount = userDAO.find(loggedInAccount.getUsername());
         for (Resource ritem : selectedItem.getResources()) {
             for (Resource raccount : loggedInAccount.getResources()) {
                 //if the type of the resources match ...
@@ -206,11 +207,10 @@ public class StoreService implements Serializable {
                         loggedInAccount.addItemToSpaceShipInventory(selectedItem);
                         //reduce the resource of the player by the amount of resources of the item
                         raccount.setAmount(raccount.getAmount() - ritem.getAmount());
-                        userDAO.edit(loggedInAccount);
-                        return;
                     }
                 }
             }
         }
+        userDAO.edit(loggedInAccount);
     }
 }
