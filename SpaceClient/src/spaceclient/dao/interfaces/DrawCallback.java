@@ -8,7 +8,7 @@ package spaceclient.dao.interfaces;
 
 import java.util.List;
 import java.util.Map;
-import spaceclient.game.GameObject;
+import shared.GameObject;
 import spaceclient.game.Spaceship;
 
 /**
