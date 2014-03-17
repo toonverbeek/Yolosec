@@ -6,18 +6,13 @@
 package spaceclient.communication;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
-import shared.GamePacket;
 import shared.SpaceshipComm;
 import spaceclient.game.GameObject;
 import spaceclient.game.Spaceship;
