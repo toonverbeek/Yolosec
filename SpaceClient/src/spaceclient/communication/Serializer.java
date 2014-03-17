@@ -11,10 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import shared.AsteroidComm;
 import shared.SpaceshipComm;
 import shared.GameObject;
+import spaceclient.game.Asteroid;
 import spaceclient.game.Spaceship;
 
 /**
@@ -59,5 +60,11 @@ public class Serializer {
         sShip.setPosition(new Vector2f(scomm.getX(), scomm.getY()));
         sShip.setDirection(scomm.getDirection());
         return sShip;
+    }
+
+    static String serializeAsteroid(Asteroid asteroid) {
+        AsteroidComm aCom = new AsteroidComm(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), asteroid.getX(), asteroid.getY());
+        String json = gson.toJson(aCom, AsteroidComm.class);
+        return json;
     }
 }

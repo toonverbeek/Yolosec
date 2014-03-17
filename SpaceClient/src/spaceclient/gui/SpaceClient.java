@@ -90,30 +90,13 @@ public class SpaceClient extends BasicGame {
             if(gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
                 ast.updateAsteroid(gc, player.getSpaceship());
+                if(ast.isIntersecting(player.getSpaceship())){
+                    broadcastHandler.sendData(ast);
+                }
             } else if(gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.update(gc);
             }
-        }
-        
-       
-        if (xTile < 0) {
-            mapX++;
-            //p.x = tileWidth;
-        }
-        if (xTile > tileWidth) {
-            mapX--;
-
-            //p.x = 0;
-        }
-        if (p.y < 0) {
-            mapY--;
-            //p.y = 0;
-        }
-
-        if (p.y > 0) {
-            mapY++;
-            //p.y = tileHeight;
         }
     }
 

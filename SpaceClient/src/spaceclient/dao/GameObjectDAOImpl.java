@@ -8,6 +8,7 @@ package spaceclient.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import shared.AsteroidType;
 import spaceclient.dao.interfaces.DrawCallback;
 import shared.GameObject;
@@ -24,8 +25,9 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     public GameObjectDAOImpl() {
         this.gameObjects = new ArrayList<>();
-        for(int i = 0; i < 100; i+=10) {
-            Asteroid ast = new Asteroid(i, i, 100, AsteroidType.common);
+        Random r = new Random();
+        for(int i = 0; i < 100; i++) {
+            Asteroid ast = new Asteroid(r.nextInt(1920), r.nextInt(1080), 100, AsteroidType.common);
             this.gameObjects.add(ast);
         }
     }
@@ -37,7 +39,6 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     @Override
     public void setGameObjects(List<GameObject> objects) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

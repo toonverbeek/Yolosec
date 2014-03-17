@@ -12,6 +12,7 @@ import org.newdawn.slick.Graphics;
 import shared.AsteroidComm;
 import shared.AsteroidType;
 import shared.GameObject;
+import spaceclient.communication.BroadcastHandler;
 import spaceclient.dao.interfaces.DrawableComponent;
 
 /**
@@ -33,6 +34,22 @@ public class Asteroid extends GameObject implements DrawableComponent {
         this.type = fromPacket.getType();
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public int getResourceAmount() {
+        return resourceAmount;
+    }
+
+    public AsteroidType getType() {
+        return type;
+    }
+
     public Asteroid(float x, float y, int resourceAmount, AsteroidType type) {
         this.x = x;
         this.y = y;
@@ -48,6 +65,7 @@ public class Asteroid extends GameObject implements DrawableComponent {
 
     public void updateAsteroid(GameContainer gc, Spaceship spaceship) {
         //TODO resourceamount to formula
+        
         if(this.asteroidBounding.intersects(spaceship.getRectangle())) {
             resourceAmount -= .01;            
         }

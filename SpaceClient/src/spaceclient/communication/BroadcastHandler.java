@@ -8,11 +8,11 @@ package spaceclient.communication;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import spaceclient.dao.interfaces.DrawCallback;
 import shared.GameObject;
+import spaceclient.game.Asteroid;
 import spaceclient.game.Spaceship;
 import spaceclient.gui.SpaceClient;
 
@@ -47,9 +47,15 @@ public class BroadcastHandler implements Runnable {
 
     }
 
-    public void sendData(Spaceship spaceship) {
-        String json = Serializer.serializeSpaceship(spaceship);
-        if (communicator != null) {
+    public void sendData(GameObject gObject) {
+        String json = "";
+        if (gObject instanceof Spaceship) {
+            json = Serializer.serializeSpaceship((Spaceship) gObject);
+        } else if (gObject instanceof Asteroid) {
+            json = Serializer.serializeAsteroid((Asteroid) gObject);
+            System.out.println("Asteroid as gamepacket: " + json);
+        }
+        if (communicator != null && !json.equals("")) {
             communicator.sendData(json);
         }
     }

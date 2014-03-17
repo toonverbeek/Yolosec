@@ -12,15 +12,6 @@
         </group>
         <group name="Proftaak-Space">
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/communication/Serializer.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/communication/Communicator.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/communication/BroadcastHandler.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/game/Spaceship.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/gui/SpaceClient.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/dao/GameObjectDAO.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/dao/GameObjectDAOImpl.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/gui/User.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/game/GameObject.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/spaceclient/dao/interfaces/DrawableComponent.java</file>
         </group>
     </open-files>
 </project-private>
