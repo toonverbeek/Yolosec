@@ -6,7 +6,9 @@
 package beans;
 
 import domain.Item;
+import domain.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -46,10 +48,15 @@ public class StoreBean {
     public void setAllItems(List<Item> allItems) {
         this.allItems = allItems;
     }
-    
-    public void buyItem(){
+
+    public void buyItem() {
         System.out.println("BUY");
         storeService.buyItem(selectedItem);
+        
     }
-    
+
+    public Collection<Resource> getCurrentUserResources() {
+        return this.storeService.getLoggedInAccount().getResources();
+    }
+
 }

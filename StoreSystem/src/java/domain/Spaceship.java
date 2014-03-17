@@ -13,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Spaceship implements Serializable {
@@ -24,7 +27,7 @@ public class Spaceship implements Serializable {
     
     private String name="hdksaldhalk";
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL) 
     private Collection<Item> inventory;
 
     public Spaceship() {

@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 @Stateless
@@ -198,19 +200,43 @@ public class StoreService implements Serializable {
 
     public void buyItem(Item selectedItem) {
         loggedInAccount = userDAO.find(loggedInAccount.getUsername());
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        Boolean hasEnoughResources = true;
+
         for (Resource ritem : selectedItem.getResources()) {
             for (Resource raccount : loggedInAccount.getResources()) {
                 //if the type of the resources match ...
                 if (ritem.getType().equals(raccount.getType())) {
-                    if (raccount.getAmount() >= ritem.getAmount()) {
-                        //add the item to the inventory of the currently loggedin user
-                        loggedInAccount.addItemToSpaceShipInventory(selectedItem);
-                        //reduce the resource of the player by the amount of resources of the item
-                        raccount.setAmount(raccount.getAmount() - ritem.getAmount());
+                    if (raccount.getAmount() < ritem.getAmount()) {
+                        //if ammount is not enough. make boolean false
+                        hasEnoughResources = false;
                     }
                 }
             }
         }
-        userDAO.edit(loggedInAccount);
+
+        if (hasEnoughResources) {
+            for (Resource ritem : selectedItem.getResources()) {
+                for (Resource raccount : loggedInAccount.getResources()) {
+                    //if the type of the resources match ...
+                    if (ritem.getType().equals(raccount.getType())) {
+                        if (raccount.getAmount() >= ritem.getAmount()) {
+                            //reduce the resource of the player by the amount of resources of the item
+                            raccount.setAmount(raccount.getAmount() - ritem.getAmount());
+                        }
+                    }
+                }
+            }
+            
+            //add the item to the inventory of the currently loggedin user
+            loggedInAccount.addItemToSpaceShipInventory(selectedItem);
+            userDAO.edit(loggedInAccount);
+                
+            context.addMessage(null, new FacesMessage(selectedItem.getName() + " succesvol gekocht."));
+        } else {
+            context.addMessage(null, new FacesMessage("Onvoldoende resources."));
+        }
+
     }
 }

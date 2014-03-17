@@ -9,9 +9,9 @@
 
 
     <ui:define name="topsection">
-        <h:form>  
+        <h:form id="topform">  
             <p:growl id="messages" />  
-            <p:toolbar styleClass="toolbar">  
+            <p:toolbar id="toolbar" styleClass="toolbar">  
                 <p:toolbarGroup align="left" >  
                 </p:toolbarGroup>  
                 <p:separator />  
@@ -21,6 +21,14 @@
                     <p:commandButton value="Store" icon="ui-icon-cart" styleClass="selected" action="storeContent.xhtml?faces-redirect=true"/>  
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">  
+                    <h:form id="resources">
+                        <ui:repeat var="res" value="#{storeBean.currentUserResources}" >
+                            <p:outputLabel value=" | #{res.type} : " />
+                            <p:outputLabel value="#{res.amount}" />
+                        </ui:repeat>
+                    </h:form>
+                    <p:outputLabel value="|  " />
+
                     <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
                 </p:toolbarGroup>  
             </p:toolbar>  
@@ -33,8 +41,10 @@
     </ui:define>
 
     <ui:define name="content">
-        <p:panel header="My Items" >  
+        <p:panel header="Store Items" >  
             <h:form id="form">  
+                <p:growl id="growl" life="500" showDetail="false"  sticky="true" />  
+
                 <p:dataGrid var="item" value="#{storeBean.allItems}" columns="3"  
                             rows="12" paginator="true" paginatorAlwaysVisible="false"
                             paginatorTemplate="{PageLinks}" >  
@@ -62,11 +72,10 @@
                                                              target="#{storeBean.selectedItem}" />  
                             </p:commandLink>  
                             <p:column>
-                                <p:commandLink styleClass="ui-icon ui-icon-plus" action="#{storeBean.buyItem()}">
+                                <p:commandLink update=":topform" styleClass="ui-icon ui-icon-plus" action="#{storeBean.buyItem()}">
                                     <f:setPropertyActionListener value="#{item}" target="#{storeBean.selectedItem}" />   
                                 </p:commandLink> 
                             </p:column>
-
                         </h:panelGrid>  
                     </p:panel>  
                 </p:dataGrid>  
@@ -88,7 +97,6 @@
                         </h:panelGrid>
                     </p:outputPanel>  
                 </p:dialog>  
-
             </h:form>  
         </p:panel>  
     </ui:define>
