@@ -10,6 +10,6 @@ package shared;
  *
  * @author user
  */
-public enum ResourceType {
+public enum AsteroidType {
     comman, magic, rare
 }

@@ -11,20 +11,20 @@ package shared;
  * @author user
  */
 
-public class Resource {    
+public class Asteroid {    
     
-    private ResourceType type;
+    private AsteroidType type;
     private int resourceAmount;
     private float x,y;
 
-    public Resource(ResourceType type, int resourceAmount, float x, float y) {
+    public Asteroid(AsteroidType type, int resourceAmount, float x, float y) {
         this.type = type;
         this.resourceAmount = resourceAmount;
         this.x = x;
         this.y = y;
     }
 
-    public ResourceType getType() {
+    public AsteroidType getType() {
         return type;
     }
 
