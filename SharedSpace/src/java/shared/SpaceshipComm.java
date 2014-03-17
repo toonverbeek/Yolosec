@@ -5,26 +5,31 @@
  */
 package shared;
 
-
 /**
  *
  * @author Tim
  */
-public class SpaceshipComm extends GamePacket{
+public class SpaceshipComm extends GamePacket {
 
     private float x, y;
     private int d, id;
+    private final int[] resources;
 
-    public SpaceshipComm(String header, float x, float y, int d, int id) {
+    public int[] getResources() {
+        return resources;
+    }
+
+    public SpaceshipComm(String header, float x, float y, int direction, int id, int[] resources) {
         super(header);
+        this.resources = resources;
         this.x = x;
         this.y = y;
-        this.d = d;
+        this.d = direction;
         this.id = id;
 
     }
-    
-    public int getId(){
+
+    public int getId() {
         return id;
     }
 
