@@ -16,7 +16,8 @@ public class AsteroidComm extends GamePacket {
     private int resourceAmount;
     private float x,y;
 
-    public AsteroidComm(AsteroidType type, int resourceAmount, float x, float y) {
+    public AsteroidComm(String header, AsteroidType type, int resourceAmount, float x, float y) {
+        super(header);
         this.type = type;
         this.resourceAmount = resourceAmount;
         this.x = x;
