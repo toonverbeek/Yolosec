@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import spaceclient.dao.interfaces.DrawCallback;
-import spaceclient.game.GameObject;
+import shared.GameObject;
 import spaceclient.game.Spaceship;
 import spaceclient.gui.SpaceClient;
 

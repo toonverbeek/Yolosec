@@ -16,8 +16,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
+import shared.AsteroidType;
+import shared.GameObject;
 import spaceclient.communication.BroadcastHandler;
 import spaceclient.dao.GameObjectDAOImpl;
+import spaceclient.game.Asteroid;
 import spaceclient.game.Camera;
 import spaceclient.game.Spaceship;
 
@@ -54,12 +57,15 @@ public class SpaceClient extends BasicGame {
         tileHeight = tileMap.getTileHeight();
         tileWidth = tileMap.getTileWidth();
         gameObjectDAO = new GameObjectDAOImpl();
-        player = new User(new Spaceship(60, 60, new Rectangle(60, 60, 50, 50)), "Space_Invader1337");
+        player = new User(new Spaceship(10, 10), "Space_Invader1337");
         camera = new Camera(tileMap, mapWidth, mapHeight);
         broadcastHandler = new BroadcastHandler(gameObjectDAO, player.getSpaceship());
 
         Thread t = new Thread(broadcastHandler);
         t.start();
+        
+        
+        
         //broadcastHandler.login(this.player.getUsername(), "asdf");
 
     }
@@ -79,6 +85,17 @@ public class SpaceClient extends BasicGame {
         Vector2f p = player.getSpaceship().getPosition();
         int xTile = (int) (p.x * tileCountHeight) / screenWidth;
         System.out.println(xTile);
+        
+        for(GameObject gObject : gameObjectDAO.getGameObjects()) {
+            if(gObject instanceof Asteroid) {
+                Asteroid ast = (Asteroid) gObject;
+                ast.updateAsteroid(gc, player.getSpaceship());
+            } else if(gObject instanceof Spaceship) {
+                Spaceship spaceship = (Spaceship) gObject;
+                spaceship.update(gc);
+            }
+        }
+        
        
         if (xTile < 0) {
             mapX++;
@@ -102,15 +119,22 @@ public class SpaceClient extends BasicGame {
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
-        int tileCountWidth = screenWidth / tileWidth;
-        int tileCountHeight = screenHeight / tileHeight;
-        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
-        camera.translate(g, player.getSpaceship());
+//        int tileCountWidth = screenWidth / tileWidth;
+//        int tileCountHeight = screenHeight / tileHeight;
+//        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
+//        camera.translate(g, player.getSpaceship());
         player.render(g, true);
-        for (Spaceship spaceship : gameObjectDAO.getSpaceships()) {
-            camera.translate(g, spaceship);
-            spaceship.render(g, false);
+         for(GameObject gObject : gameObjectDAO.getGameObjects()) {
+            if(gObject instanceof Asteroid) {
+                Asteroid ast = (Asteroid) gObject;
+                ast.render(g, false);
+            } else if(gObject instanceof Spaceship) {
+                Spaceship spaceship = (Spaceship) gObject;
+                spaceship.render(g, false);
+            }
         }
+        
+        
     }
 
     public static void main(String[] args) {

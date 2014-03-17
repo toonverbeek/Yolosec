@@ -8,8 +8,10 @@ package spaceclient.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import shared.AsteroidType;
 import spaceclient.dao.interfaces.DrawCallback;
-import spaceclient.game.GameObject;
+import shared.GameObject;
+import spaceclient.game.Asteroid;
 import spaceclient.game.Spaceship;
 
 /**
@@ -22,6 +24,10 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     public GameObjectDAOImpl() {
         this.gameObjects = new ArrayList<>();
+        for(int i = 0; i < 100; i+=10) {
+            Asteroid ast = new Asteroid(i, i, 100, AsteroidType.common);
+            this.gameObjects.add(ast);
+        }
     }
     
     @Override

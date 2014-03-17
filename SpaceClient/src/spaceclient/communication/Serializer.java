@@ -14,7 +14,7 @@ import java.util.Map;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import shared.SpaceshipComm;
-import spaceclient.game.GameObject;
+import shared.GameObject;
 import spaceclient.game.Spaceship;
 
 /**
@@ -55,7 +55,7 @@ public class Serializer {
     }
 
     private static Spaceship deserializeSpaceship(SpaceshipComm scomm) {
-        Spaceship sShip = new Spaceship(50, 50, new Rectangle(0, 0, 50, 50));
+        Spaceship sShip = new Spaceship(10, 10);
         sShip.setPosition(new Vector2f(scomm.getX(), scomm.getY()));
         sShip.setDirection(scomm.getDirection());
         return sShip;

@@ -17,4 +17,6 @@ public interface DrawableComponent {
     void update(GameContainer gc);
     
     void render(Graphics g, boolean self);
+    
+    
 }

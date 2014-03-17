@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.rmi.UnknownHostException;
 import java.util.List;
 import java.util.Map;
-import spaceclient.game.GameObject;
+import shared.GameObject;
 
 /**
  *
@@ -49,7 +49,7 @@ public class Communicator {
 
     public boolean initiate() {
         try {
-            socket = new Socket("145.93.60.128", 1337);
+            socket = new Socket("145.93.217.171", 1337);
             //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);

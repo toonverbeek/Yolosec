@@ -5,11 +5,13 @@
  */
 package spaceclient.game;
 
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import shared.GameObject;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.gui.Direction;
@@ -35,11 +37,12 @@ public class Spaceship extends GameObject implements DrawableComponent {
     private int width, height;
     private Rectangle boundingRectangle;
     private int direction;
+    
 
-    public Spaceship(int width, int height, Rectangle boundingRectangle) {
+    public Spaceship(int width, int height) {
         this.width = width;
         this.height = height;
-        this.boundingRectangle = boundingRectangle;
+        
 
         polygonPoints = new float[8];
         polygonPoints[0] = 0;
@@ -52,6 +55,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         polygonPoints[7] = 10;
         polygon = new Polygon(polygonPoints);
         position = new Vector2f(50, 0);
+        this.boundingRectangle = new Rectangle((int)position.x, (int)position.y, width, height);
         velocity = new Vector2f(0, 0);
         acceleration = new Vector2f(0, 0);
         prevDirection = Direction.NEUTRAL;
@@ -60,18 +64,22 @@ public class Spaceship extends GameObject implements DrawableComponent {
     @Override
     public void update(GameContainer gc) {
         calculateMovement(gc.getInput());
+        boundingRectangle.x = (int) position.x;
+        boundingRectangle.y = (int) position.y;
+        
     }
 
     @Override
     public void render(Graphics g, boolean self) {
-        if (self) {
-            polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
-        } else {
-            polygon.setLocation(position.x + (SpaceClient.screenWidth /2), position.y + (SpaceClient.screenHeight /2));
-        }
-        //polygon.setLocation(position.x, position.y);
+//        if (self) {
+//            polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
+//        } else {
+//            polygon.setLocation(position.x + (SpaceClient.screenWidth /2), position.y + (SpaceClient.screenHeight /2));
+//        }
+        polygon.setLocation(position.x, position.y);
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
         g.drawString("Accel: " + acceleration, 100, 100);
+        g.drawRect((int)position.x, (int)position.y, width, height);
         g.draw(polygon);
     }
 
@@ -173,4 +181,8 @@ public class Spaceship extends GameObject implements DrawableComponent {
         direction = 1;
     }
 
+    @Override
+    public java.awt.Rectangle getRectangle() {
+        return this.boundingRectangle;
+    }
 }
