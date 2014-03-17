@@ -8,6 +8,7 @@ package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class Spaceship implements Serializable {
     
     private String name="hdksaldhalk";
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<Item> inventory;
 
     public Spaceship() {

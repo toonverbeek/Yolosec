@@ -16,9 +16,9 @@
                 </p:toolbarGroup>  
                 <p:separator />  
                 <p:toolbarGroup align="left" styleClass="buttons">  
-                    <p:commandButton type="button" value="My Inventory" icon="ui-icon-suitcase" action="#{myInventoryBean.goToMyInventory()}"/>  
-                    <p:commandButton type="button" value="My Ship" icon="ui-icon-home"/>
-                    <p:commandButton type="button" value="Store" icon="ui-icon-cart" styleClass="selected" action="#{myInventoryBean.goToStoreContent()}"/>  
+                    <p:commandButton value="My Inventory" icon="ui-icon-suitcase" action="myInventoryContent.xhtml?faces-redirect=true"/>  
+                    <p:commandButton value="My Ship" icon="ui-icon-home"/>
+                    <p:commandButton value="Store" icon="ui-icon-cart" styleClass="selected" action="storeContent.xhtml?faces-redirect=true"/>  
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">  
                     <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
@@ -79,7 +79,6 @@
 
                             <h:outputLabel for="color" value="Id " />  
                             <h:outputText id="color" value="#{storeBean.selectedItem.id}" />
-                            <p:commandButton id="buyItem" value="Buy item" action="#{storeBean.buyItem()}"/>
                         </h:panelGrid>
                     </p:outputPanel>  
                 </p:dialog>  

@@ -27,10 +27,10 @@ public class Account implements Serializable {
     @Column(name = "password")
     private String password;
     
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Spaceship spaceship;
     
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<Resource> resources;
 
     public Account() {

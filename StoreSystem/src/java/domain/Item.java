@@ -23,12 +23,16 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    
     @Lob
     private String description;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<Resource> resources;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<Stat> stats;
+    
     private boolean equipped;
     private String image;
 

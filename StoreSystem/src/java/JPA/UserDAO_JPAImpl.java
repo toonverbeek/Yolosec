@@ -70,7 +70,8 @@ public class UserDAO_JPAImpl implements UserDAO {
 
     @Override
     public void remove(Account user) {
-        em.remove(user);
+        Account toBeRemovedUser = em.merge(user);
+        em.remove(toBeRemovedUser);
     }
 
     @Override

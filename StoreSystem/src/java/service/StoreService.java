@@ -49,10 +49,10 @@ public class StoreService implements Serializable {
         Item item3 = new Item("Item 3", lorem, item1Resources, item1Stats, false, "");
         Item item4 = new Item("Item 4", lorem, item1Resources, item1Stats, false, "");
 
-//        this.itemDAO.create(item1);
-//        this.itemDAO.create(item2);
-//        this.itemDAO.create(item3);
-//        this.itemDAO.create(item4);
+        this.itemDAO.create(item1);
+        this.itemDAO.create(item2);
+        this.itemDAO.create(item3);
+        this.itemDAO.create(item4);
     }
 
     /**
@@ -167,6 +167,9 @@ public class StoreService implements Serializable {
         item1Resources.add(new Resource("Iron", 100));
 
         Account user = new Account(username, password1, new Spaceship(new ArrayList<Item>()), item1Resources);
+        Item userItem = new Item("TEST", "TEST", item1Resources, null, false, "");
+        this.itemDAO.create(userItem);
+        user.addItemToSpaceShipInventory(userItem);
         return createUser(user);
     }
 
