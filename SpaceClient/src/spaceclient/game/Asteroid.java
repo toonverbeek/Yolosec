@@ -67,7 +67,9 @@ public class Asteroid extends GameObject implements DrawableComponent {
         //TODO resourceamount to formula
         
         if(this.asteroidBounding.intersects(spaceship.getRectangle())) {
-            resourceAmount -= .01;            
+            resourceAmount -= .01;    
+            //callback
+            spaceship.mine(this.getType());
         }
         asteroidBounding.height = resourceAmount;
         asteroidBounding.width = resourceAmount;

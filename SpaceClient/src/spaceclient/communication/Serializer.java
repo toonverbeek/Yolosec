@@ -27,7 +27,7 @@ public class Serializer {
     private static final Gson gson = new Gson();
 
     public static String serializeSpaceship(Spaceship spaceship) {
-        SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship.getPosition().x, spaceship.getPosition().y, 1, spaceship.getId());
+        SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship.getPosition().x, spaceship.getPosition().y, 1, spaceship.getId(), spaceship.getResources());
         String json = gson.toJson(sComm, SpaceshipComm.class);
         return json;
     }
@@ -48,7 +48,8 @@ public class Serializer {
                 float xx = (float) x;
                 float yy = (float) y;
                 int d = ((Double) map.get("d")).intValue();
-                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id);
+                int[] resources = (int[])map.get("resources");
+                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
                 gameobjects.add(deserializeSpaceship(scomm));
             }
         }

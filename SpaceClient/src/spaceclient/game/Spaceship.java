@@ -13,6 +13,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
+import shared.AsteroidComm;
+import shared.AsteroidType;
 import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.gui.Direction;
 import spaceclient.gui.SpaceClient;
@@ -37,12 +39,16 @@ public class Spaceship extends GameObject implements DrawableComponent {
     private int width, height;
     private Rectangle boundingRectangle;
     private int direction;
-    
+
+    private int commonResources = 0, magicResources = 0, rareResources = 0;
+
+    public int[] getResources() {
+        return new int[]{commonResources, magicResources, rareResources};
+    }
 
     public Spaceship(int width, int height) {
         this.width = width;
         this.height = height;
-        
 
         polygonPoints = new float[8];
         polygonPoints[0] = 0;
@@ -55,7 +61,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         polygonPoints[7] = 10;
         polygon = new Polygon(polygonPoints);
         position = new Vector2f(50, 0);
-        this.boundingRectangle = new Rectangle((int)position.x, (int)position.y, width, height);
+        this.boundingRectangle = new Rectangle((int) position.x, (int) position.y, width, height);
         velocity = new Vector2f(0, 0);
         acceleration = new Vector2f(0, 0);
         prevDirection = Direction.NEUTRAL;
@@ -66,7 +72,7 @@ public class Spaceship extends GameObject implements DrawableComponent {
         calculateMovement(gc.getInput());
         boundingRectangle.x = (int) position.x;
         boundingRectangle.y = (int) position.y;
-        
+
     }
 
     @Override
@@ -78,8 +84,9 @@ public class Spaceship extends GameObject implements DrawableComponent {
 //        }
         polygon.setLocation(position.x, position.y);
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
-        g.drawString("Accel: " + acceleration, 100, 100);
-        g.drawRect((int)position.x, (int)position.y, width, height);
+        g.drawString("Accel: " + acceleration, 50, 70);
+        g.drawString("Resources: " + this.getResources()[0], 50, 90);
+        g.drawRect((int) position.x, (int) position.y, width, height);
         g.draw(polygon);
     }
 
@@ -184,5 +191,15 @@ public class Spaceship extends GameObject implements DrawableComponent {
     @Override
     public java.awt.Rectangle getRectangle() {
         return this.boundingRectangle;
+    }
+
+    public void mine(AsteroidType type) {
+        if (type == AsteroidType.common) {
+            this.commonResources++;
+        } else if (type == AsteroidType.magic) {
+            this.magicResources++;
+        } else if (type == AsteroidType.rare) {
+            this.rareResources++;
+        }
     }
 }
