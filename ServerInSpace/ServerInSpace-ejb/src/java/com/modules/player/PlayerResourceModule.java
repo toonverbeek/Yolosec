@@ -1,6 +1,7 @@
 
-package com.modules;
+package com.modules.player;
 
+import com.server.ClientConnection;
 import com.server.DbConnector;
 import java.util.Map;
 import shared.SpaceshipComm;

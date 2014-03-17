@@ -1,6 +1,8 @@
-package com.modules;
+package com.modules.player;
 
 
+import com.server.ConnectionServer;
+import com.server.ClientConnection;
 import com.objects.User;
 import com.server.DbConnector;
 import java.util.HashMap;

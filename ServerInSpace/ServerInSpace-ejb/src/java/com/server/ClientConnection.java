@@ -1,4 +1,4 @@
-package com.modules;
+package com.server;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,6 +76,8 @@ public class ClientConnection implements Runnable {
                 float x = (float)dX;
                 float y = (float)dY;
                 int d = ((Double)recievedObject.get("d")).intValue();
+                List<Integer> r = (ArrayList<Integer>)recievedObject.get("resources");
+                System.out.println(String.format("Resource recieved - %s", r));
                 this.server.updateSpaceship(spaceshipID, x, y, d);
                 break;
 
@@ -82,6 +86,9 @@ public class ClientConnection implements Runnable {
                 String password = (String) recievedObject.get("password");
                 this.server.login(username, password, this);
                 break;
+                
+            default:
+                System.out.println(String.format("Recieved Unknown Package - %s", recievedObject.toString()));
 
         }
     }

@@ -14,8 +14,8 @@ public class DbConnector {
     private static Statement statement = null;
     private static PreparedStatement preparedStatement = null;
     private static ResultSet resultSet = null;
-    private static final String db_location = "145.93.56.202";
-    private static final String db_name = "inspace";
+    private static final String db_location = "192.168.24.78";
+    private static final String db_name = "inspacedb";
     private static final String db_username = "inspaceserver";
     private static final String db_password = "toor";
     private static final String connectionString = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", new Object[]{db_location, db_name, db_username, db_password});
@@ -29,10 +29,10 @@ public class DbConnector {
             System.out.println("Connection established");
 
             // Statements allow to issue SQL queries to the database
-            statement = connect.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM USER");
-            writeResultSet(resultSet);
-            writeMetaData(resultSet);
+            //statement = connect.createStatement();
+            //resultSet = statement.executeQuery("SELECT * FROM USER");
+            //writeResultSet(resultSet);
+            //writeMetaData(resultSet);
 
 //            // PreparedStatements can use variables and are more efficient
 //            preparedStatement = connect.prepareStatement("insert into  FEEDBACK.COMMENTS values (default, ?, ?, ?, ? , ?, ?)");

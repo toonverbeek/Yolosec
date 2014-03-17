@@ -1,6 +1,6 @@
 package com.console;
 
-import com.modules.ConnectionServer;
+import com.server.ConnectionServer;
 import java.util.Scanner;
 
 /**

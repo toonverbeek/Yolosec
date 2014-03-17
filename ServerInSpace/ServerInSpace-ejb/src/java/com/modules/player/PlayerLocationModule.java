@@ -1,5 +1,6 @@
-package com.modules;
+package com.modules.player;
 
+import com.server.ClientConnection;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -34,6 +35,10 @@ public class PlayerLocationModule {
             System.out.println("added spaceship");
             clientSpaceships.put(connection, newShip);
         }
+    }
+    
+    public List<ClientConnection> getClientConnections(){
+        return (List<ClientConnection>) clientSpaceships.keySet();
     }
     
     public Map<ClientConnection, SpaceshipComm> getClientSpaceships() {

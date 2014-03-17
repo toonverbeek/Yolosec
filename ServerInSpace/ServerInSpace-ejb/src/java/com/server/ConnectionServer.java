@@ -1,10 +1,17 @@
-package com.modules;
+package com.server;
 
+import com.modules.player.ClientBroadcastModule;
+import com.modules.player.PlayerLocationModule;
+import com.modules.player.PlayerLoginModule;
+import com.modules.player.PlayerResourceModule;
+import com.modules.server.ServerAsteroidGenerator;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import shared.Asteroid;
 import shared.SpaceshipComm;
 
 /**
@@ -25,11 +32,17 @@ public class ConnectionServer implements Runnable {
     
     //Module responsible for updating the resources of a user
     private PlayerResourceModule resourceModule;
+    
+    private ClientBroadcastModule broadcastModule;
+    
+    private ServerAsteroidGenerator asteroidModule;
 
-    public ConnectionServer() {
+    public ConnectionServer(ClientBroadcastModule broadcastModule) {
+        this.broadcastModule = broadcastModule;
         locationModule = new PlayerLocationModule();
         resourceModule = new PlayerResourceModule(locationModule);
         loginModule = new PlayerLoginModule(this);
+        asteroidModule = new ServerAsteroidGenerator();
 
         try {
             this.server = new ServerSocket(1337);
@@ -103,6 +116,18 @@ public class ConnectionServer implements Runnable {
         }
         
         return builder.toString();
+    }
+    
+    public void broadcastAsteroids(){
+        broadcastModule.broadcastAsteroids();
+    }
+
+    public List<Asteroid> getAsteroids() {
+        return asteroidModule.getAsteroids();
+    }
+
+    public List<ClientConnection> getClientConnections() {
+        return locationModule.getClientConnections();
     }
 
 }

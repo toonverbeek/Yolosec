@@ -1,8 +1,7 @@
 package com.server;
 
 import com.console.ConsoleApp;
-import com.modules.ClientBroadcastModule;
-import com.modules.ConnectionServer;
+import com.modules.player.ClientBroadcastModule;
 
 /**
  *
@@ -13,15 +12,16 @@ public class LoadModules {
     public static void main(String[] args) throws Exception {
          
         DbConnector.readDataBase();
-        
-        ConnectionServer serverModule = new ConnectionServer();
+        //Create broadcast module
+        ClientBroadcastModule broadcastModule = new ClientBroadcastModule();
+        Thread broadcastThread = new Thread(broadcastModule);
+        //Create server module
+        ConnectionServer serverModule = new ConnectionServer(broadcastModule);
         Thread receiverThread = new Thread(serverModule);
         
+        broadcastModule.setServerModule(serverModule);
+        
         receiverThread.start();
-        
-        ClientBroadcastModule broadcastModule = new ClientBroadcastModule(serverModule);
-        Thread broadcastThread = new Thread(broadcastModule);
-        
         broadcastThread.start();
         
         ConsoleApp consoleApp = new ConsoleApp(serverModule);
