@@ -1,0 +1,92 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.yolosec.spaceclient.dao;
+
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import shared.AsteroidType;
+import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
+import com.yolosec.spaceclient.game.GameObjectImpl;
+import com.yolosec.spaceclient.communication.BroadcastHandler;
+import com.yolosec.spaceclient.communication.Communicator;
+import com.yolosec.spaceclient.game.Asteroid;
+import com.yolosec.spaceclient.game.GameWorldImpl;
+import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.observing.NodeImpl;
+
+/**
+ *
+ * @author Toon
+ */
+public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameObjectDAO, DrawCallback {
+
+    private List<GameObjectImpl> gameObjects;
+    private BroadcastHandler broadcastHandler;
+
+    public GameObjectDAOImpl() {
+        try {
+            Communicator.initiate();
+            broadcastHandler = new BroadcastHandler(this);
+
+            Thread th = new Thread(broadcastHandler);
+            th.start();
+            
+            this.gameObjects = new ArrayList<>();
+            Random r = new Random();
+            for (int i = 0; i < 20; i++) {
+                AsteroidType t;
+                if (r.nextInt() % 2 == 0) {
+                    t = AsteroidType.common;
+                } else if (r.nextInt() % 3 == 0) {
+                    t = AsteroidType.magic;
+                } else {
+                    t = AsteroidType.rare;
+                }
+                Asteroid ast = new Asteroid(r.nextInt(1920), 100, 100, t);
+                this.gameObjects.add(ast);
+            }
+        } catch (SocketException ex) {
+            Logger.getLogger(GameObjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void sendData(GameObjectImpl gameObject){
+        broadcastHandler.sendData(gameObject);
+    }
+
+    @Override
+    public List<GameObjectImpl> getGameObjects() {
+        return gameObjects;
+    }
+
+    @Override
+    public void setGameObjects(List<GameObjectImpl> objects) {
+    }
+
+    @Override
+    public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
+        if (objects != null && objects.size() > 0) {
+            gameObjects = objects;
+        }
+    }
+
+    @Override
+    public List<Spaceship> getSpaceships() {
+        List<Spaceship> spaceships = new ArrayList<>();
+        for (GameObjectImpl gObject : gameObjects) {
+            if (gObject instanceof Spaceship) {
+                spaceships.add((Spaceship) gObject);
+            }
+        }
+
+        return spaceships;
+    }
+}
