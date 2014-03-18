@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package shared;
 
 /**
@@ -11,10 +10,10 @@ package shared;
  * @author user
  */
 public class AsteroidComm extends GamePacket {
-    
+
     private AsteroidType type;
     private int resourceAmount;
-    private float x,y;
+    private float x, y;
 
     public AsteroidComm(String header, AsteroidType type, int resourceAmount, float x, float y) {
         super(header);
@@ -38,5 +37,5 @@ public class AsteroidComm extends GamePacket {
 
     public float getY() {
         return y;
-    }   
+    }
 }
