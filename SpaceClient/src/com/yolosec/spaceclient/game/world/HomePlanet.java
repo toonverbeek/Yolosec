@@ -4,14 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.yolosec.spaceclient.dao.interfaces;
-
-import com.yolosec.spaceclient.observing.Node;
+package com.yolosec.spaceclient.game.world;
 
 /**
  *
  * @author Toon
  */
-public interface GameObject extends Node<GameObjectDAO> {
+public class HomePlanet {
     
 }

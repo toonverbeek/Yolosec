@@ -5,6 +5,7 @@
  */
 package com.yolosec.spaceclient.dao;
 
+import com.yolosec.spaceclient.dao.interfaces.GameObjectDAO;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.AsteroidType;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
-import com.yolosec.spaceclient.game.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.communication.BroadcastHandler;
 import com.yolosec.spaceclient.communication.Communicator;
-import com.yolosec.spaceclient.game.Asteroid;
-import com.yolosec.spaceclient.game.GameWorldImpl;
-import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.world.GameWorldImpl;
+import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.observing.NodeImpl;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -50,7 +52,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     t = AsteroidType.rare;
                 }
                 Asteroid ast = new Asteroid(r.nextInt(1920), 100, 100, t);
-                this.gameObjects.add(ast);
+                //this.gameObjects.add(ast);
             }
         } catch (SocketException ex) {
             Logger.getLogger(GameObjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,6 +71,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public void setGameObjects(List<GameObjectImpl> objects) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

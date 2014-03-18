@@ -4,14 +4,16 @@
  * and open the template in the editor.
  */
 
-package com.yolosec.spaceclient.dao.interfaces;
-
-import com.yolosec.spaceclient.observing.Node;
+package com.yolosec.spaceclient.game.player;
 
 /**
  *
- * @author Toon
+ * @author Tim
  */
-public interface GameObject extends Node<GameObjectDAO> {
-    
+public enum Direction {
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    NEUTRAL;
 }

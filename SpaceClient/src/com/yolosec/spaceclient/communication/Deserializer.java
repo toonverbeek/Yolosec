@@ -8,8 +8,8 @@ package com.yolosec.spaceclient.communication;
 import org.newdawn.slick.geom.Vector2f;
 import shared.AsteroidComm;
 import shared.SpaceshipComm;
-import com.yolosec.spaceclient.game.Asteroid;
-import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.player.Spaceship;
 
 /**
  *

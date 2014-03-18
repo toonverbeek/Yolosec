@@ -1,6 +1,6 @@
 package com.yolosec.spaceclient.gui;
 
-import com.yolosec.spaceclient.game.User;
+import com.yolosec.spaceclient.game.player.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.AppGameContainer;
@@ -9,8 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import com.yolosec.spaceclient.game.GameWorldImpl;
-import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.game.world.GameWorldImpl;
+import com.yolosec.spaceclient.game.player.Spaceship;
 
 public class SpaceClient extends BasicGame {
 

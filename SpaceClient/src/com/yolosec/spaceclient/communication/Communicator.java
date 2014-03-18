@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.geom.Vector2f;
 import shared.AsteroidComm;
-import com.yolosec.spaceclient.game.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import shared.GamePacket;
 import shared.SpaceshipComm;
-import com.yolosec.spaceclient.game.Asteroid;
-import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.player.Spaceship;
 
 /**
  *
@@ -35,6 +35,7 @@ public class Communicator {
     private static PrintWriter writer;
     private static BufferedReader reader;
     private static Gson gson = new Gson();
+    private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "127.0.0.1";
    
@@ -46,13 +47,13 @@ public class Communicator {
     public static List<GameObjectImpl> retrieveData() throws IOException {
         JsonReader jreader = new JsonReader(new InputStreamReader(socket.getInputStream()));
         jreader.setLenient(true);
-        ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
         for (GamePacket gp : Serializer.deserializePackets(jreader)) {
             if (gp instanceof SpaceshipComm) {
                 SpaceshipComm sc = (SpaceshipComm) gp;
                 gameObjects.add(new Spaceship(sc));
             } else if (gp instanceof AsteroidComm) {
                 AsteroidComm ac = (AsteroidComm) gp;
+                System.out.println("Got new AsteroidComm: "  + ac.toString());
                 gameObjects.add(new Asteroid(ac));
             }
         }
@@ -66,6 +67,7 @@ public class Communicator {
 
     public static boolean initiate() throws SocketException{
         try {
+            System.out.println("-----Initializing Comm Link to Server");
             socket = new Socket(IP_ADDRESS, 1337);
             //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),

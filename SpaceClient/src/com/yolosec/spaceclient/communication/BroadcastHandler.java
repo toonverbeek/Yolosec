@@ -14,10 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shared.AsteroidComm;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
-import com.yolosec.spaceclient.game.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import shared.SpaceshipComm;
-import com.yolosec.spaceclient.game.Asteroid;
-import com.yolosec.spaceclient.game.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;
 
 /**
@@ -59,7 +59,6 @@ public class BroadcastHandler implements Runnable {
         } else if (gObject instanceof Asteroid) {
             Asteroid asteroid = (Asteroid) gObject;
             json = Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), (int) asteroid.getX(), (int) asteroid.getY());
-            System.out.println("Asteroid as gamepacket: " + json);
         }
         if (!json.equals("")) {
             Communicator.sendData(json);
@@ -70,7 +69,6 @@ public class BroadcastHandler implements Runnable {
         try {
             retrievedObjectList = Communicator.retrieveData();
             if (retrievedObjectList != null) {
-                System.out.println(retrievedObjectList);
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
                 callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             }
