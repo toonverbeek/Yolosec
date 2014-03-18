@@ -5,6 +5,7 @@
  */
 package spaceclient.communication;
 
+import shared.Serializer;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import java.io.BufferedReader;
@@ -13,9 +14,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import org.newdawn.slick.geom.Vector2f;
+import shared.AsteroidComm;
 import shared.GameObject;
+import shared.GamePacket;
+import shared.SpaceshipComm;
+import spaceclient.game.Asteroid;
+import spaceclient.game.Spaceship;
 
 /**
  *
@@ -28,6 +35,7 @@ public class Communicator {
     private static BufferedReader reader;
     private static Gson gson = new Gson();
 
+    public static final String IP_ADDRESS = "127.0.0.1";
     public Communicator() {
         initiate();
     }
@@ -39,9 +47,21 @@ public class Communicator {
     public List<GameObject> retrieveData() throws IOException {
         JsonReader jreader = new JsonReader(new InputStreamReader(socket.getInputStream()));
         jreader.setLenient(true);
-        return Serializer.deserializePackets(jreader);
+        ArrayList<GameObject> gameObjects = new ArrayList<>();
+        for (GamePacket gp : Serializer.deserializePackets(jreader)) {
+            if (gp instanceof SpaceshipComm) {
+                SpaceshipComm sc = (SpaceshipComm) gp;
+                gameObjects.add(new Spaceship(sc));
+            } else if (gp instanceof AsteroidComm) {
+                AsteroidComm ac = (AsteroidComm) gp;
+                gameObjects.add(new Asteroid(ac));
+            }
+        }
+        return gameObjects;
 
     }
+
+    
 
     public void login(String json) {
         writer.println(json);
@@ -49,7 +69,7 @@ public class Communicator {
 
     public boolean initiate() {
         try {
-            socket = new Socket("145.93.217.171", 1337);
+            socket = new Socket(IP_ADDRESS, 1337);
             //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);

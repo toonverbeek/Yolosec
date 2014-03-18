@@ -7,6 +7,7 @@ package spaceclient.game;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import shared.GameObject;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -15,6 +16,7 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 import shared.AsteroidComm;
 import shared.AsteroidType;
+import shared.SpaceshipComm;
 import spaceclient.dao.interfaces.DrawableComponent;
 import spaceclient.gui.Direction;
 import spaceclient.gui.SpaceClient;
@@ -40,7 +42,10 @@ public class Spaceship extends GameObject implements DrawableComponent {
     private Rectangle boundingRectangle;
     private int direction;
 
+    private Input input;
     private int commonResources = 0, magicResources = 0, rareResources = 0;
+    private boolean mining = false;
+    private Vector2f miningLasers1, mininglasers2;
 
     public int[] getResources() {
         return new int[]{commonResources, magicResources, rareResources};
@@ -49,7 +54,21 @@ public class Spaceship extends GameObject implements DrawableComponent {
     public Spaceship(int width, int height) {
         this.width = width;
         this.height = height;
+        position = new Vector2f(0, 0);
+        init();
+    }
 
+    public Spaceship(SpaceshipComm fromPacket) {
+        this.width = 10;
+        this.height = 10;
+        fromPacket.getResources();
+        fromPacket.getId();
+        fromPacket.getDirection();
+        position = new Vector2f(fromPacket.getX(), fromPacket.getY());
+        init();
+    }
+
+    private void init() {
         polygonPoints = new float[8];
         polygonPoints[0] = 0;
         polygonPoints[1] = 0;
@@ -60,7 +79,6 @@ public class Spaceship extends GameObject implements DrawableComponent {
         polygonPoints[6] = 10;
         polygonPoints[7] = 10;
         polygon = new Polygon(polygonPoints);
-        position = new Vector2f(50, 0);
         this.boundingRectangle = new Rectangle((int) position.x, (int) position.y, width, height);
         velocity = new Vector2f(0, 0);
         acceleration = new Vector2f(0, 0);
@@ -69,7 +87,8 @@ public class Spaceship extends GameObject implements DrawableComponent {
 
     @Override
     public void update(GameContainer gc) {
-        calculateMovement(gc.getInput());
+        this.input = gc.getInput();
+        calculateMovement(input);
         boundingRectangle.x = (int) position.x;
         boundingRectangle.y = (int) position.y;
 
@@ -85,8 +104,13 @@ public class Spaceship extends GameObject implements DrawableComponent {
         polygon.setLocation(position.x, position.y);
         g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
         g.drawString("Accel: " + acceleration, 50, 70);
-        g.drawString("Resources: " + this.getResources()[0], 50, 90);
+        g.drawString("Common Resources: " + this.getResources()[0], 50, 90);
+        g.drawString("Magic Resources: " + this.getResources()[1], 50, 110);
+        g.drawString("Rare Resources: " + this.getResources()[2], 50, 130);
         g.drawRect((int) position.x, (int) position.y, width, height);
+        if (mining) {
+            g.drawLine(miningLasers1.x, miningLasers1.y, mininglasers2.x, mininglasers2.y);
+        }
         g.draw(polygon);
     }
 
@@ -154,7 +178,8 @@ public class Spaceship extends GameObject implements DrawableComponent {
     }
 
     private void downKey() {
-        acceleration.y += .0015;
+        //acceleration.y += .0015;
+        acceleration.y += .015;
         if (acceleration.y > .2) {
             acceleration.y = .2f;
         }
@@ -163,6 +188,10 @@ public class Spaceship extends GameObject implements DrawableComponent {
             velocity.y = .08f;
         }
         prevDirection = Direction.DOWN;
+    }
+
+    public boolean isMining() {
+        return mining;
     }
 
     private void addResistance() {
@@ -193,13 +222,24 @@ public class Spaceship extends GameObject implements DrawableComponent {
         return this.boundingRectangle;
     }
 
-    public void mine(AsteroidType type) {
-        if (type == AsteroidType.common) {
-            this.commonResources++;
-        } else if (type == AsteroidType.magic) {
-            this.magicResources++;
-        } else if (type == AsteroidType.rare) {
-            this.rareResources++;
+    public boolean mine(AsteroidType type, float asteroidX, float asteroidY) {
+        if (input.isKeyDown(Input.KEY_SPACE)) {
+            System.out.println("Mining!");
+            mining = true;
+            miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
+            mininglasers2 = new Vector2f(asteroidX, asteroidY);
+            if (type == AsteroidType.common) {
+                this.commonResources++;
+            } else if (type == AsteroidType.magic) {
+                this.magicResources++;
+            } else if (type == AsteroidType.rare) {
+                this.rareResources++;
+            }
+            return true;
         }
+        miningLasers1 = null;
+        mininglasers2 = null;
+        mining = false;
+        return false;
     }
 }

@@ -6,17 +6,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.opengl.GL11;
-import static org.lwjgl.util.mapped.MappedObject.map;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
-import shared.AsteroidType;
 import shared.GameObject;
 import spaceclient.communication.BroadcastHandler;
 import spaceclient.dao.GameObjectDAOImpl;
@@ -63,19 +60,6 @@ public class SpaceClient extends BasicGame {
 
         Thread t = new Thread(broadcastHandler);
         t.start();
-        
-        
-        
-        //broadcastHandler.login(this.player.getUsername(), "asdf");
-
-    }
-
-    private void initMap() {
-        int displayList = GL11.glGenLists(1); //Save this int so you can access it later
-        GL11.glNewList(displayList, GL11.GL_COMPILE);
-        //Draw the tiles using Slick
-        GL11.glEndList();
-
     }
 
     @Override
@@ -84,16 +68,15 @@ public class SpaceClient extends BasicGame {
         broadcastHandler.sendData(player.getSpaceship());
         Vector2f p = player.getSpaceship().getPosition();
         int xTile = (int) (p.x * tileCountHeight) / screenWidth;
-        System.out.println(xTile);
-        
-        for(GameObject gObject : gameObjectDAO.getGameObjects()) {
-            if(gObject instanceof Asteroid) {
+
+        for (GameObject gObject : gameObjectDAO.getGameObjects()) {
+            if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
                 ast.updateAsteroid(gc, player.getSpaceship());
-                if(ast.isIntersecting(player.getSpaceship())){
+                if (ast.isIntersecting(player.getSpaceship())) {
                     broadcastHandler.sendData(ast);
                 }
-            } else if(gObject instanceof Spaceship) {
+            } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.update(gc);
             }
@@ -107,17 +90,16 @@ public class SpaceClient extends BasicGame {
 //        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
 //        camera.translate(g, player.getSpaceship());
         player.render(g, true);
-         for(GameObject gObject : gameObjectDAO.getGameObjects()) {
-            if(gObject instanceof Asteroid) {
+        for (GameObject gObject : gameObjectDAO.getGameObjects()) {
+            if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
                 ast.render(g, false);
-            } else if(gObject instanceof Spaceship) {
+            } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.render(g, false);
             }
         }
-        
-        
+
     }
 
     public static void main(String[] args) {

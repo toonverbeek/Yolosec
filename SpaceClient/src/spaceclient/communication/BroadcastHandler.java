@@ -5,13 +5,17 @@
  */
 package spaceclient.communication;
 
+import shared.LoginComm;
+import shared.Serializer;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.AsteroidComm;
 import spaceclient.dao.interfaces.DrawCallback;
 import shared.GameObject;
+import shared.SpaceshipComm;
 import spaceclient.game.Asteroid;
 import spaceclient.game.Spaceship;
 import spaceclient.gui.SpaceClient;
@@ -50,9 +54,11 @@ public class BroadcastHandler implements Runnable {
     public void sendData(GameObject gObject) {
         String json = "";
         if (gObject instanceof Spaceship) {
-            json = Serializer.serializeSpaceship((Spaceship) gObject);
+            Spaceship s = (Spaceship) gObject;
+            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getPosition().x, s.getPosition().y, 1, s.getId(), s.getResources());
         } else if (gObject instanceof Asteroid) {
-            json = Serializer.serializeAsteroid((Asteroid) gObject);
+            Asteroid asteroid = (Asteroid) gObject;
+            json = Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), (int) asteroid.getX(), (int) asteroid.getY());
             System.out.println("Asteroid as gamepacket: " + json);
         }
         if (communicator != null && !json.equals("")) {
