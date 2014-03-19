@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ptsesd.groepb.shared;;
+package com.ptsesd.groepb.shared;
+
+;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -16,6 +18,8 @@ import java.util.Map;
  *
  * @author Tim
  */
+
+
 public class Serializer {
 
     private static final Gson gson = new Gson();
@@ -23,11 +27,11 @@ public class Serializer {
     public static String serializeLogin(LoginComm lc) {
         return gson.toJson(lc, LoginComm.class);
     }
-    
+
     public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
         GamePacket gameobject = null;
         if (reader.hasNext()) {
-          
+
             Map map = gson.fromJson(reader, Map.class);
 
             String header = (String) map.get("header");
@@ -47,8 +51,14 @@ public class Serializer {
                 int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
                 float x = ((Double) map.get("x")).floatValue();
                 float y = ((Double) map.get("y")).floatValue();
-                AsteroidType type = (AsteroidType) map.get("type");
-                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
+                AsteroidType atype = AsteroidType.common;
+                String type = (String) map.get("type");
+                if (type.equals(AsteroidType.magic.toString())) {
+                    atype = AsteroidType.magic;
+                } else if (type.equals(AsteroidType.rare.toString())) {
+                    atype = AsteroidType.rare;
+                }
+                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resourceAmount, x, y);
                 gameobject = ac;
             } else if (header.equals(LoginComm.class.getSimpleName())) {
                 String username = (String) map.get("username");
@@ -64,9 +74,9 @@ public class Serializer {
     public static List<GamePacket> deserializePackets(JsonReader reader) throws IOException {
         List<GamePacket> gameobjects = new ArrayList<>();
         if (reader.hasNext()) {
-            
+
             List<Map> retrievedObjects = gson.fromJson(reader, List.class);
-            
+
             for (Map map : retrievedObjects) {
                 String header = (String) map.get("header");
                 if (header.equals(SpaceshipComm.class.getSimpleName())) {
@@ -85,7 +95,7 @@ public class Serializer {
                     int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
                     float x = ((Double) map.get("x")).floatValue();
                     float y = ((Double) map.get("y")).floatValue();
-                    AsteroidType type = (AsteroidType)map.get("type");
+                    AsteroidType type = (AsteroidType) map.get("type");
                     AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
                     gameobjects.add(ac);
                 } else if (header.equals(LoginComm.class.getSimpleName())) {
@@ -98,7 +108,6 @@ public class Serializer {
         }
         return gameobjects;
     }
-
 
     public static String serializeSpaceShipAsGamePacket(String header, float x, float y, int direction, int id, int[] resources) {
         SpaceshipComm sComm = new SpaceshipComm(header, x, y, direction, id, resources);
