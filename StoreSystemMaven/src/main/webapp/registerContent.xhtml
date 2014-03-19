@@ -1,0 +1,38 @@
+<ui:composition template="templates/loginTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="topsection">
+        <p:growl id="messages" />  
+        <p:toolbar styleClass="toolbar">  
+        </p:toolbar>  
+    </ui:define>
+
+    <ui:define name="loginform">
+        <div id="loginformcontent">
+            <h:form>
+                <p:panel id="panel" header="Register" >  
+                    <p:messages id="messages" showDetail="true" autoUpdate="true"/>  
+                    <h:panelGrid columns="3">  
+                        <h:outputLabel for="username" value="Username *" />  
+                        <p:inputText id="username" value="#{registerBean.username}" required="true" validatorMessage="Username is not long enough (5+)" requiredMessage="Username is required" label="Username">  
+                            <f:validateLength minimum="5" />  
+                        </p:inputText>  
+                        <br/>
+                        <h:outputText value="Password *" />  
+                        <p:password id="password" value="#{registerBean.password1}" label="Password 1" required="true" match="matchingpassword" feedback="true" inline="false"/>  
+                        <br/>
+                        <h:outputText value="Re-enter password *" />  
+                        <p:password id="matchingpassword" value="#{registerBean.password2}"  label="Password 2" required="true" />  
+                    </h:panelGrid>  
+                    <p:commandButton value="Register" id="submit" action="#{registerBean.register()}" update="panel"  />  
+                </p:panel> 
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

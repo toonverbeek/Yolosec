@@ -1,0 +1,73 @@
+/* 
+    Created on : Feb 21, 2014, 2:18:10 PM
+    Author     : Jamy
+*/
+body,html {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5em;
+    font-family: sans-serif;
+    height:100%;
+    background-color: #ECECEC;
+}
+
+#topsection {
+    height: 50px; /*Height of top section*/
+    width: 100%;
+    position: fixed;
+    border-width: 0 0 2px;
+}
+
+.selected {
+    background: #555555 !important;
+}
+
+.toolbar {
+    height: 50px;
+}
+
+.buttons {
+    margin-left: 30%;
+}
+
+#contentwrapper {
+    margin-left: 5px; /*Set right margin to RightColumnWidth*/
+    padding-top: 55px;
+}
+
+.ui-helper-clearfix:after{
+    display: inline-block !important;
+}
+
+#leftsection {
+    float: left;
+    width: 250px;
+    padding: 10px 0 10px 0;
+    position: fixed;
+}
+
+#content{
+    margin-left:255px;
+    width: auto; /*Width of right column -10px*/
+    padding: 10px 0 10px 0;
+}
+
+tr.inputtable > td{
+    padding-bottom: 10px;
+}
+
+.innertube {
+    margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+    margin-top: 0;
+}
+
+#loginformcontent {
+    width: 500px;
+    height: auto;
+    margin: 70px auto; /*Center container on page*/
+}
+
+.loginButton, .registerButton {
+    width:100%;
+}
+
