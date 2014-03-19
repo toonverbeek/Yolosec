@@ -41,10 +41,10 @@ public class ConnectionServer implements Runnable {
     public ConnectionServer(ClientBroadcastModule broadcastModule) {
         this.broadcastModule = broadcastModule;
         locationModule = new PlayerLocationModule();
-        resourceModule = new PlayerResourceModule();
         loginModule = new PlayerLoginModule(this);
         asteroidModule = new ServerAsteroidGenerator();
-
+        resourceModule = new PlayerResourceModule(asteroidModule.generateAsteroids());
+        
         try {
             this.server = new ServerSocket(1337);
 
@@ -125,7 +125,7 @@ public class ConnectionServer implements Runnable {
     }
 
     public List<AsteroidComm> getAsteroids() {
-        return asteroidModule.getAsteroids();
+        return resourceModule.getAsteroids();
     }
 
     public List<ClientConnection> getClientConnections() {

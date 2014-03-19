@@ -200,10 +200,11 @@ public class DbConnector {
     }
 
     public static int getSpaceshipResourceAmount(int clientID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("get spaceship resource amount");
+        return -1;
     }
 
     public static void setSpaceshipResourceAmount(int clientID, int resourceAmount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Set spaceship resource amount");
     }
 }

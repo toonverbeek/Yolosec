@@ -71,7 +71,7 @@ public class ClientConnection implements Runnable {
 
     private void readGson(JsonReader reader) {
         try {
-            List<GamePacket> deserializePackets = Serializer.getGamePackets(reader);
+            List<GamePacket> deserializePackets = Serializer.deserializePackets(reader);
             
             for (GamePacket packet : deserializePackets) {
                 String header = packet.getHeader();
@@ -84,11 +84,13 @@ public class ClientConnection implements Runnable {
                     case "LoginComm":
                         LoginComm lcomm = (LoginComm)packet;
                         this.server.login(lcomm, this);
+                        this.server.broadcastAsteroids();
                         break;
                         
                     case "AsteroidComm":
                         AsteroidComm acomm = (AsteroidComm)packet;
                         this.server.recievedAsteroid(this, acomm);
+                        this.server.broadcastAsteroids();
                         break;
 
                     default:

@@ -20,7 +20,6 @@ public class ServerAsteroidGenerator {
     
     private int[][] map;
     private List<position> occupiedPositions;
-    private List<AsteroidComm> currentAsteroids;
     
     private final int amountOfAsteroids = 25;
     
@@ -29,11 +28,7 @@ public class ServerAsteroidGenerator {
         occupiedPositions = new ArrayList<position>();
     }
     
-    public List<AsteroidComm> getAsteroids() {
-        return this.currentAsteroids;
-    }
-    
-    public void generateAsteroids(){
+    public List<AsteroidComm> generateAsteroids(){
         List<AsteroidComm> _asteroids = new ArrayList<>();
         
         while (_asteroids.size() < amountOfAsteroids) {
@@ -59,7 +54,7 @@ public class ServerAsteroidGenerator {
             }
         }
         
-        currentAsteroids = _asteroids;
+        return _asteroids;
     }
     
     private boolean isColliding(int posUnitX, int posUnitY, int resourceAmount, Collection<AsteroidComm> checkAsteroids){
