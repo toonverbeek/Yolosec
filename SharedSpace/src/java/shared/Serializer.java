@@ -51,6 +51,11 @@ public class Serializer {
                     AsteroidType type = (AsteroidType)map.get("type");
                     AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
                     gameobjects.add(ac);
+                } else if (header.equals(LoginComm.class.getSimpleName())) {
+                    String username = (String) map.get("username");
+                    String password = (String) map.get("password");
+                    LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
+                    gameobjects.add(lcomm);
                 }
             }
         }
