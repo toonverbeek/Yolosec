@@ -12,12 +12,8 @@
         </group>
         <group name="Proftaak-Space">
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/Communicator.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/player/Spaceship.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/dao/GameObjectDAOImpl.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/world/Asteroid.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/BroadcastHandler.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/world/GameObjectImpl.java</file>
-            <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/Deserializer.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/world/GameWorldImpl.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/gui/SpaceClient.java</file>
         </group>

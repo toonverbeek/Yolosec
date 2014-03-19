@@ -5,20 +5,16 @@
  */
 package com.yolosec.spaceclient.game.player;
 
+import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
-import shared.AsteroidComm;
-import shared.AsteroidType;
-import shared.SpaceshipComm;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
-import com.yolosec.spaceclient.gui.SpaceClient;
 
 /**
  *

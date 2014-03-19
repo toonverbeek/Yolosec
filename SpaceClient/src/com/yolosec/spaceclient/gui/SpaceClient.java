@@ -1,5 +1,8 @@
 package com.yolosec.spaceclient.gui;
 
+import com.ptsesd.groepb.shared.LoginComm;
+import com.ptsesd.groepb.shared.Serializer;
+import com.yolosec.spaceclient.communication.Communicator;
 import com.yolosec.spaceclient.game.player.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +32,7 @@ public class SpaceClient extends BasicGame {
         gc.setTargetFrameRate(FPS);
         gc.setFullscreen(true);
         user = new User(new Spaceship(10, 10), "Space_Invader1337");
+        Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
         gameWorld = new GameWorldImpl(user.getSpaceship());
     }
 

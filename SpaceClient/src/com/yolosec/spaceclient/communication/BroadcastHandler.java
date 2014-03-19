@@ -5,17 +5,17 @@
  */
 package com.yolosec.spaceclient.communication;
 
-import shared.LoginComm;
-import shared.Serializer;
 import com.google.gson.Gson;
+import com.ptsesd.groepb.shared.AsteroidComm;
+import com.ptsesd.groepb.shared.LoginComm;
+import com.ptsesd.groepb.shared.Serializer;
+import com.ptsesd.groepb.shared.SpaceshipComm;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shared.AsteroidComm;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import shared.SpaceshipComm;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;

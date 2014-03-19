@@ -5,9 +5,9 @@
  */
 package com.yolosec.spaceclient.communication;
 
+import com.ptsesd.groepb.shared.AsteroidComm;
+import com.ptsesd.groepb.shared.SpaceshipComm;
 import org.newdawn.slick.geom.Vector2f;
-import shared.AsteroidComm;
-import shared.SpaceshipComm;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
 

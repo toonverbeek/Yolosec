@@ -5,6 +5,7 @@
  */
 package com.yolosec.spaceclient.dao;
 
+import com.ptsesd.groepb.shared.AsteroidType;
 import com.yolosec.spaceclient.dao.interfaces.GameObjectDAO;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shared.AsteroidType;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.communication.BroadcastHandler;
@@ -21,7 +21,6 @@ import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.observing.NodeImpl;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  *
@@ -39,7 +38,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
             Thread th = new Thread(broadcastHandler);
             th.start();
-            
+
             this.gameObjects = new ArrayList<>();
             Random r = new Random();
             for (int i = 0; i < 20; i++) {
@@ -52,16 +51,20 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     t = AsteroidType.rare;
                 }
                 Asteroid ast = new Asteroid(r.nextInt(1920), r.nextInt(1080), 100, t);
-                this.gameObjects.add(ast);
+                //this.gameObjects.add(ast);
             }
         } catch (SocketException ex) {
             Logger.getLogger(GameObjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-    public void sendData(GameObjectImpl gameObject){
+
+    public void sendData(GameObjectImpl gameObject) {
         broadcastHandler.sendData(gameObject);
+    }
+
+    public void login(String username, String password) {
+        broadcastHandler.login(username, password);
     }
 
     @Override

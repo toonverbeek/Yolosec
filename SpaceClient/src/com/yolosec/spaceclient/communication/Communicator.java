@@ -5,9 +5,12 @@
  */
 package com.yolosec.spaceclient.communication;
 
-import shared.Serializer;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.ptsesd.groepb.shared.AsteroidComm;
+import com.ptsesd.groepb.shared.GamePacket;
+import com.ptsesd.groepb.shared.Serializer;
+import com.ptsesd.groepb.shared.SpaceshipComm;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,13 +20,10 @@ import java.net.SocketException;
 import java.rmi.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import org.newdawn.slick.geom.Vector2f;
-import shared.AsteroidComm;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import shared.GamePacket;
-import shared.SpaceshipComm;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import java.util.Iterator;
 
 /**
  *
@@ -37,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "127.0.0.1";
+    public static final String IP_ADDRESS = "145.93.58.41";
    
 
     public static void sendData(String json) {
