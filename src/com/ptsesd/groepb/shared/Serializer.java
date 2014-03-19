@@ -31,9 +31,9 @@ public class Serializer {
     public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
         GamePacket gameobject = null;
         if (reader.hasNext()) {
-
+            
             Map map = gson.fromJson(reader, Map.class);
-
+            System.out.println("Gamepacket map" + map.toString());
             String header = (String) map.get("header");
             if (header.equals(SpaceshipComm.class.getSimpleName())) {
                 //desirialize spaceshipcomm
@@ -43,7 +43,9 @@ public class Serializer {
                 float xx = (float) x;
                 float yy = (float) y;
                 int d = ((Double) map.get("d")).intValue();
-                int[] resources = (int[]) map.get("resources");
+                List<Integer> resourcesList = (ArrayList<Integer>) map.get("resources");
+                int[] resources = convertIntegers(resourcesList);
+                
                 SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
                 gameobject = scomm;
             } else if (header.equals(AsteroidComm.class.getSimpleName())) {
@@ -70,6 +72,16 @@ public class Serializer {
         }
         return gameobject;
     }
+    
+    public static int[] convertIntegers(List<Integer> integers)
+{
+    int[] ret = new int[integers.size()];
+    for (int i=0; i < ret.length; i++)
+    {
+        ret[i] = integers.get(i).intValue();
+    }
+    return ret;
+}
 
     public static List<GamePacket> deserializePackets(JsonReader reader) throws IOException {
         List<GamePacket> gameobjects = new ArrayList<>();
@@ -87,7 +99,8 @@ public class Serializer {
                     float xx = (float) x;
                     float yy = (float) y;
                     int d = ((Double) map.get("d")).intValue();
-                    int[] resources = (int[]) map.get("resources");
+                    List<Integer> resourcesList = (ArrayList<Integer>) map.get("resources");
+                    int[] resources = convertIntegers(resourcesList);
                     SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
                     gameobjects.add(scomm);
                 } else if (header.equals(AsteroidComm.class.getSimpleName())) {
