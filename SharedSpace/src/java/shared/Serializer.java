@@ -21,11 +21,6 @@ public class Serializer {
 
     private static final Gson gson = new Gson();
 
-//    public static String serializeSpaceship(Spaceship spaceship) {
-//        SpaceshipComm sComm = new SpaceshipComm(SpaceshipComm.class.getSimpleName(), spaceship.getPosition().x, spaceship.getPosition().y, 1, spaceship.getId(), spaceship.getResources());
-//        String json = gson.toJson(sComm, SpaceshipComm.class);
-//        return json;
-//    }
     public static String serializeLogin(LoginComm lc) {
         return gson.toJson(lc, LoginComm.class);
     }
@@ -38,6 +33,7 @@ public class Serializer {
             for (Map map : retrievedObjects) {
                 String header = (String) map.get("header");
                 if (header.equals(SpaceshipComm.class.getSimpleName())) {
+                    //desirialize spaceshipcomm
                     int id = ((Double) map.get("id")).intValue();
                     double x = (Double) map.get("x");
                     double y = (Double) map.get("y");
@@ -52,7 +48,8 @@ public class Serializer {
                     int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
                     float x = ((Double) map.get("x")).floatValue();
                     float y = ((Double) map.get("y")).floatValue();
-                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), AsteroidType.rare, resourceAmount, x, y);
+                    AsteroidType type = (AsteroidType)map.get("type");
+                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
                     gameobjects.add(ac);
                 }
             }
@@ -60,20 +57,7 @@ public class Serializer {
         return gameobjects;
     }
 
-//    private static Spaceship deserializeSpaceship(SpaceshipComm scomm) {
-//        Spaceship sShip = new Spaceship(10, 10);
-//        sShip.setPosition(new Vector2f(scomm.getX(), scomm.getY()));
-//        sShip.setDirection(scomm.getDirection());
-//        return sShip;
-//    }
-//    private static Asteroid deserializeAsAsteroid(AsteroidComm acom) {
-//        return new Asteroid(acom);
-//    }
-//    public static String serializeAsteroid(Asteroid asteroid) {
-//        AsteroidComm aCom = new AsteroidComm(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), asteroid.getX(), asteroid.getY());
-//        String json = gson.toJson(aCom, AsteroidComm.class);
-//        return json;
-//    }
+
     public static String serializeSpaceShipAsGamePacket(String header, float x, float y, int direction, int id, int[] resources) {
         SpaceshipComm sComm = new SpaceshipComm(header, x, y, direction, id, resources);
         String json = gson.toJson(sComm, SpaceshipComm.class);
