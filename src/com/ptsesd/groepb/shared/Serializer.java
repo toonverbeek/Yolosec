@@ -33,7 +33,7 @@ public class Serializer {
         if (reader.hasNext()) {
             
             Map map = gson.fromJson(reader, Map.class);
-            System.out.println("Gamepacket map" + map.toString());
+            
             String header = (String) map.get("header");
             if (header.equals(SpaceshipComm.class.getSimpleName())) {
                 //desirialize spaceshipcomm
