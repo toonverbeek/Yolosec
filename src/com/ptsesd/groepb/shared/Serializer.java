@@ -23,12 +23,50 @@ public class Serializer {
     public static String serializeLogin(LoginComm lc) {
         return gson.toJson(lc, LoginComm.class);
     }
+    
+    public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
+        GamePacket gameobject = null;
+        if (reader.hasNext()) {
+          
+            Map map = gson.fromJson(reader, Map.class);
+
+            String header = (String) map.get("header");
+            if (header.equals(SpaceshipComm.class.getSimpleName())) {
+                //desirialize spaceshipcomm
+                int id = ((Double) map.get("id")).intValue();
+                double x = (Double) map.get("x");
+                double y = (Double) map.get("y");
+                float xx = (float) x;
+                float yy = (float) y;
+                int d = ((Double) map.get("d")).intValue();
+                int[] resources = (int[]) map.get("resources");
+                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
+                gameobject = scomm;
+            } else if (header.equals(AsteroidComm.class.getSimpleName())) {
+                //deserialize asteroidcomm
+                int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
+                float x = ((Double) map.get("x")).floatValue();
+                float y = ((Double) map.get("y")).floatValue();
+                AsteroidType type = (AsteroidType) map.get("type");
+                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
+                gameobject = ac;
+            } else if (header.equals(LoginComm.class.getSimpleName())) {
+                String username = (String) map.get("username");
+                String password = (String) map.get("password");
+                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
+                gameobject = lcomm;
+            }
+
+        }
+        return gameobject;
+    }
 
     public static List<GamePacket> deserializePackets(JsonReader reader) throws IOException {
         List<GamePacket> gameobjects = new ArrayList<>();
         if (reader.hasNext()) {
+            
             List<Map> retrievedObjects = gson.fromJson(reader, List.class);
-
+            
             for (Map map : retrievedObjects) {
                 String header = (String) map.get("header");
                 if (header.equals(SpaceshipComm.class.getSimpleName())) {

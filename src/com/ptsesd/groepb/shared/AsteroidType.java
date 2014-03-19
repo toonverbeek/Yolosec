@@ -4,12 +4,16 @@
  * and open the template in the editor.
  */
 
-package com.ptsesd.groepb.shared;;
+package com.ptsesd.groepb.shared;
+
+import java.io.Serializable;
+
+;
 
 /**
  *
  * @author user
  */
-public enum AsteroidType {
+public enum AsteroidType implements Serializable{
     common, magic, rare
 }
