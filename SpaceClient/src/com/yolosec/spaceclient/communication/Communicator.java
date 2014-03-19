@@ -37,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.41";
+    public static final String IP_ADDRESS = "145.93.219.29";
    
 
     public static void sendData(String json) {
@@ -62,6 +62,7 @@ public class Communicator {
     }
 
     public static void login(String json) {
+        System.out.println("Sout login: " + json);
         writer.println(json);
     }
 

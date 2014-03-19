@@ -15,6 +15,10 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -27,6 +31,8 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
     private final AsteroidType type;
     private Rectangle asteroidBounding;
     private Shape astroidCircle;
+    private int maxResourceAmount;
+    private AngelCodeFont resourceFont;
 
     public float getX() {
         return x;
@@ -49,10 +55,15 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         return this.asteroidBounding;
     }
     
+    public void setResourceFont(AngelCodeFont font) {
+        this.resourceFont = font;
+    }
+    
     public Asteroid(AsteroidComm fromPacket) {
         this.x = fromPacket.getX();
         this.y = fromPacket.getX();
         this.resourceAmount = fromPacket.getResourceAmount();
+        this.maxResourceAmount = resourceAmount;
         astroidCircle = new Circle(x, y, resourceAmount);
 
         this.asteroidBounding = new Rectangle((int) astroidCircle.getX(), (int) astroidCircle.getY(), resourceAmount, resourceAmount);
@@ -66,6 +77,7 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         this.x = x;
         this.y = y;
         this.resourceAmount = resourceAmount;
+        this.maxResourceAmount = resourceAmount;
         astroidCircle = new Circle(x, y, resourceAmount);
         this.x = astroidCircle.getX();
         this.y = astroidCircle.getY();
@@ -87,12 +99,14 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             if (resourceAmount > 5 ) {
                 //callback
                 //if player is mining (i.e. pressing spacebar)
-                if (spaceship.mine(this.getType(), x + (resourceAmount / 2), y + (resourceAmount / 2))) {
+                if (spaceship.mine(this.getType(), x + (maxResourceAmount / 2), y + (maxResourceAmount / 2))) {
                     resourceAmount -= .01;
                 }
             } else {
                 spaceship.stopMining();
             }
+        } else {
+            spaceship.stopMining();
         }
         //asteroidBounding.width = resourceAmount * 2;
     }
@@ -106,12 +120,9 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         } else {
             g.setColor(Color.pink);
         }
-        g.drawOval(x, y, resourceAmount, resourceAmount);
-
-        //astroidCircle = new Circle(x, y, resourceAmount / 2);
-        //g.draw(astroidCircle);
-        //g.fillOval(x, y, resourceAmount, resourceAmount);
+        g.drawOval(x + ((maxResourceAmount - resourceAmount) / 2), y + ((maxResourceAmount - resourceAmount) / 2), resourceAmount, resourceAmount);
         g.setColor(Color.white);
         g.drawRect(x, y, asteroidBounding.width, asteroidBounding.height);
+        resourceFont.drawString(x, y, String.valueOf(resourceAmount));
     }
 }

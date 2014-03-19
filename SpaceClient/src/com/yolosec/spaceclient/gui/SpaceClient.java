@@ -14,6 +14,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import java.util.HashMap;
+import java.util.Map;
+import org.newdawn.slick.AngelCodeFont;
 
 public class SpaceClient extends BasicGame {
 
@@ -22,6 +25,8 @@ public class SpaceClient extends BasicGame {
     public static int screenWidth;
     private User user;
     private GameWorldImpl gameWorld;
+    private AngelCodeFont font;
+    private HashMap<String, AngelCodeFont> fontSet = new HashMap<String, AngelCodeFont>();
 
     public SpaceClient(String gamename) {
         super(gamename);
@@ -32,8 +37,11 @@ public class SpaceClient extends BasicGame {
         gc.setTargetFrameRate(FPS);
         gc.setFullscreen(true);
         user = new User(new Spaceship(10, 10), "Space_Invader1337");
-        Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
+        //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
         gameWorld = new GameWorldImpl(user.getSpaceship());
+        font = new AngelCodeFont("font.fnt", "font_0.png");
+        AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
+        fontSet.put("resource_font", resourceFont);
     }
 
     @Override
@@ -43,6 +51,8 @@ public class SpaceClient extends BasicGame {
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
+        g.setFont(font);
+        gameWorld.setFontSet(fontSet);
         gameWorld.render(g, false);
     }
 

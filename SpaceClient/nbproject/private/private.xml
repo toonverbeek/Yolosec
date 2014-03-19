@@ -2,20 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/communication/Communicator.java</file>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/communication/BroadcastHandler.java</file>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/communication/Serializer.java</file>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/gui/SpaceClient.java</file>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/dao/interfaces/DrawCallback.java</file>
-            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/spaceclient/game/Spaceship.java</file>
-        </group>
         <group name="Proftaak-Space">
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/Communicator.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/dao/GameObjectDAOImpl.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/BroadcastHandler.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/world/GameWorldImpl.java</file>
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/Yolosec/SpaceClient/src/com/yolosec/spaceclient/gui/SpaceClient.java</file>
+        </group>
+        <group>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/communication/Communicator.java</file>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/world/Asteroid.java</file>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/player/SpaceItem.java</file>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/dao/GameObjectDAOImpl.java</file>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/game/player/Spaceship.java</file>
+            <file>file:/C:/Users/Tim/Documents/schools6/Yolosec/SpaceClient/src/com/yolosec/spaceclient/gui/SpaceClient.java</file>
         </group>
     </open-files>
 </project-private>
