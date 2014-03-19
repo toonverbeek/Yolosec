@@ -169,9 +169,6 @@ public class StoreService implements Serializable {
         item1Resources.add(new Resource("Iron", 100));
 
         Account user = new Account(username, password1, new Spaceship(new ArrayList<Item>()), item1Resources);
-        Item userItem = new Item("TEST", "TEST", item1Resources, null, false, "");
-        this.itemDAO.create(userItem);
-        user.addItemToSpaceShipInventory(userItem);
         return createUser(user);
     }
 
