@@ -43,7 +43,7 @@ public class Serializer {
                 float xx = (float) x;
                 float yy = (float) y;
                 int d = ((Double) map.get("d")).intValue();
-                List<Integer> resourcesList = (ArrayList<Integer>) map.get("resources");
+                List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                 int[] resources = convertIntegers(resourcesList);
                 
                 SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
@@ -73,9 +73,10 @@ public class Serializer {
         return gameobject;
     }
     
-    public static int[] convertIntegers(List<Integer> integers)
+    public static int[] convertIntegers(List<Double> integers)
 {
     int[] ret = new int[integers.size()];
+    
     for (int i=0; i < ret.length; i++)
     {
         ret[i] = integers.get(i).intValue();
@@ -99,7 +100,7 @@ public class Serializer {
                     float xx = (float) x;
                     float yy = (float) y;
                     int d = ((Double) map.get("d")).intValue();
-                    List<Integer> resourcesList = (ArrayList<Integer>) map.get("resources");
+                    List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                     int[] resources = convertIntegers(resourcesList);
                     SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
                     gameobjects.add(scomm);
