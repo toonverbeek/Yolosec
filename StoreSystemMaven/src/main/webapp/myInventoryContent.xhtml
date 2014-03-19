@@ -13,16 +13,26 @@
             <p:growl id="messages" />  
             <p:toolbar styleClass="toolbar">  
                 <p:toolbarGroup align="left" >  
-                    <p:commandButton value="Buy SpaceCoins" icon="ui-icon-cart"/>
+                    <p:button value="Buy SpaceCoins" icon="ui-icon-cart" outcome="buyPage"  styleClass="selected"/>
                 </p:toolbarGroup>  
                 <p:separator />  
                 <p:toolbarGroup align="left" styleClass="buttons">  
-                    <p:commandButton value="My Inventory" icon="ui-icon-suitcase" styleClass="selected" action="myInventoryContent.xhtml?faces-redirect=true"/>  
-                    <p:commandButton value="My Ship" icon="ui-icon-home" />
-                    <p:commandButton value="Store" icon="ui-icon-cart" action="storeContent.xhtml?faces-redirect=true"/>  
+                    <p:button value="My Inventory" icon="ui-icon-suitcase" outcome="myInventoryContent"/>  
+                    <p:button value="My Ship" icon="ui-icon-home" />
+                    <p:button value="Store" icon="ui-icon-cart" outcome="storeContent"/>  
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">  
-                    <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                    <p:toolbarGroup align="right">  
+                        <h:form id="resources">
+                            <ui:repeat var="res" value="#{storeBean.currentUserResources}" >
+                                <p:outputLabel value=" | #{res.type} : " />
+                                <p:outputLabel value="#{res.amount}" />
+                            </ui:repeat>
+                        </h:form>
+                        <p:outputLabel value="|  " />
+
+                        <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                    </p:toolbarGroup>  
                 </p:toolbarGroup>  
             </p:toolbar>  
         </h:form>

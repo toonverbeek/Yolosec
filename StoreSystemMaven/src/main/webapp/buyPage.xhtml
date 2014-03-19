@@ -1,4 +1,4 @@
-<ui:composition template="templates/loginTemplate.xhtml"
+<ui:composition template="templates/storeTemplate.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -8,21 +8,77 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <ui:define name="topsection">
-        <p:growl id="messages" />  
-        <p:toolbar styleClass="toolbar">  
-        </p:toolbar>  
+        <h:form>  
+            <p:growl id="messages" />  
+            <p:toolbar styleClass="toolbar">  
+                <p:toolbarGroup align="left" >  
+                    <p:button value="Buy SpaceCoins" icon="ui-icon-cart" outcome="buyPage"  styleClass="selected"/>
+                </p:toolbarGroup>  
+                <p:separator />  
+                <p:toolbarGroup align="left" styleClass="buttons">  
+                    <p:button value="My Inventory" icon="ui-icon-suitcase" outcome="myInventoryContent"/>  
+                    <p:button value="My Ship" icon="ui-icon-home" />
+                    <p:button value="Store" icon="ui-icon-cart" outcome="storeContent"/>  
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">  
+                    <p:toolbarGroup align="right">  
+                        <h:form id="resources">
+                            <ui:repeat var="res" value="#{storeBean.currentUserResources}" >
+                                <p:outputLabel value=" | #{res.type} : " />
+                                <p:outputLabel value="#{res.amount}" />
+                            </ui:repeat>
+                        </h:form>
+                        <p:outputLabel value="|  " />
+
+                        <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                    </p:toolbarGroup>  
+                </p:toolbarGroup>  
+            </p:toolbar>  
+        </h:form>
     </ui:define>
 
-    <ui:define name="loginform">
-        <div id="loginformcontent">
-            <h:form>
-                <p:panel id="panel" header="Buy SpaceCoins" >  
-                    <p:messages id="messages" autoUpdate="true"/>  
+    <ui:define name="content">
+        <h:form>
+            <p:panel id="panel" header="Buy SpaceCoins" >  
+                <p:messages id="messages" autoUpdate="true"/> 
+                <p:outputPanel id="customPanel">
+                    <h:outputLabel value="Select amount space coins"/>
+
+                    <p:selectOneRadio id="customRadio" layout="custom">  
+                        <f:selectItem itemLabel="1 SpaceCoin" itemValue="1" />  
+                        <f:selectItem itemLabel="10 SpaceCoin" itemValue="2" />  
+                        <f:selectItem itemLabel="100 SpaceCoin" itemValue="3" />  
+                        <f:selectItem itemLabel="1000 SpaceCoin" itemValue="4" />  
+                    </p:selectOneRadio>  
+
                     <h:panelGrid columns="3">  
-                        <h:outputLabel for="username" value="Buy" />  
-                       </h:panelGrid> 
-                </p:panel> 
-            </h:form>
-        </div>
+                        <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>  
+                        <h:outputLabel for="opt1" value="1 SpaceCoin" />
+                        <h:outputLabel value="0.10 euro" />
+
+                        <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>  
+                        <h:outputLabel for="opt2" value="10 SpaceCoin" /> 
+                        <h:outputLabel value="0.90 euro" />
+
+
+                        <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>  
+                        <h:outputLabel for="opt3" value="100 SpaceCoin" />
+                        <h:outputLabel value="9.00 euro" />
+
+
+                        <p:radioButton id="opt4" for="customRadio" itemIndex="3"/>  
+                        <h:outputLabel for="opt4" value="1000 SpaceCoin" />
+                        <h:outputLabel value="90.00 euro" />
+
+                    </h:panelGrid>  
+                </p:outputPanel>  
+                <p:commandButton value="Buy with PayPal" action="#{buyBean.buySpaceCoins()}"/>
+            </p:panel> 
+        </h:form>
+    </ui:define>
+
+    <ui:define name="leftsection">
+        <p:panel header="Filters" >  
+        </p:panel>  
     </ui:define>
 </ui:composition>
