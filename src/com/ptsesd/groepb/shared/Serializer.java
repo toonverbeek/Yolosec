@@ -8,8 +8,10 @@ package com.ptsesd.groepb.shared;
 ;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +134,12 @@ public class Serializer {
     public static String serializeAsteroidAsGamePacket(String header, AsteroidType type, int resourceAmount, int x, int y) {
         AsteroidComm aCom = new AsteroidComm(header, type, resourceAmount, x, y);
         String json = gson.toJson(aCom, AsteroidComm.class);
+        return json;
+    }
+    
+    public static String serializeSpaceShipAsGamePackets(List<SpaceshipComm> ships) {
+        Type com = new TypeToken<List<GamePacket>>() {}.getType();
+        String json = gson.toJson(ships, com);
         return json;
     }
 }
