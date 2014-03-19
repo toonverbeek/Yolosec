@@ -53,7 +53,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     public Spaceship(int width, int height) {
         this.width = width;
         this.height = height;
-        position = new Vector2f(0, 0);
+        position = new Vector2f(100, 100);
         init();
     }
 

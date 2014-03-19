@@ -51,8 +51,8 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 } else {
                     t = AsteroidType.rare;
                 }
-                Asteroid ast = new Asteroid(r.nextInt(1920), 100, 100, t);
-                //this.gameObjects.add(ast);
+                Asteroid ast = new Asteroid(r.nextInt(1920), r.nextInt(1080), 100, t);
+                this.gameObjects.add(ast);
             }
         } catch (SocketException ex) {
             Logger.getLogger(GameObjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
