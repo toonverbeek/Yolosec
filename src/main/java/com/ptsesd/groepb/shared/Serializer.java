@@ -24,7 +24,7 @@ public class Serializer {
         return gson.toJson(lc, LoginComm.class);
     }
 
-    public static List<GamePacket> deserializePackets(JsonReader reader) throws IOException {
+    public static List<GamePacket> getGamePackets(JsonReader reader) throws IOException {
         List<GamePacket> gameobjects = new ArrayList<>();
         if (reader.hasNext()) {
             List<Map> retrievedObjects = gson.fromJson(reader, List.class);
