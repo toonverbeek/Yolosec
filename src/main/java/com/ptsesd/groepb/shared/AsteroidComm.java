@@ -30,6 +30,10 @@ public class AsteroidComm extends GamePacket {
     public int getResourceAmount() {
         return resourceAmount;
     }
+    
+    public void setResourceAmount(int resourceAmount){
+        this.resourceAmount = resourceAmount;
+    }
 
     public float getX() {
         return x;
