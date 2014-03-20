@@ -27,6 +27,10 @@ public class SpaceshipComm extends GamePacket {
         this.d = direction;
         this.id = id;
     }
+    
+    public int getId(){
+        return id;
+    }
 
     public float getX() {
         return x;
