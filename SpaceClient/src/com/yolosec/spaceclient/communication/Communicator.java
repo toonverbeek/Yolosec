@@ -39,6 +39,7 @@ public class Communicator {
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "145.93.60.83";
+   
 
     public static void sendData(String json) {
         writer.println(json);

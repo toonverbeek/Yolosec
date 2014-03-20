@@ -162,26 +162,19 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
     private void upKey() {
         acceleration.y -= .0015;
-        if (acceleration.y < -.2) {
-            acceleration.y = -.2f;
+        if (acceleration.y < -.02) {
+            acceleration.y = -.02f;
         }
         velocity.y += acceleration.y;
-        if (velocity.y > .08) {
-            velocity.y = .08f;
-        }
         prevDirection = Direction.UP;
     }
 
     private void downKey() {
-        //acceleration.y += .0015;
-        acceleration.y += .015;
-        if (acceleration.y < .2) {
-            acceleration.y = .2f;
+        acceleration.y += .0015;
+        if (acceleration.y > .02) {
+            acceleration.y = .02f;
         }
         velocity.y += acceleration.y;
-        if (velocity.y > .02) {
-            velocity.y = .08f;
-        }
         prevDirection = Direction.DOWN;
     }
 

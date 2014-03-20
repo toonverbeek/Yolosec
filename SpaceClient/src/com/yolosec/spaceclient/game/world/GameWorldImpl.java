@@ -17,8 +17,10 @@ import com.yolosec.spaceclient.gui.Camera;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import org.newdawn.slick.AngelCodeFont;
 
 /**
  *
@@ -31,6 +33,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     private Spaceship player;
     private Camera camera;
     private List<GameObjectImpl> gameObjects = new ArrayList<>();
+    private HashMap<String, AngelCodeFont> fontSet;
 
     public GameWorldImpl(Spaceship player) throws SlickException {
         gameObjectDAO = new GameObjectDAOImpl();
@@ -69,15 +72,21 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 
         g.drawString("Amount of gameObjects " +gameObjects.size(), 50, 250);
         player.render(g, true);
+        AngelCodeFont resourceFont = fontSet.get("resource_font");
         for (GameObject gObject : gameObjects) {
             if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
+                ast.setResourceFont(resourceFont);
                 ast.render(g, false);
             } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.render(g, false);
             }
         }
+    }
+
+    public void setFontSet(HashMap<String, AngelCodeFont> fontSet) {
+        this.fontSet = fontSet;
     }
 
 }
