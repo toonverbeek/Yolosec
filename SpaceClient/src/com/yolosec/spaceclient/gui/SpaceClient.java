@@ -32,8 +32,8 @@ public class SpaceClient extends BasicGame {
         gc.setTargetFrameRate(FPS);
         gc.setFullscreen(true);
         user = new User(new Spaceship(10, 10), "Space_Invader1337");
-        Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
         gameWorld = new GameWorldImpl(user.getSpaceship());
+
     }
 
     @Override

@@ -48,7 +48,6 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
         for (GameObjectImpl gObject : gameObjects) {
             if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
-                System.out.println("Got asteroid from gameobjectlist");
                 ast.updateAsteroid(gc, player);
                 if (ast.isIntersecting(player)) {
                     //if asteroid is being mined, start sending updates to server 
@@ -68,6 +67,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 //        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
 //        camera.translate(g, player.getSpaceship());
 
+        g.drawString("Amount of gameObjects " +gameObjects.size(), 50, 250);
         player.render(g, true);
         for (GameObject gObject : gameObjects) {
             if (gObject instanceof Asteroid) {

@@ -6,6 +6,8 @@
 package com.yolosec.spaceclient.dao;
 
 import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.LoginComm;
+import com.ptsesd.groepb.shared.Serializer;
 import com.yolosec.spaceclient.dao.interfaces.GameObjectDAO;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -79,9 +81,71 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
-        if (objects != null && objects.size() > 0) {
-            gameObjects = objects;
+        for(GameObjectImpl goi : objects){
+            if(goi instanceof Asteroid) {
+                Asteroid ast = (Asteroid) goi;
+                Asteroid existing = asteroidExists(ast);
+                if(existing == null){
+                    gameObjects.add(goi);
+                } else {
+                    //update resource amount of asteroid
+                    //check of resource amount has changed
+                    if(ast.getResourceAmount() != existing.getResourceAmount()){
+                        existing.setResourceAmount(ast.getResourceAmount());
+                    }
+                }
+            }
+            
+            if(goi instanceof Spaceship){
+                Spaceship spa = (Spaceship)goi;
+                Spaceship existing = spaceshipExists(spa);
+                if(existing == null){
+                    gameObjects.add(goi);
+                } else {
+                    //update position from spaceship
+                    existing.setPosition(spa.getPosition());
+                }
+            }
         }
+    }
+    
+    /***
+     * Checks if a spaceship already exists in the local gameclient gameobject list
+     * @param ship the object to check
+     * @return an instance of the ship if it exists, null otherwise. 
+     */
+    private Spaceship spaceshipExists(Spaceship ship){
+        int id = ship.getId();   
+        for (GameObjectImpl goimpl : gameObjects) {
+            if (goimpl instanceof Spaceship) {
+                Spaceship compareShip = (Spaceship) goimpl;
+                if (compareShip.getId() == id) {
+                    return compareShip;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+    /***
+     * Checks if an asteroid exists in the local gameclient gameobject list
+     * @param ast the asteroid to check for
+     * @return an instance of the asteroid if it exists, null otherwise.
+     */
+    private Asteroid asteroidExists(Asteroid ast) {
+        float astX = ast.getX();
+        float astY = ast.getY();
+
+        for (GameObjectImpl goimpl : gameObjects) {
+            if (goimpl instanceof Asteroid) {
+                Asteroid compareAst = (Asteroid) goimpl;
+                if (compareAst.getX() == astX && compareAst.getY() == astY) {
+                    return compareAst;
+                }
+            }
+        }
+        return null;
     }
 
     @Override

@@ -36,6 +36,10 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         return y;
     }
 
+    public void setResourceAmount(int resourceAmount) {
+        this.resourceAmount = resourceAmount;
+    }
+
     public int getResourceAmount() {
         return resourceAmount;
     }

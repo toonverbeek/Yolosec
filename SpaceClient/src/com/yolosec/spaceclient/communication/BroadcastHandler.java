@@ -6,6 +6,7 @@
 package com.yolosec.spaceclient.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
@@ -19,6 +20,8 @@ import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,7 +30,7 @@ import com.yolosec.spaceclient.gui.SpaceClient;
 public class BroadcastHandler implements Runnable {
 
     private DrawCallback callBack;
-   // private Communicator communicator;
+    // private Communicator communicator;
     private List<GameObjectImpl> retrievedObjectList;
     private static final Gson gson = new Gson();
 
@@ -39,9 +42,17 @@ public class BroadcastHandler implements Runnable {
     public void run() {
         //communicator = new Communicator();
         //communicator.initiate();
-        login("asdf2", "asdf2");
-        while (true) {
-            handleData();
+        login("asdf", "asdf");
+        try {
+            JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
+            reader.setLenient(true);
+
+            while (true) {
+                System.out.println("in while loop");
+                handleData(reader);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -55,7 +66,7 @@ public class BroadcastHandler implements Runnable {
         String json = "";
         if (gObject instanceof Spaceship) {
             Spaceship s = (Spaceship) gObject;
-            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getPosition().x, s.getPosition().y, 1, s.getId(), s.getResources());
+            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getId(),s.getPosition().x, s.getPosition().y, 1, s.getResources());
         } else if (gObject instanceof Asteroid) {
             Asteroid asteroid = (Asteroid) gObject;
             json = Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), (int) asteroid.getX(), (int) asteroid.getY());
@@ -65,14 +76,30 @@ public class BroadcastHandler implements Runnable {
         }
     }
 
-    private void handleData() {
+    private void handleData(JsonReader reader) throws Exception {
         try {
-            retrievedObjectList = Communicator.retrieveData();
+            System.out.println("Getting new data from Communicator");
+            List<GameObjectImpl> previous;
             if (retrievedObjectList != null) {
+                previous = retrievedObjectList;
+            } else {
+                previous = new ArrayList<>();
+            }
+            List<GameObjectImpl> ret = new ArrayList<>();
+            retrievedObjectList = Communicator.retrieveData(reader);
+            if (retrievedObjectList != null) {
+                for (GameObjectImpl gameObjectImpl : retrievedObjectList) {
+                    ret.add(gameObjectImpl);
+                }
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
-                callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
+                callBack.drawAfterDataReadFromSocketFromServer(ret);
+            } else if (retrievedObjectList.isEmpty()) {
+                System.out.println("got an empty list");
+            } else {
+                System.out.println("Objects retrieved was NULL");
             }
         } catch (IOException ex) {
+            System.out.println("crash, yo");
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }
 
