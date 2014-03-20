@@ -13,8 +13,8 @@ public class LoginComm extends GamePacket {
 
     private String username, password;
 
-    public LoginComm(String header, String username, String password) {
-        super(header);
+    public LoginComm(String header, Integer id, String username, String password) {
+        super(header, id);
         this.username = username;
         this.password = password;
     }

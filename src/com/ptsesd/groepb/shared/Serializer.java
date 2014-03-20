@@ -25,9 +25,15 @@ import java.util.Map;
 public class Serializer {
 
     private static final Gson gson = new Gson();
+    private static int nextIdInt = 0;
 
     public static String serializeLogin(LoginComm lc) {
         return gson.toJson(lc, LoginComm.class);
+    }
+    
+    public synchronized static int getNextGamePacketId(){
+        nextIdInt++;
+        return nextIdInt;
     }
 
     public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
@@ -48,13 +54,14 @@ public class Serializer {
                 List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                 int[] resources = convertIntegers(resourcesList);
                 
-                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
+                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources);
                 gameobject = scomm;
             } else if (header.equals(AsteroidComm.class.getSimpleName())) {
                 //deserialize asteroidcomm
                 int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
                 float x = ((Double) map.get("x")).floatValue();
                 float y = ((Double) map.get("y")).floatValue();
+                int id = ((Double) map.get("id")).intValue();
                 AsteroidType atype = AsteroidType.common;
                 String type = (String) map.get("type");
                 if (type.equals(AsteroidType.magic.toString())) {
@@ -62,12 +69,13 @@ public class Serializer {
                 } else if (type.equals(AsteroidType.rare.toString())) {
                     atype = AsteroidType.rare;
                 }
-                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resourceAmount, x, y);
+                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), id, atype, resourceAmount, x, y);
                 gameobject = ac;
             } else if (header.equals(LoginComm.class.getSimpleName())) {
                 String username = (String) map.get("username");
                 String password = (String) map.get("password");
-                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
+                int id = ((Double) map.get("id")).intValue();
+                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), id, username, password);
                 gameobject = lcomm;
             }
 
@@ -104,20 +112,22 @@ public class Serializer {
                     int d = ((Double) map.get("d")).intValue();
                     List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                     int[] resources = convertIntegers(resourcesList);
-                    SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), xx, yy, d, id, resources);
+                    SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources);
                     gameobjects.add(scomm);
                 } else if (header.equals(AsteroidComm.class.getSimpleName())) {
                     //deserialize asteroidcomm
                     int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
+                    int id = ((Double) map.get("id")).intValue();
                     float x = ((Double) map.get("x")).floatValue();
                     float y = ((Double) map.get("y")).floatValue();
                     AsteroidType type = (AsteroidType) map.get("type");
-                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
+                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), id, type, resourceAmount, x, y);
                     gameobjects.add(ac);
                 } else if (header.equals(LoginComm.class.getSimpleName())) {
                     String username = (String) map.get("username");
                     String password = (String) map.get("password");
-                    LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
+                    int id = ((Double) map.get("id")).intValue();
+                    LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), id, username, password);
                     gameobjects.add(lcomm);
                 }
             }
@@ -125,15 +135,23 @@ public class Serializer {
         return gameobjects;
     }
 
-    public static String serializeSpaceShipAsGamePacket(String header, float x, float y, int direction, int id, int[] resources) {
-        SpaceshipComm sComm = new SpaceshipComm(header, x, y, direction, id, resources);
+    public static String serializeSpaceShipAsGamePacket(String header, Integer id, float x, float y, int direction, int[] resources) {
+        SpaceshipComm sComm = new SpaceshipComm(header, id, x, y, direction, resources);
         String json = gson.toJson(sComm, SpaceshipComm.class);
         return json;
     }
 
-    public static String serializeAsteroidAsGamePacket(String header, AsteroidType type, int resourceAmount, int x, int y) {
-        AsteroidComm aCom = new AsteroidComm(header, type, resourceAmount, x, y);
+    public static String serializeAsteroidAsGamePacket(String header, Integer id, AsteroidType type, int resourceAmount, int x, int y) {
+        AsteroidComm aCom = new AsteroidComm(header, id, type, resourceAmount, x, y);
         String json = gson.toJson(aCom, AsteroidComm.class);
+        System.out.println("Json : " + json);
+        return json;
+    }
+    
+    public static String serializeAsteroidAsGamePackets(List<AsteroidComm> asteroids) {
+        Type com = new TypeToken<List<GamePacket>>() {}.getType();
+        String json = gson.toJson(asteroids, com);
+        System.out.println("Json : " + json);
         return json;
     }
     

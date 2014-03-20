@@ -12,25 +12,19 @@ package com.ptsesd.groepb.shared;;
 public class SpaceshipComm extends GamePacket {
 
     private float x, y;
-    private int d, id;
+    private int d;
     private final int[] resources;
 
     public int[] getResources() {
         return resources;
     }
 
-    public SpaceshipComm(String header, float x, float y, int direction, int id, int[] resources) {
-        super(header);
+    public SpaceshipComm(String header, Integer id, float x, float y, int direction, int[] resources) {
+        super(header, id);
         this.resources = resources;
         this.x = x;
         this.y = y;
         this.d = direction;
-        this.id = id;
-
-    }
-
-    public int getId() {
-        return id;
     }
 
     public float getX() {
