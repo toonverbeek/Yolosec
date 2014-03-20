@@ -48,7 +48,6 @@ public class BroadcastHandler implements Runnable {
             reader.setLenient(true);
 
             while (true) {
-                System.out.println("in while loop");
                 handleData(reader);
             }
         } catch (Exception ex) {
@@ -78,7 +77,6 @@ public class BroadcastHandler implements Runnable {
 
     private void handleData(JsonReader reader) throws Exception {
         try {
-            System.out.println("Getting new data from Communicator");
             List<GameObjectImpl> previous;
             if (retrievedObjectList != null) {
                 previous = retrievedObjectList;
@@ -93,11 +91,7 @@ public class BroadcastHandler implements Runnable {
                 }
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
                 callBack.drawAfterDataReadFromSocketFromServer(ret);
-            } else if (retrievedObjectList.isEmpty()) {
-                System.out.println("got an empty list");
-            } else {
-                System.out.println("Objects retrieved was NULL");
-            }
+            } 
         } catch (IOException ex) {
             System.out.println("crash, yo");
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);

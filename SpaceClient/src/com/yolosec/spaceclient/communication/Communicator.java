@@ -24,7 +24,6 @@ import java.util.List;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import java.io.InputStream;
 
 /**
  *
@@ -39,7 +38,6 @@ public class Communicator {
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "145.93.60.83";
-   
 
     public static void sendData(String json) {
         writer.println(json);
@@ -50,30 +48,19 @@ public class Communicator {
     }
 
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
-        System.out.println("In retrieveData()");
-        System.out.println("Got inputstream, deserializing next");
-
         if (jreader.hasNext()) {
-            System.out.println("jreader has next");
             if (jreader.peek() == JsonToken.BEGIN_ARRAY) {
-                System.out.println("Got new list of stuff");
                 List<GamePacket> packets = Serializer.deserializePackets(jreader);
                 for (GamePacket gp : packets) {
-                    System.out.println("Got a gamepacket part of fa list:  " + gp.getHeader());
                     if (gp instanceof SpaceshipComm) {
                         SpaceshipComm sc = (SpaceshipComm) gp;
                         gameObjects.add(new Spaceship(sc));
-                        System.out.println("Got new spaceshipComm from list" + sc.getResources());
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
-                        System.out.println("Got new AsteroidComm from list: " + ac.toString());
                         gameObjects.add(new Asteroid(ac));
                     }
                 }
             } else {
-
-                System.out.println("Got got single gamepacket");
-
                 GamePacket gp = Serializer.getSingleGamePacket(jreader);
                 if (gp instanceof SpaceshipComm) {
                     SpaceshipComm sc = (SpaceshipComm) gp;
@@ -82,12 +69,10 @@ public class Communicator {
                     if (gameObjects.contains(spaceship)) {
                         gameObjects.add(spaceship);
                     }
-                    System.out.println("Got new spaceshipComm as single" + sc.getResources());
 
                 } else if (gp instanceof AsteroidComm) {
                     AsteroidComm ac = (AsteroidComm) gp;
                     Asteroid a = new Asteroid(ac);
-                    System.out.println("Got new AsteroidComm as single: " + ac.toString());
                     gameObjects.add(a);
                 }
             }
@@ -97,7 +82,6 @@ public class Communicator {
     }
 
     public static void login(String json) {
-        System.out.println("Logging in:\n " + json);
         writer.println(json);
     }
 
