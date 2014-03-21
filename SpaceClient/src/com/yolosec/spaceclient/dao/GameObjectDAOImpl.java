@@ -95,7 +95,6 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     }
                 }
             }
-            
             if(goi instanceof Spaceship){
                 Spaceship spa = (Spaceship)goi;
                 Spaceship existing = spaceshipExists(spa);

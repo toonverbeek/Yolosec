@@ -50,6 +50,8 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         this.width = width;
         this.height = height;
         position = new Vector2f(100, 100);
+        velocity = new Vector2f(0, 0);
+        acceleration = new Vector2f(0, 0);
         init();
     }
 
@@ -75,8 +77,6 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         polygonPoints[7] = 10;
         polygon = new Polygon(polygonPoints);
         this.boundingRectangle = new Rectangle((int) position.x, (int) position.y, width, height);
-        velocity = new Vector2f(0, 0);
-        acceleration = new Vector2f(0, 0);
         prevDirection = Direction.NEUTRAL;
     }
 

@@ -67,8 +67,8 @@ public class Communicator {
                     Spaceship spaceship = new Spaceship(sc);
 
                     if (gameObjects.contains(spaceship)) {
-                        gameObjects.add(spaceship);
                     }
+                    gameObjects.add(spaceship);
 
                 } else if (gp instanceof AsteroidComm) {
                     AsteroidComm ac = (AsteroidComm) gp;
@@ -82,7 +82,7 @@ public class Communicator {
     }
 
     public static void login(String json) {
-        System.out.println("login: "  + json);
+        System.out.println("login: " + json);
         writer.println(json);
     }
 

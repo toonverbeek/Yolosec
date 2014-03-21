@@ -42,7 +42,7 @@ public class BroadcastHandler implements Runnable {
     public void run() {
         //communicator = new Communicator();
         //communicator.initiate();
-        login("asdf", "asdf");
+        login("asdf2", "asdf2");
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
             reader.setLenient(true);
