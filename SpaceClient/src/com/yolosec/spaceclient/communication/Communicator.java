@@ -48,6 +48,7 @@ public class Communicator {
     }
 
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
+        gameObjects.clear();
         if (jreader.hasNext()) {
             if (jreader.peek() == JsonToken.BEGIN_ARRAY) {
                 List<GamePacket> packets = Serializer.deserializePackets(jreader);
@@ -67,7 +68,6 @@ public class Communicator {
                     Spaceship spaceship = new Spaceship(sc);
 
                     if (gameObjects.contains(spaceship)) {
-                        System.out.println("list of objects contains this spaceship");
                     }
                     gameObjects.add(spaceship); //always add, for now
 

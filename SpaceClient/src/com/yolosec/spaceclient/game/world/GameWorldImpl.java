@@ -59,7 +59,6 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 }
             } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
-                System.out.println(spaceship.getPosition().x +  "  "  + spaceship.getPosition().y);
                 spaceship.update(gc);
             }
         }

@@ -77,20 +77,10 @@ public class BroadcastHandler implements Runnable {
 
     private void handleData(JsonReader reader) throws Exception {
         try {
-            List<GameObjectImpl> previous;
-            if (retrievedObjectList != null) {
-                previous = retrievedObjectList;
-            } else {
-                previous = new ArrayList<>();
-            }
-            List<GameObjectImpl> ret = new ArrayList<>();
             retrievedObjectList = Communicator.retrieveData(reader);
             if (retrievedObjectList != null) {
-                for (GameObjectImpl gameObjectImpl : retrievedObjectList) {
-                    ret.add(gameObjectImpl);
-                }
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
-                callBack.drawAfterDataReadFromSocketFromServer(ret);
+                callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             } 
         } catch (IOException ex) {
             System.out.println("crash, yo");
