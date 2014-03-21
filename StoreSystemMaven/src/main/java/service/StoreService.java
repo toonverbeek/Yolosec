@@ -12,7 +12,9 @@ import domain.Account;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
@@ -31,6 +33,7 @@ public class StoreService implements Serializable {
     private ItemDAO itemDAO;
 
     private Account loggedInAccount;
+    Map<String, String> map = new HashMap<String, String>();
 
     public StoreService() {
     }
@@ -39,8 +42,8 @@ public class StoreService implements Serializable {
     private void initItems() {
 
         List<Resource> item1Resources = new ArrayList<>();
-        item1Resources.add(new Resource("Mineral", 100));
-        item1Resources.add(new Resource("Iron", 50));
+        item1Resources.add(new Resource("Common", 100));
+        item1Resources.add(new Resource("Magic", 50));
         List<Stat> item1Stats = new ArrayList<>();
         item1Stats.add(new Stat("Stamina", 10));
 
@@ -51,10 +54,18 @@ public class StoreService implements Serializable {
         Item item3 = new Item("Item 3", lorem, item1Resources, item1Stats, false, "");
         Item item4 = new Item("Item 4", lorem, item1Resources, item1Stats, false, "");
 
-        this.itemDAO.create(item1);
-        this.itemDAO.create(item2);
-        this.itemDAO.create(item3);
-        this.itemDAO.create(item4);
+//        this.itemDAO.create(item1);
+//        this.itemDAO.create(item2);
+//        this.itemDAO.create(item3);
+//        this.itemDAO.create(item4);
+    }
+    
+    public void addPayment(String guid, String paymentID){
+        this.map.put(guid, paymentID);
+    }
+    
+    public String getPayment(String guid){
+        return this.map.get(guid);
     }
 
     /**
@@ -165,9 +176,10 @@ public class StoreService implements Serializable {
 
     public boolean registerUser(String username, String password1, String password2) {
         List<Resource> item1Resources = new ArrayList<>();
-        item1Resources.add(new Resource("Mineral", 200));
-        item1Resources.add(new Resource("Iron", 100));
-
+        item1Resources.add(new Resource("Common", 100));
+        item1Resources.add(new Resource("Magic", 100));
+        item1Resources.add(new Resource("Rare", 100));
+        item1Resources.add(new Resource("SpaceCoins", 100));
         Account user = new Account(username, password1, new Spaceship(new ArrayList<Item>()), item1Resources);
         return createUser(user);
     }
@@ -235,5 +247,9 @@ public class StoreService implements Serializable {
             context.addMessage(null, new FacesMessage("Onvoldoende resources."));
         }
 
+    }
+    public void addResourceToLoggedInUser(Resource resource) {
+        this.loggedInAccount.editResource("SpaceCoins", resource.getAmount());
+        userDAO.edit(loggedInAccount);
     }
 }

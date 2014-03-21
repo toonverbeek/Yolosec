@@ -24,13 +24,13 @@
                     <p:toolbarGroup align="right">  
                         <h:form id="resources">
                             <ui:repeat var="res" value="#{storeBean.currentUserResources}" >
-                                <p:outputLabel value=" | #{res.type} : " />
-                                <p:outputLabel value="#{res.amount}" />
+                                <p:outputLabel value=" | #{res.type} : "  styleClass="resources"/>
+                                <p:outputLabel value="#{res.amount}"  styleClass="resources"/>
                             </ui:repeat>
                         </h:form>
-                        <p:outputLabel value="|  " />
+                        <p:outputLabel value="|  " styleClass="resources" />
 
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                        <p:button outcome="loginContent" value="Logout" icon="ui-icon-power" />  
                     </p:toolbarGroup>  
                 </p:toolbarGroup>  
             </p:toolbar>  
@@ -44,7 +44,7 @@
                 <p:outputPanel id="customPanel">
                     <h:outputLabel value="Select amount space coins"/>
 
-                    <p:selectOneRadio id="customRadio" layout="custom">  
+                    <p:selectOneRadio value="#{buyBean.selectedAmount}" id="customRadio" layout="custom">  
                         <f:selectItem itemLabel="1 SpaceCoin" itemValue="1" />  
                         <f:selectItem itemLabel="10 SpaceCoin" itemValue="2" />  
                         <f:selectItem itemLabel="100 SpaceCoin" itemValue="3" />  
@@ -72,7 +72,7 @@
 
                     </h:panelGrid>  
                 </p:outputPanel>  
-                <p:commandButton value="Buy with PayPal" action="#{buyBean.buySpaceCoins()}"/>
+                <p:commandButton value="Buy with PayPal" update="@form" action="#{buyBean.buySpaceCoins()}"/>
             </p:panel> 
         </h:form>
     </ui:define>

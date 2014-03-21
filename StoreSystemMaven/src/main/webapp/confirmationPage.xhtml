@@ -1,4 +1,4 @@
-<ui:composition template="templates/loginTemplate.xhtml"
+<ui:composition template="templates/storeTemplate.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -24,29 +24,37 @@
                     <p:toolbarGroup align="right">  
                         <h:form id="resources">
                             <ui:repeat var="res" value="#{storeBean.currentUserResources}" >
-                                <p:outputLabel value=" | #{res.type} : " />
-                                <p:outputLabel value="#{res.amount}" />
+                                <p:outputLabel value=" | #{res.type} : "  styleClass="resources"/>
+                                <p:outputLabel value="#{res.amount}"  styleClass="resources"/>
                             </ui:repeat>
                         </h:form>
-                        <p:outputLabel value="|  " />
+                        <p:outputLabel value="|  " styleClass="resources" />
 
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-power" />  
+                        <p:button outcome="loginContent" value="Logout" icon="ui-icon-power" />  
                     </p:toolbarGroup>  
                 </p:toolbarGroup>  
             </p:toolbar>  
         </h:form>
     </ui:define>
 
-    <ui:define name="loginform">
-        <div id="loginformcontent">
-            <h:form>
-                <p:panel id="panel" header="Bevestiging" >  
-                    <p:messages id="messages" autoUpdate="true"/>  
-                    <h:panelGrid columns="3">  
-                        <h:outputLabel for="username" value="Content" />  
-                       </h:panelGrid> 
-                </p:panel> 
-            </h:form>
-        </div>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="guid" value="#{confirmationBean.guid}"></f:viewParam>
+        </f:metadata>
+        <h:form>
+            <p:panel id="panel" header="Confirmation" >
+                The SpaceCoins are successfully added to your account. <br/>
+                This is an overview of your order: <br/>
+                <p:outputLabel value="Name: #{confirmationBean.itemname}"/> <br/>
+                <p:outputLabel value="Amount: #{confirmationBean.amount}"/> <br/>
+                <p:outputLabel value="Total Price: #{confirmationBean.price}"/><br/>
+                <p:button outcome="storeContent" value="Click this button to go back to the store"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="leftsection">
+        <p:panel header="Filters" >  
+        </p:panel>  
     </ui:define>
 </ui:composition>

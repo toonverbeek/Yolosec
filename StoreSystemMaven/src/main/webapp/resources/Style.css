@@ -25,9 +25,12 @@ body,html {
 .toolbar {
     height: 50px;
 }
+.resources{
+    font-size: 10px;
+}
 
 .buttons {
-    margin-left: 20%;
+    margin-left: 18%;
 }
 
 #contentwrapper {
