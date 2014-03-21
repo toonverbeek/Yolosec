@@ -34,9 +34,7 @@ public class SpaceClient extends BasicGame {
         gc.setFullscreen(true);
         user = new User(new Spaceship(10, 10), "Space_Invader1337");
         gameWorld = new GameWorldImpl(user.getSpaceship());
-
         //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
-        gameWorld = new GameWorldImpl(user.getSpaceship());
         font = new AngelCodeFont("font.fnt", "font_0.png");
         AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
         fontSet.put("resource_font", resourceFont);

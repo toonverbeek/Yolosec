@@ -82,6 +82,7 @@ public class Communicator {
     }
 
     public static void login(String json) {
+        System.out.println("login: "  + json);
         writer.println(json);
     }
 

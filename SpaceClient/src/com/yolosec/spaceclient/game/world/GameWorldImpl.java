@@ -36,6 +36,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     private HashMap<String, AngelCodeFont> fontSet;
 
     public GameWorldImpl(Spaceship player) throws SlickException {
+        System.out.println("Constructin gameworldimpl");
         gameObjectDAO = new GameObjectDAOImpl();
         tileMap = new TiledMap("/map.tmx");
         this.player = player;
