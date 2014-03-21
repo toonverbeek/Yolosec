@@ -65,7 +65,7 @@ public class BroadcastHandler implements Runnable {
         String json = "";
         if (gObject instanceof Spaceship) {
             Spaceship s = (Spaceship) gObject;
-            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getId(),s.getPosition().x, s.getPosition().y, 1, s.getResources());
+            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getId(),s.getPosition().x, s.getPosition().y, 1, s.getResources(), s.isMining());
         } else if (gObject instanceof Asteroid) {
             Asteroid asteroid = (Asteroid) gObject;
             json = Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), (int) asteroid.getX(), (int) asteroid.getY());

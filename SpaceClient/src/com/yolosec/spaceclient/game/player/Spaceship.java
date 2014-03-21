@@ -212,7 +212,6 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
     public boolean mine(AsteroidType type, float asteroidX, float asteroidY) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
-            System.out.println("Mining!");
             mining = true;
             miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
             mininglasers2 = new Vector2f(asteroidX, asteroidY);
@@ -223,10 +222,10 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
             } else if (type == AsteroidType.rare) {
                 this.rareResources++;
             }
-            return true;
+            return mining;
         }
         mining = false;
-        return false;
+        return mining;
     }
 
     public void stopMining() {
