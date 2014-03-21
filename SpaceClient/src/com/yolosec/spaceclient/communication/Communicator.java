@@ -67,8 +67,9 @@ public class Communicator {
                     Spaceship spaceship = new Spaceship(sc);
 
                     if (gameObjects.contains(spaceship)) {
+                        System.out.println("list of objects contains this spaceship");
                     }
-                    gameObjects.add(spaceship);
+                    gameObjects.add(spaceship); //always add, for now
 
                 } else if (gp instanceof AsteroidComm) {
                     AsteroidComm ac = (AsteroidComm) gp;

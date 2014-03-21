@@ -28,8 +28,8 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     private Polygon polygon;
     private Vector2f position, relPosition;
     private float speed = 10;
-    private Vector2f velocity;
-    private Vector2f acceleration;
+    private Vector2f velocity = new Vector2f(0, 0);
+    private Vector2f acceleration = new Vector2f(0, 0);
     private float horizontalAcceleration = 0;
     private Direction prevDirection;
     private float resistance = .001f;
@@ -50,8 +50,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         this.width = width;
         this.height = height;
         position = new Vector2f(100, 100);
-        velocity = new Vector2f(0, 0);
-        acceleration = new Vector2f(0, 0);
+
         init();
     }
 

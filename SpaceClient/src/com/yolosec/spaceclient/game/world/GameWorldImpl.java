@@ -55,7 +55,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 ast.updateAsteroid(gc, player);
                 if (ast.isIntersecting(player)) {
                     //if asteroid is being mined, start sending updates to server 
-                    gameObjectDAO.sendData(ast);
+                    //gameObjectDAO.sendData(ast);
                 }
             } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
