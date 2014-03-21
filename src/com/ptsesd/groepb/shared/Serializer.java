@@ -73,9 +73,7 @@ public class Serializer {
                 } else if (type.equals(AsteroidType.rare.toString())) {
                     atype = AsteroidType.rare;
                 }
-                List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
-                    int[] resources = convertIntegers(resourcesList);
-                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resources, x, y);
+                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resourceAmount, x, y);
                 gameobject = ac;
             } else if (header.equals(LoginComm.class.getSimpleName())) {
                 String username = (String) map.get("username");
@@ -120,12 +118,11 @@ public class Serializer {
                     gameobjects.add(scomm);
                 } else if (header.equals(AsteroidComm.class.getSimpleName())) {
                     //deserialize asteroidcomm
+                    int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
                     float x = ((Double) map.get("x")).floatValue();
                     float y = ((Double) map.get("y")).floatValue();
                     AsteroidType type = (AsteroidType) map.get("type");
-                    List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
-                    int[] resources = convertIntegers(resourcesList);
-                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resources, x, y);
+                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), type, resourceAmount, x, y);
                     gameobjects.add(ac);
                 } else if (header.equals(LoginComm.class.getSimpleName())) {
                     String username = (String) map.get("username");
@@ -144,7 +141,7 @@ public class Serializer {
         return json;
     }
 
-    public static String serializeAsteroidAsGamePacket(String header, AsteroidType type, int[] resourceAmount, int x, int y) {
+    public static String serializeAsteroidAsGamePacket(String header, AsteroidType type, int resourceAmount, int x, int y) {
         AsteroidComm aCom = new AsteroidComm(header, type, resourceAmount, x, y);
         String json = gson.toJson(aCom, AsteroidComm.class);
         System.out.println("Json : " + json);

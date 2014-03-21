@@ -12,10 +12,10 @@ package com.ptsesd.groepb.shared;
 public class AsteroidComm extends GamePacket {
 
     private AsteroidType type;
-    private int[] resourceAmount;
+    private int resourceAmount;
     private float x, y;
 
-    public AsteroidComm(String header, AsteroidType type, int[] resourceAmount, float x, float y) {
+    public AsteroidComm(String header, AsteroidType type, int resourceAmount, float x, float y) {
         super(header);
         this.type = type;
         this.resourceAmount = resourceAmount;
@@ -28,11 +28,11 @@ public class AsteroidComm extends GamePacket {
         return type;
     }
 
-    public int[] getResourceAmount() {
+    public int getResourceAmount() {
         return resourceAmount;
     }
 
-    public void setResourceAmount(int[] resourceAmount) {
+    public void setResourceAmount(int resourceAmount) {
         this.resourceAmount = resourceAmount;
     }
 
