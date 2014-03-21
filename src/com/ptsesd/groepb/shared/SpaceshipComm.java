@@ -13,7 +13,7 @@ public class SpaceshipComm extends GamePacket {
 
     private float x, y;
     private int d, id;
-    private final int[] resources;
+    private int[] resources;
     private boolean mining;
     public int[] getResources() {
         return resources;
@@ -27,6 +27,10 @@ public class SpaceshipComm extends GamePacket {
         this.d = direction;
         this.id = id;
         this.mining = mining;
+    }
+    
+    public void setResources(int[] resources){
+        this.resources = resources;
     }
 
     public int getD() {

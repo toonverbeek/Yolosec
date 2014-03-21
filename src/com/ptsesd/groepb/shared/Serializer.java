@@ -144,7 +144,6 @@ public class Serializer {
     public static String serializeAsteroidAsGamePacket(String header, AsteroidType type, int resourceAmount, int x, int y) {
         AsteroidComm aCom = new AsteroidComm(header, type, resourceAmount, x, y);
         String json = gson.toJson(aCom, AsteroidComm.class);
-        System.out.println("Json : " + json);
         return json;
     }
 
@@ -152,7 +151,6 @@ public class Serializer {
         Type com = new TypeToken<List<GamePacket>>() {
         }.getType();
         String json = gson.toJson(asteroids, com);
-        System.out.println("Json : " + json);
         return json;
     }
 
