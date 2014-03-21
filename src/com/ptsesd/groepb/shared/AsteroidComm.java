@@ -23,6 +23,7 @@ public class AsteroidComm extends GamePacket {
         this.y = y;
     }
 
+
     public AsteroidType getType() {
         return type;
     }
@@ -30,8 +31,8 @@ public class AsteroidComm extends GamePacket {
     public int getResourceAmount() {
         return resourceAmount;
     }
-    
-    public void setResourceAmount(int resourceAmount){
+
+    public void setResourceAmount(int resourceAmount) {
         this.resourceAmount = resourceAmount;
     }
 

@@ -14,18 +14,27 @@ public class SpaceshipComm extends GamePacket {
     private float x, y;
     private int d, id;
     private final int[] resources;
-
+    private boolean mining;
     public int[] getResources() {
         return resources;
     }
 
-    public SpaceshipComm(String header, Integer id, float x, float y, int direction, int[] resources) {
+    public SpaceshipComm(String header, Integer id, float x, float y, int direction, int[] resources, boolean mining) {
         super(header);
         this.resources = resources;
         this.x = x;
         this.y = y;
         this.d = direction;
         this.id = id;
+        this.mining = mining;
+    }
+
+    public int getD() {
+        return d;
+    }
+
+    public boolean isMining() {
+        return mining;
     }
     
     public int getId(){

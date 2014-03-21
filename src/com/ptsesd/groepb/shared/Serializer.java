@@ -30,22 +30,22 @@ public class Serializer {
     public static String serializeLogin(LoginComm lc) {
         return gson.toJson(lc, LoginComm.class);
     }
-    
-    public synchronized static int getNextGamePacketId(){
+
+    public synchronized static int getNextGamePacketId() {
         nextIdInt++;
         return nextIdInt;
     }
-    
-    public synchronized static void setNextGamePacketId(int nextIdInt){
+
+    public synchronized static void setNextGamePacketId(int nextIdInt) {
         Serializer.nextIdInt = nextIdInt;
     }
 
     public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
         GamePacket gameobject = null;
         if (reader.hasNext()) {
-            
+
             Map map = gson.fromJson(reader, Map.class);
-            
+
             String header = (String) map.get("header");
             if (header.equals(SpaceshipComm.class.getSimpleName())) {
                 //desirialize spaceshipcomm
@@ -57,8 +57,9 @@ public class Serializer {
                 int d = ((Double) map.get("d")).intValue();
                 List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                 int[] resources = convertIntegers(resourcesList);
-                
-                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources);
+
+                boolean mining = (boolean) map.get("mining");
+                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources, mining);
                 gameobject = scomm;
             } else if (header.equals(AsteroidComm.class.getSimpleName())) {
                 //deserialize asteroidcomm
@@ -77,24 +78,22 @@ public class Serializer {
             } else if (header.equals(LoginComm.class.getSimpleName())) {
                 String username = (String) map.get("username");
                 String password = (String) map.get("password");
-                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(),  username, password);
+                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                 gameobject = lcomm;
             }
 
         }
         return gameobject;
     }
-    
-    public static int[] convertIntegers(List<Double> integers)
-{
-    int[] ret = new int[integers.size()];
-    
-    for (int i=0; i < ret.length; i++)
-    {
-        ret[i] = integers.get(i).intValue();
+
+    public static int[] convertIntegers(List<Double> integers) {
+        int[] ret = new int[integers.size()];
+
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = integers.get(i).intValue();
+        }
+        return ret;
     }
-    return ret;
-}
 
     public static List<GamePacket> deserializePackets(JsonReader reader) throws IOException {
         List<GamePacket> gameobjects = new ArrayList<>();
@@ -114,7 +113,8 @@ public class Serializer {
                     int d = ((Double) map.get("d")).intValue();
                     List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
                     int[] resources = convertIntegers(resourcesList);
-                    SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources);
+                    boolean mining = (boolean) map.get("mining");
+                    SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources, mining);
                     gameobjects.add(scomm);
                 } else if (header.equals(AsteroidComm.class.getSimpleName())) {
                     //deserialize asteroidcomm
@@ -135,8 +135,8 @@ public class Serializer {
         return gameobjects;
     }
 
-    public static String serializeSpaceShipAsGamePacket(String header, Integer id, float x, float y, int direction, int[] resources) {
-        SpaceshipComm sComm = new SpaceshipComm(header, id, x, y, direction, resources);
+    public static String serializeSpaceShipAsGamePacket(String header, Integer id, float x, float y, int direction, int[] resources, boolean mining) {
+        SpaceshipComm sComm = new SpaceshipComm(header, id, x, y, direction, resources, mining);
         String json = gson.toJson(sComm, SpaceshipComm.class);
         return json;
     }
@@ -147,16 +147,18 @@ public class Serializer {
         System.out.println("Json : " + json);
         return json;
     }
-    
+
     public static String serializeAsteroidAsGamePackets(List<AsteroidComm> asteroids) {
-        Type com = new TypeToken<List<GamePacket>>() {}.getType();
+        Type com = new TypeToken<List<GamePacket>>() {
+        }.getType();
         String json = gson.toJson(asteroids, com);
         System.out.println("Json : " + json);
         return json;
     }
-    
+
     public static String serializeSpaceShipAsGamePackets(List<SpaceshipComm> ships) {
-        Type com = new TypeToken<List<GamePacket>>() {}.getType();
+        Type com = new TypeToken<List<GamePacket>>() {
+        }.getType();
         String json = gson.toJson(ships, com);
         return json;
     }
