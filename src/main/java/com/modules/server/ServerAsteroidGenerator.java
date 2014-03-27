@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.Serializer;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ServerAsteroidGenerator {
     private int[][] map;
     private List<position> occupiedPositions;
     
-    private final int amountOfAsteroids = 25;
+    private final int amountOfAsteroids = 50;
     
     public ServerAsteroidGenerator(){
         map = new int[1600][1600];
@@ -149,7 +150,4 @@ public class ServerAsteroidGenerator {
     private int calculateSizeFromResource(int resourceAmount){
         return resourceAmount;
     }
-
-    
-    
 }

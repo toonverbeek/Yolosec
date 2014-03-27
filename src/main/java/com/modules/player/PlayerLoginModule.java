@@ -30,7 +30,7 @@ public class PlayerLoginModule {
     }
 
     public synchronized boolean login(LoginComm lcomm, ClientConnection connection) {
-        System.out.println("Login request");
+        System.out.println("---[LOGIN] Login request");
         boolean isLoggedIn = false;
         try {
             String checkPassword = DbConnector.identifyUser(lcomm.getUsername());
@@ -46,10 +46,10 @@ public class PlayerLoginModule {
                 isLoggedIn = true;
             }
 
-            System.out.println(String.format("Returned logged in is [%s]", isLoggedIn));
+            System.out.println(String.format("---[LOGIN] Returned logged user = %s || connected = %s", lcomm.getUsername(), isLoggedIn));
             //Always return the login request
         } catch (Exception ex) {
-            System.out.println(String.format("Excepting in PlayerLoginModule.login()", ex.getMessage()));
+            System.out.println(String.format("---[LOGIN] Excepting in PlayerLoginModule.login() - %s", ex.getMessage()));
         }
         return isLoggedIn;
     }

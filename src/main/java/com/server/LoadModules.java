@@ -1,7 +1,7 @@
 package com.server;
 
 import com.console.ConsoleApp;
-import com.modules.player.ClientBroadcastModule;
+import com.modules.thread.ClientBroadcastThread;
 
 /**
  *
@@ -13,7 +13,7 @@ public class LoadModules {
          
         DbConnector.readDataBase();
         //Create broadcast module
-        ClientBroadcastModule broadcastModule = new ClientBroadcastModule();
+        ClientBroadcastThread broadcastModule = new ClientBroadcastThread();
         Thread broadcastThread = new Thread(broadcastModule);
         
         //Create server module

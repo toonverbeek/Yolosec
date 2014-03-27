@@ -2,13 +2,12 @@ package com.server;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.ptsesd.groepb.shared.AsteroidComm;
@@ -26,7 +25,7 @@ public class ClientConnection implements Runnable {
     private final Socket socket;
     private InputStream inputStream;
     private final ConnectionServer server;
-    
+
     private final Gson gson;
 
     public Socket getSocket() {
@@ -37,7 +36,7 @@ public class ClientConnection implements Runnable {
         this.server = server;
         this.socket = socket;
         this.gson = new Gson();
-        
+
         try {
             inputStream = this.socket.getInputStream();
         } catch (IOException ex) {
@@ -62,44 +61,70 @@ public class ClientConnection implements Runnable {
                     this.readGson(reader);
                 }
             } catch (IOException ex) {
-                  System.out.println("Connection lost");
-                  break;
+                System.out.println("---[CONNECTION] Connection lost");
+                break;
             }
         }
+        server.updateSpaceshipToDatabase(this);
         server.logout(this);
     }
 
-    private void readGson(JsonReader reader) {
-        try {
-            List<GamePacket> deserializePackets = Serializer.deserializePackets(reader);
-            
-            for (GamePacket packet : deserializePackets) {
+    private void readGson(JsonReader reader) throws IOException {
+        if (reader.peek() == JsonToken.BEGIN_ARRAY) {
+            List<GamePacket> packets = Serializer.deserializePackets(reader);
+            for (GamePacket packet : packets) {
                 String header = packet.getHeader();
-            switch (header) {
+
+                switch (header) {
                     case "SpaceshipComm":
-                        SpaceshipComm comm = (SpaceshipComm)packet;
+                        SpaceshipComm comm = (SpaceshipComm) packet;
                         this.server.updateSpaceship(comm);
                         break;
 
                     case "LoginComm":
-                        LoginComm lcomm = (LoginComm)packet;
+                        LoginComm lcomm = (LoginComm) packet;
                         this.server.login(lcomm, this);
                         this.server.broadcastAsteroids();
                         break;
-                        
+
                     case "AsteroidComm":
-                        AsteroidComm acomm = (AsteroidComm)packet;
+                        AsteroidComm acomm = (AsteroidComm) packet;
                         this.server.recievedAsteroid(this, acomm);
                         this.server.broadcastAsteroids();
+                        //System.out.println("Aster" + acomm);
                         break;
 
                     default:
-                        System.out.println(String.format("Recieved Unknown Package - %s", packet.toString()));
-
+                        System.out.println(String.format("---[CONNECTION] Recieved Unknown Package - %s", packet.toString()));
                 }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            GamePacket packet = Serializer.getSingleGamePacket(reader);
+
+            String header = packet.getHeader();
+
+            switch (header) {
+                case "SpaceshipComm":
+                    SpaceshipComm comm = (SpaceshipComm) packet;
+                    this.server.updateSpaceship(comm);
+                    break;
+
+                case "LoginComm":
+                    LoginComm lcomm = (LoginComm) packet;
+                    this.server.login(lcomm, this);
+                    this.server.broadcastAsteroids();
+                    break;
+
+                case "AsteroidComm":
+                    AsteroidComm acomm = (AsteroidComm) packet;
+                    this.server.recievedAsteroid(this, acomm);
+                    this.server.broadcastAsteroids();
+                    //System.out.println("Aster" + acomm);
+                    break;
+
+                default:
+                    System.out.println(String.format("---[CONNECTION] Recieved Unknown Package - %s", packet.toString()));
+            }
         }
     }
 }
