@@ -37,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.56.209";
+    public static final String IP_ADDRESS = "145.93.58.157‏";
 
     public static void sendData(String json) {
         writer.println(json);
@@ -48,7 +48,7 @@ public class Communicator {
     }
 
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
-        gameObjects.clear();
+        gameObjects = new ArrayList<>();
         if (jreader.hasNext()) {
             if (jreader.peek() == JsonToken.BEGIN_ARRAY) {
                 List<GamePacket> packets = Serializer.deserializePackets(jreader);
@@ -91,6 +91,7 @@ public class Communicator {
         try {
             System.out.println("-----Initializing Comm Link to Server");
             socket = new Socket(IP_ADDRESS, 1337);
+            System.out.println("Connection successful");
             //socket = new Socket("localhost", 1337);
             writer = new PrintWriter(socket.getOutputStream(),
                     true);

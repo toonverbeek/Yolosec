@@ -5,8 +5,11 @@
  */
 package com.yolosec.spaceclient.game.player;
 
+import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.spaceclient.communication.Communicator;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import java.awt.Rectangle;
 import org.newdawn.slick.GameContainer;
@@ -209,13 +212,17 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         return this.boundingRectangle;
     }
 
-    public boolean mine(AsteroidType type, float asteroidX, float asteroidY) {
+    public boolean mine(AsteroidType type, float asteroidX, float asteroidY , int maxResourceAmount, int currentResourceAmount) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
             mining = true;
             miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
-            mininglasers2 = new Vector2f(asteroidX, asteroidY);
+            mininglasers2 = new Vector2f(asteroidX + (maxResourceAmount /2), asteroidY + (maxResourceAmount / 2));
+            System.out.println("is mining");
+            int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
-                this.commonResources++;
+                this.commonResources += .1;
+                 System.out.println("sending new resource amount: " + currentResourceAmount);
+        Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, (commonResources - oldCommonResources), (int)asteroidX, (int)asteroidY));
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
             } else if (type == AsteroidType.rare) {
@@ -223,6 +230,8 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
             }
             return mining;
         }
+       
+
         mining = false;
         return mining;
     }

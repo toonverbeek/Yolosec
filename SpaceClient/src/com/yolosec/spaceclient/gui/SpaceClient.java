@@ -29,15 +29,19 @@ public class SpaceClient extends BasicGame {
     }
 
     @Override
-    public void init(GameContainer gc) throws SlickException {
-        gc.setTargetFrameRate(FPS);
-        gc.setFullscreen(true);
-        user = new User(new Spaceship(10, 10), "Space_Invader1337");
-        gameWorld = new GameWorldImpl(user.getSpaceship());
-        //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
-        font = new AngelCodeFont("font.fnt", "font_0.png");
-        AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
-        fontSet.put("resource_font", resourceFont);
+    public void init(GameContainer gc)  {
+        try {
+            gc.setTargetFrameRate(FPS);
+            gc.setFullscreen(true);
+            user = new User(new Spaceship(10, 10), "Space_Invader1337");
+            gameWorld = new GameWorldImpl(user.getSpaceship());
+            //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
+            font = new AngelCodeFont("font.fnt", "font_0.png");
+            AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
+            fontSet.put("resource_font", resourceFont);
+        } catch (SlickException ex) {
+            //Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

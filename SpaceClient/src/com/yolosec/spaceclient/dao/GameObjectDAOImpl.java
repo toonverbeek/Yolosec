@@ -34,30 +34,10 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
     private BroadcastHandler broadcastHandler;
 
     public GameObjectDAOImpl() {
-        try {
-            Communicator.initiate();
-            broadcastHandler = new BroadcastHandler(this);
-
-            Thread th = new Thread(broadcastHandler);
-            th.start();
-
-            this.gameObjects = new ArrayList<>();
-            Random r = new Random();
-            for (int i = 0; i < 20; i++) {
-                AsteroidType t;
-                if (r.nextInt() % 2 == 0) {
-                    t = AsteroidType.common;
-                } else if (r.nextInt() % 3 == 0) {
-                    t = AsteroidType.magic;
-                } else {
-                    t = AsteroidType.rare;
-                }
-                Asteroid ast = new Asteroid(r.nextInt(1920), r.nextInt(1080), 100, t);
-                //this.gameObjects.add(ast);
-            }
-        } catch (SocketException ex) {
-            Logger.getLogger(GameObjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        broadcastHandler = new BroadcastHandler(this);
+        Thread th = new Thread(broadcastHandler);
+        th.start();
+        this.gameObjects = new ArrayList<>();
 
     }
 
@@ -81,24 +61,26 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
-        for(GameObjectImpl goi : objects){
-            if(goi instanceof Asteroid) {
+        for (GameObjectImpl goi : objects) {
+            if (goi instanceof Asteroid) {
                 Asteroid ast = (Asteroid) goi;
                 Asteroid existing = asteroidExists(ast);
-                if(existing == null){
+                if (existing == null) {
+                    System.out.println("adding new asteroid");
                     gameObjects.add(goi);
                 } else {
                     //update resource amount of asteroid
                     //check of resource amount has changed
-                    if(ast.getResourceAmount() != existing.getResourceAmount()){
+                    if (ast.getResourceAmount() != existing.getResourceAmount()) {
+                        System.out.println("got updated asteroid");
                         existing.setResourceAmount(ast.getResourceAmount());
                     }
                 }
             }
-            if(goi instanceof Spaceship){
-                Spaceship spa = (Spaceship)goi;
+            if (goi instanceof Spaceship) {
+                Spaceship spa = (Spaceship) goi;
                 Spaceship existing = spaceshipExists(spa);
-                if(existing == null){
+                if (existing == null) {
                     gameObjects.add(goi);
                 } else {
                     //update position from spaceship
@@ -107,14 +89,17 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
             }
         }
     }
-    
-    /***
-     * Checks if a spaceship already exists in the local gameclient gameobject list
+
+    /**
+     * *
+     * Checks if a spaceship already exists in the local gameclient gameobject
+     * list
+     *
      * @param ship the object to check
-     * @return an instance of the ship if it exists, null otherwise. 
+     * @return an instance of the ship if it exists, null otherwise.
      */
-    private Spaceship spaceshipExists(Spaceship ship){
-        int id = ship.getId();   
+    private Spaceship spaceshipExists(Spaceship ship) {
+        int id = ship.getId();
         for (GameObjectImpl goimpl : gameObjects) {
             if (goimpl instanceof Spaceship) {
                 Spaceship compareShip = (Spaceship) goimpl;
@@ -125,10 +110,11 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
         }
         return null;
     }
-    
-    
-    /***
+
+    /**
+     * *
      * Checks if an asteroid exists in the local gameclient gameobject list
+     *
      * @param ast the asteroid to check for
      * @return an instance of the asteroid if it exists, null otherwise.
      */
@@ -140,10 +126,12 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
             if (goimpl instanceof Asteroid) {
                 Asteroid compareAst = (Asteroid) goimpl;
                 if (compareAst.getX() == astX && compareAst.getY() == astY) {
+                    System.out.println("found an existing asteroid, updating");
                     return compareAst;
                 }
             }
         }
+        System.out.println("didn't find an existing asteroid, returning null");
         return null;
     }
 

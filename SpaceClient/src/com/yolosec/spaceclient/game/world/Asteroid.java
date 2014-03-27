@@ -7,6 +7,9 @@ package com.yolosec.spaceclient.game.world;
 
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.Serializer;
+import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.spaceclient.communication.Communicator;
 import java.awt.Rectangle;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -58,14 +61,14 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
     public Rectangle getRectangle() {
         return this.asteroidBounding;
     }
-    
+
     public void setResourceFont(AngelCodeFont font) {
         this.resourceFont = font;
     }
-    
+
     public Asteroid(AsteroidComm fromPacket) {
         this.x = fromPacket.getX();
-        this.y = fromPacket.getX();
+        this.y = fromPacket.getY();
         this.resourceAmount = fromPacket.getResourceAmount();
         this.maxResourceAmount = resourceAmount;
         astroidCircle = new Circle(x, y, resourceAmount);
@@ -93,21 +96,22 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
 
     @Override
     public void update(GameContainer gc) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void updateAsteroid(GameContainer gc, Spaceship spaceship) {
         //TODO resourceamount to formula
 
         if (this.asteroidBounding.intersects(spaceship.getRectangle())) {
-            if (resourceAmount > 5 ) {
+            if (resourceAmount > 5) {
                 //callback
                 //if player is mining (i.e. pressing spacebar)
-                if (spaceship.mine(this.getType(), x + (maxResourceAmount / 2), y + (maxResourceAmount / 2))) {
-                    resourceAmount -= .01;
+                if (spaceship.mine(this.getType(), x, y , maxResourceAmount, resourceAmount)) {
+                    
                 }
             } else {
                 spaceship.stopMining();
+
             }
         } else {
             spaceship.stopMining();

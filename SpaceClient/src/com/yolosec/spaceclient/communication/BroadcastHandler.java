@@ -21,6 +21,7 @@ import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import java.io.InputStreamReader;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -40,17 +41,23 @@ public class BroadcastHandler implements Runnable {
 
     @Override
     public void run() {
-        //communicator = new Communicator();
-        //communicator.initiate();
-        login("asdf2", "asdf2");
         try {
-            JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
-            reader.setLenient(true);
-
-            while (true) {
-                handleData(reader);
+            //communicator = new Communicator();
+            //communicator.initiate();
+            Communicator.initiate();
+            
+            login("asdf2", "asdf2");
+            try {
+                JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
+                reader.setLenient(true);
+                
+                while (true) {
+                    handleData(reader);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
+        } catch (SocketException ex) {
             Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -65,7 +72,7 @@ public class BroadcastHandler implements Runnable {
         String json = "";
         if (gObject instanceof Spaceship) {
             Spaceship s = (Spaceship) gObject;
-            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getId(),s.getPosition().x, s.getPosition().y, 1, s.getResources(), s.isMining());
+            json = Serializer.serializeSpaceShipAsGamePacket(SpaceshipComm.class.getSimpleName(), s.getId(), s.getPosition().x, s.getPosition().y, 1, s.getResources(), s.isMining());
         } else if (gObject instanceof Asteroid) {
             Asteroid asteroid = (Asteroid) gObject;
             json = Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), asteroid.getType(), asteroid.getResourceAmount(), (int) asteroid.getX(), (int) asteroid.getY());
@@ -81,7 +88,7 @@ public class BroadcastHandler implements Runnable {
             if (retrievedObjectList != null) {
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
                 callBack.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
-            } 
+            }
         } catch (IOException ex) {
             System.out.println("crash, yo");
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
