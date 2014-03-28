@@ -167,4 +167,21 @@ public class SpaceshipCommModule {
             }
         }
     }
+
+    /**
+     * 
+     * @param ship
+     * @param conn 
+     */
+    public void sendSpaceshipComm(SpaceshipComm ship, ClientConnection conn) {
+        try {
+            PrintWriter writer = new PrintWriter(conn.getSocket().getOutputStream(), true);
+            String json = Serializer.serializeSpaceShipAsGamePacket(ship.getHeader(), ship.getId(), ship.getX(), ship.getY(), ship.getDirection(), ship.getResources(), ship.isMining());
+            
+            //Send
+            writer.println(json);
+        } catch (IOException ex) {
+            System.err.println(String.format("IOException in PlayerLocationModule.sendSpaceshipComm() - %s", ex.getMessage()));
+        }
+    }
 }

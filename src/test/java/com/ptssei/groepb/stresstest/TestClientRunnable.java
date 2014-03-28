@@ -24,7 +24,7 @@ public class TestClientRunnable implements Runnable {
     private static PrintWriter writer;
     private static BufferedReader reader;
     
-    public static final String IP_ADDRESS = "145.93.58.157‏";
+    public static final String IP_ADDRESS = "192.168.24.78‏";
     
     public TestClientRunnable(){
         

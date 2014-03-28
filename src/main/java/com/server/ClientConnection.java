@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.LoginComm;
@@ -83,13 +81,17 @@ public class ClientConnection implements Runnable {
 
                     case "LoginComm":
                         LoginComm lcomm = (LoginComm) packet;
-                        this.server.login(lcomm, this);
-                        this.server.broadcastAsteroids();
+                        SpaceshipComm login = this.server.login(lcomm, this);
+                        this.server.sendLoggedIn(login, this);
+                        
+                        if(login != null){
+                            this.server.broadcastAsteroids();
+                        }
                         break;
 
                     case "AsteroidComm":
                         AsteroidComm acomm = (AsteroidComm) packet;
-                        this.server.recievedAsteroid(this, acomm);
+                        this.server.recievedAsteroid(acomm);
                         this.server.broadcastAsteroids();
                         //System.out.println("Aster" + acomm);
                         break;
@@ -117,7 +119,7 @@ public class ClientConnection implements Runnable {
 
                 case "AsteroidComm":
                     AsteroidComm acomm = (AsteroidComm) packet;
-                    this.server.recievedAsteroid(this, acomm);
+                    this.server.recievedAsteroid(acomm);
                     this.server.broadcastAsteroids();
                     //System.out.println("Aster" + acomm);
                     break;

@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import junit.framework.TestCase;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -52,6 +51,7 @@ public class StressTest extends TestCase {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 System.out.println("---[STRESSTEST] Clicked");
+                System.out.println("---[STRESSTEST] Running [" + running +"]");
                 running = false;
                 System.out.println("---[STRESSTEST] Running [" + running +"]");
             }
@@ -92,8 +92,16 @@ public class StressTest extends TestCase {
     public void testClient(){
         guiFrame.setVisible(true);
         System.out.println("---[STRESSTEST] Start testClient");
-        
-      
+        int i = 0;
+        while(true){
+            if(running){
+                 int j = 1;
+                 i += j;
+            } else {
+                break;
+            }
+        }
+        System.out.println(i);
         
         System.out.println("---[STRESSTEST] Stop testClient");
     }

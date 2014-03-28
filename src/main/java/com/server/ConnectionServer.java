@@ -89,7 +89,7 @@ public class ConnectionServer implements Runnable {
         spaceshipCommModule.removeSpaceshipComm(connection);
     }
 
-    public synchronized boolean login(LoginComm lcomm, ClientConnection connection) {
+    public synchronized SpaceshipComm login(LoginComm lcomm, ClientConnection connection) {
         return loginModule.login(lcomm, connection);
     }
 
@@ -101,8 +101,7 @@ public class ConnectionServer implements Runnable {
         spaceshipCommModule.addSpaceshipComm(spaceship, connection);
     }
     
-    public synchronized void recievedAsteroid(ClientConnection connection, AsteroidComm asteroid){
-        int clientID = spaceshipCommModule.getSpaceshipFromClient(connection).getId();
+    public synchronized void recievedAsteroid(AsteroidComm asteroid){
         resourceModule.recievedAsteroid(asteroid);
     }
     
@@ -147,5 +146,13 @@ public class ConnectionServer implements Runnable {
     public void resetAsteroids() {
         this.resourceModule.setAsteroids(this.asteroidModule.generateAsteroids());
         this.broadcastAsteroids();
+    }
+
+    public void sendLoggedIn(SpaceshipComm login, ClientConnection conn) {
+        if(login != null){
+            this.spaceshipCommModule.sendSpaceshipComm(login, conn);
+        } else {
+            this.loginModule.sendLoginError(conn);
+        }
     }
 }
