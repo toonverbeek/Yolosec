@@ -45,8 +45,9 @@ public class Serializer {
         if (reader.hasNext()) {
 
             Map map = gson.fromJson(reader, Map.class);
-
+            
             String header = (String) map.get("header");
+            
             if (header.equals(SpaceshipComm.class.getSimpleName())) {
                 //desirialize spaceshipcomm
                 int id = ((Double) map.get("id")).intValue();
@@ -80,6 +81,8 @@ public class Serializer {
                 String password = (String) map.get("password");
                 LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                 gameobject = lcomm;
+            } else if (header.equals(LoginCommError.class.getSimpleName())){
+                gameobject = new LoginCommError();
             }
 
         }
@@ -129,6 +132,8 @@ public class Serializer {
                     String password = (String) map.get("password");
                     LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                     gameobjects.add(lcomm);
+                } else if (header.equals(LoginCommError.class.getSimpleName())){
+                    gameobjects.add(new LoginCommError());
                 }
             }
         }
@@ -158,6 +163,11 @@ public class Serializer {
         Type com = new TypeToken<List<GamePacket>>() {
         }.getType();
         String json = gson.toJson(ships, com);
+        return json;
+    }
+    
+    public static String serializeLoginCommErrorAsGamePacktet(LoginCommError err) {
+        String json = gson.toJson(err, LoginCommError.class);
         return json;
     }
 }
