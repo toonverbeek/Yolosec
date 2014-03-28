@@ -74,8 +74,6 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         astroidCircle = new Circle(x, y, resourceAmount);
 
         this.asteroidBounding = new Rectangle((int) astroidCircle.getX(), (int) astroidCircle.getY(), resourceAmount, resourceAmount);
-        this.x = astroidCircle.getX();
-        this.y = astroidCircle.getY();
         this.type = fromPacket.getType();
 
     }
@@ -128,7 +126,11 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         } else {
             g.setColor(Color.pink);
         }
-        g.drawOval(x + ((maxResourceAmount - resourceAmount) / 2), y + ((maxResourceAmount - resourceAmount) / 2), resourceAmount, resourceAmount);
+        
+        int locX = (int) x + ((maxResourceAmount) / 2);
+        int locY = (int) y + ((maxResourceAmount) / 2);
+        
+        g.drawOval(locX, locY, resourceAmount, resourceAmount);
         g.setColor(Color.white);
         g.drawRect(x, y, asteroidBounding.width, asteroidBounding.height);
         resourceFont.drawString(x, y, String.valueOf(resourceAmount));

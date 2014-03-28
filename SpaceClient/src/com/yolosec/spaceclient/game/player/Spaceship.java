@@ -221,11 +221,9 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += .1;
-                 int asteroidX = (int) minedAsteroid.getX() + 100;
-                 int asteroidY = (int) minedAsteroid.getY() + 100;
                  System.out.println("Current mined res: " + minedAsteroid.resourceAmount);
                  System.out.println("Current calc res: " + (commonResources - oldCommonResources));
-            Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int)asteroidX, (int)asteroidY));
+            Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int)minedAsteroid.getX(), (int)minedAsteroid.getY()));
             minedAsteroid.resourceAmount -= .1;
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
