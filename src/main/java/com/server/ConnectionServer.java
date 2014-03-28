@@ -129,6 +129,11 @@ public class ConnectionServer implements Runnable {
         return builder.toString();
     }
     
+    public Boolean logCpuTime() {
+        return this.broadcastModule.logCpuTime();
+    }
+    
+    
     public void broadcastAsteroids(){
         spaceshipCommModule.sendAsteroidComms();
     }
