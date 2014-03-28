@@ -1,6 +1,9 @@
 package com.console;
 
 import com.server.ConnectionServer;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.Scanner;
 
 /**
@@ -8,16 +11,18 @@ import java.util.Scanner;
  * @author Administrator
  */
 public class ConsoleApp implements Runnable {
-    
+
     private final Boolean isRunning;
     private final ConnectionServer connServer;
-    
+
     public ConsoleApp(ConnectionServer connServer) {
         this.connServer = connServer;
         System.out.println("---[CONSOLE] Starting console...");
         System.out.println("---[CONSOLE] Available commands are:");
         System.out.println("---[CONSOLE] -getStatus [-g]");
         System.out.println("---[CONSOLE] -resetAsteroids [-a]");
+        System.out.println("---[CONSOLE] -getIp [-ip]");
+        System.out.println("---[CONSOLE] -logCpu [-c]");
         System.out.println("---[CONSOLE] -exit");
         System.out.println("------------------------------------");
         isRunning = true;
@@ -26,23 +31,26 @@ public class ConsoleApp implements Runnable {
     @Override
     public void run() {
         String input = "";
-        while(isRunning) {
+        while (isRunning) {
             Scanner sc = new Scanner(System.in);
             input = sc.next();
-            switch(input) {
+            switch (input) {
                 case "g":
-                    System.out.println(connServer.getStatusInformation());
-                    break;
                 case "getStatus":
                     System.out.println(connServer.getStatusInformation());
                     break;
                 case "resetAsteroids":
-                    System.out.println("---[CONSOLE] Reset Asteroids");
-                    this.connServer.resetAsteroids();
-                    break;
                 case "a":
                     System.out.println("---[CONSOLE] Reset Asteroids");
                     this.connServer.resetAsteroids();
+                    break;
+                case "getIp":
+                case "ip":
+                    System.out.println(getIpAddresses());
+                    break;
+                case "logCpu":
+                case "c":
+                    System.out.println(logCpuTime());
                     break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
@@ -54,5 +62,32 @@ public class ConsoleApp implements Runnable {
             }
         }
     }
-    
+
+    private String getIpAddresses() {
+        String concat = "";
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                if (n.getInetAddresses().hasMoreElements()) {
+                    String ip = n.getInetAddresses().nextElement().getHostAddress();
+                    if (!ip.contains(":")) {
+                        concat = concat.concat("IP: " + ip + '\n');
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return concat;
+    }
+
+    private String logCpuTime() {
+        Boolean started = connServer.logCpuTime();
+        if (started) {
+            return "CPU logging enabled.";
+        } else {
+            return "CPU logging disabled.";
+        }
+    }
 }
