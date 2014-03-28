@@ -30,11 +30,11 @@ import org.newdawn.slick.SlickException;
 public class Asteroid extends GameObjectImpl implements DrawableComponent {
 
     private float x, y;
-    private int resourceAmount;
+    public int resourceAmount;
     private final AsteroidType type;
     private Rectangle asteroidBounding;
     private Shape astroidCircle;
-    private int maxResourceAmount;
+    public int maxResourceAmount;
     private AngelCodeFont resourceFont;
 
     public float getX() {
@@ -106,7 +106,7 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             if (resourceAmount > 5) {
                 //callback
                 //if player is mining (i.e. pressing spacebar)
-                if (spaceship.mine(this.getType(), x, y , maxResourceAmount, resourceAmount)) {
+                if (spaceship.mine(this.getType(), this)) {
                     
                 }
             } else {

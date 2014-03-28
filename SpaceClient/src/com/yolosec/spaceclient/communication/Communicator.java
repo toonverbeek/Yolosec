@@ -37,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.157‏";
+    public static final String IP_ADDRESS = "192.168.24.78";
 
     public static void sendData(String json) {
         writer.println(json);
@@ -47,6 +47,10 @@ public class Communicator {
         return socket;
     }
 
+    
+    /*
+      Retrieves 
+    */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
         gameObjects = new ArrayList<>();
         if (jreader.hasNext()) {

@@ -18,6 +18,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
+import com.yolosec.spaceclient.game.world.Asteroid;
 
 /**
  *
@@ -212,17 +213,20 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         return this.boundingRectangle;
     }
 
-    public boolean mine(AsteroidType type, float asteroidX, float asteroidY , int maxResourceAmount, int currentResourceAmount) {
+    public boolean mine(AsteroidType type, Asteroid minedAsteroid) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
             mining = true;
             miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
-            mininglasers2 = new Vector2f(asteroidX + (maxResourceAmount /2), asteroidY + (maxResourceAmount / 2));
-            System.out.println("is mining");
+            mininglasers2 = new Vector2f(minedAsteroid.getX() + (minedAsteroid.maxResourceAmount /2), minedAsteroid.getY() + (minedAsteroid.maxResourceAmount / 2));
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += .1;
-                 System.out.println("sending new resource amount: " + currentResourceAmount);
-        Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, (commonResources - oldCommonResources), (int)asteroidX, (int)asteroidY));
+                 int asteroidX = (int) minedAsteroid.getX() + 100;
+                 int asteroidY = (int) minedAsteroid.getY() + 100;
+                 System.out.println("Current mined res: " + minedAsteroid.resourceAmount);
+                 System.out.println("Current calc res: " + (commonResources - oldCommonResources));
+            Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int)asteroidX, (int)asteroidY));
+            minedAsteroid.resourceAmount -= .1;
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
             } else if (type == AsteroidType.rare) {
