@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package economysystem;
+
+import service.EconomyService;
 
 /**
  *
@@ -17,7 +18,14 @@ public class EconomySystem {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("je moeder");
+        EconomyService e = new EconomyService();
+        
+        System.out.println(e.getAllItems().size() + " items in database");
+        
+        
+        
+        //Close EntityManager when finished running:
+        e.closeEntityManager();
     }
-    
+
 }

@@ -5,6 +5,7 @@
  */
 package domain;
 
+import com.ptsesd.groepb.shared.AsteroidType;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

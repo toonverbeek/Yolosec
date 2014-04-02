@@ -7,6 +7,13 @@ package domain;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Item implements Serializable {
@@ -24,19 +31,17 @@ public class Item implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL)
     private Collection<Stat> stats;
-    
-    private boolean equipped;
+
     private String image;
 
     public Item() {
     }
 
-    public Item(String name, String description, Collection<Resource> resources, Collection<Stat> stats, boolean equipped, String image) {
+    public Item(String name, String description, Collection<Resource> resources, Collection<Stat> stats, String image) {
         this.name = name;
         this.description = description;
         this.resources = resources;
         this.stats = stats;
-        this.equipped = equipped;
         this.image = image;
     }
 
@@ -128,24 +133,6 @@ public class Item implements Serializable {
      */
     public void setStats(Collection<Stat> stats) {
         this.stats = stats;
-    }
-
-    /**
-     * Get if the item is equipped
-     *
-     * @return
-     */
-    public boolean isEquipped() {
-        return equipped;
-    }
-
-    /**
-     * Set if the item is equipped
-     *
-     * @param equipped
-     */
-    public void setEquipped(boolean equipped) {
-        this.equipped = equipped;
     }
 
     /**
