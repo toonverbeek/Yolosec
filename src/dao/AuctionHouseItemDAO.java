@@ -5,6 +5,7 @@
  */
 package dao;
 
+import domain.AuctionHouseItem;
 import domain.Item;
 import java.util.List;
 
@@ -12,21 +13,21 @@ import java.util.List;
  *
  * @author Lisanne
  */
-public interface ItemDAO {
+public interface AuctionHouseItemDAO {
 
     int count();
 
-    void create(Item item);
+    boolean create(AuctionHouseItem item);
 
-    void edit(Item item);
+    void edit(AuctionHouseItem item);
 
-    List<Item> findAll();
+    List<AuctionHouseItem> findAll();
 
-    Item find(String itemname);
+    AuctionHouseItem find(String itemname);
 
-    Item find(Long id);
+    AuctionHouseItem find(Long id);
 
-    void remove(Item item);
+    void remove(AuctionHouseItem item);
     
     void closeEntityManager();
 }
