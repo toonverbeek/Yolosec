@@ -37,7 +37,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 
     public GameWorldImpl(Spaceship player) throws SlickException {
         System.out.println("Constructin gameworldimpl");
-        gameObjectDAO = new GameObjectDAOImpl();
+        this.gameObjectDAO = new GameObjectDAOImpl();
         tileMap = new TiledMap("/map.tmx");
         this.player = player;
         camera = new Camera(tileMap, tileMap.getWidth(), tileMap.getHeight());
@@ -89,5 +89,4 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     public void setFontSet(HashMap<String, AngelCodeFont> fontSet) {
         this.fontSet = fontSet;
     }
-
 }

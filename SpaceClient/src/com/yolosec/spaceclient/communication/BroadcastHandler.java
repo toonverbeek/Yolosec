@@ -45,12 +45,12 @@ public class BroadcastHandler implements Runnable {
             //communicator = new Communicator();
             //communicator.initiate();
             Communicator.initiate();
-            
-            login("asdf2", "asdf2");
+
+            //login("asdf3", "asdf3");
             try {
                 JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
                 reader.setLenient(true);
-                
+
                 while (true) {
                     handleData(reader);
                 }
@@ -62,10 +62,9 @@ public class BroadcastHandler implements Runnable {
         }
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password) throws Exception {
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password);
-        Communicator.login(Serializer.serializeLogin(lc));
-
+        Communicator.sendLogin(Serializer.serializeLogin(lc));
     }
 
     public void sendData(GameObjectImpl gObject) {

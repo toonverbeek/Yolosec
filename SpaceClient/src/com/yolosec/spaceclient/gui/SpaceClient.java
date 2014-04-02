@@ -1,5 +1,6 @@
 package com.yolosec.spaceclient.gui;
 
+import com.yolosec.spaceclient.dao.GameObjectDAOImpl;
 import com.yolosec.spaceclient.game.player.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,12 +21,14 @@ public class SpaceClient extends BasicGame {
     public static int screenHeight;
     public static int screenWidth;
     private User user;
+    private Spaceship spaceship;
     private GameWorldImpl gameWorld;
     private AngelCodeFont font;
     private HashMap<String, AngelCodeFont> fontSet = new HashMap<String, AngelCodeFont>();
 
-    public SpaceClient(String gamename) {
+    public SpaceClient(String gamename, Spaceship spaceship) {
         super(gamename);
+        this.spaceship = spaceship;
     }
 
     @Override
@@ -33,7 +36,8 @@ public class SpaceClient extends BasicGame {
         try {
             gc.setTargetFrameRate(FPS);
             gc.setFullscreen(true);
-            user = new User(new Spaceship(10, 10), "Space_Invader1337");
+            user = new User(spaceship, "Space_Invader1337");
+            //gameWorld = new GameWorldImpl(user.getSpaceship());
             gameWorld = new GameWorldImpl(user.getSpaceship());
             //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
             font = new AngelCodeFont("font.fnt", "font_0.png");
@@ -54,20 +58,6 @@ public class SpaceClient extends BasicGame {
         g.setFont(font);
         gameWorld.setFontSet(fontSet);
         gameWorld.render(g, false);
-    }
-
-    public static void main(String[] args) {
-        try {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new SpaceClient("Simple Slick Game"));
-            screenHeight = appgc.getScreenHeight();
-            screenWidth = appgc.getScreenWidth();
-
-            appgc.setDisplayMode(screenWidth, screenHeight, true);
-            appgc.start();
-        } catch (SlickException ex) {
-            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override
