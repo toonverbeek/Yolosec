@@ -6,6 +6,7 @@
 package com.ptsesd.groepb.shared.jms;
 
 import com.ptsesd.groepb.shared.ItemComm;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.Connection;
@@ -44,7 +45,9 @@ public abstract class MessagingGateway {
 
     private void setupConnection() {
         try {
-            jndiContext = new InitialContext();
+            Properties prop = new Properties();
+            prop.put(Context.PROVIDER_URL, "https://192.168.24.11:4848");
+            jndiContext = new InitialContext(prop);
             ConnectionFactory factory = (ConnectionFactory) jndiContext.lookup(factoryName);
             connection = factory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
