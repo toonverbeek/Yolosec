@@ -1,5 +1,6 @@
-package com.server;
+package com.yolosec.domain;
 
+import com.yolosec.service.GameService;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -13,16 +14,17 @@ import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.service.GameService;
 
 /**
  *
  * @author user
  */
-public class ClientConnection implements Runnable {
+public class GameClient implements Runnable {
 
     private final Socket socket;
     private InputStream inputStream;
-    private final ConnectionServer server;
+    private final GameService server;
 
     private final Gson gson;
 
@@ -30,7 +32,7 @@ public class ClientConnection implements Runnable {
         return socket;
     }
 
-    public ClientConnection(Socket socket, ConnectionServer server) {
+    public GameClient(Socket socket, GameService server) {
         this.server = server;
         this.socket = socket;
         this.gson = new Gson();
@@ -63,7 +65,7 @@ public class ClientConnection implements Runnable {
                 break;
             }
         }
-        server.updateSpaceshipToDatabase(this);
+        server.updateSpaceshipDatabase(this);
         server.logout(this);
     }
 
@@ -80,8 +82,10 @@ public class ClientConnection implements Runnable {
                         break;
 
                     case "LoginComm":
+                        
                         LoginComm lcomm = (LoginComm) packet;
                         SpaceshipComm login = this.server.login(lcomm, this);
+                        
                         this.server.sendLoggedIn(login, this);
                         
                         if(login != null){
@@ -102,7 +106,6 @@ public class ClientConnection implements Runnable {
             }
         } else {
             GamePacket packet = Serializer.getSingleGamePacket(reader);
-
             String header = packet.getHeader();
 
             switch (header) {
@@ -113,8 +116,11 @@ public class ClientConnection implements Runnable {
 
                 case "LoginComm":
                     LoginComm lcomm = (LoginComm) packet;
-                    this.server.login(lcomm, this);
-                    this.server.broadcastAsteroids();
+                    SpaceshipComm login = this.server.login(lcomm, this);
+                        
+                    this.server.sendLoggedIn(login, this);
+                    
+                    //this.server.broadcastAsteroids();
                     break;
 
                 case "AsteroidComm":

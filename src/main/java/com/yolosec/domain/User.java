@@ -1,4 +1,4 @@
-package com.objects;
+package com.yolosec.domain;
 
 import java.util.List;
 

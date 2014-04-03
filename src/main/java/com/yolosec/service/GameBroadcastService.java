@@ -1,6 +1,6 @@
-package com.modules.thread;
+package com.yolosec.service;
 
-import com.server.ConnectionServer;
+import com.yolosec.service.GameService;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
  *
  * @author user
  */
-public class ClientBroadcastThread implements Runnable {
+public class GameBroadcastService implements Runnable {
 
     private boolean isRunning = false;
     private boolean isLogging = false;
-    private ConnectionServer serverModule = null;
+    private GameService serverModule = null;
 
     //---debug---
     ThreadMXBean bean;
@@ -22,7 +22,7 @@ public class ClientBroadcastThread implements Runnable {
     ArrayList<Integer> tArr;
     //---debug---
 
-    public ClientBroadcastThread() {
+    public GameBroadcastService() {
         this.isRunning = true;
     }
 
@@ -31,7 +31,7 @@ public class ClientBroadcastThread implements Runnable {
      *
      * @param server
      */
-    public void setServerModule(ConnectionServer server) {
+    public void setServerModule(GameService server) {
         this.serverModule = server;
     }
 

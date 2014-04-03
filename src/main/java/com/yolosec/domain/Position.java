@@ -1,15 +1,15 @@
-package com.modules.server;
+package com.yolosec.domain;
 
 /**
  *
  * @author user
  */
-public class position {
+public class Position {
 
-    int posX1, posY1;
-    int size;
+    private int posX1, posY1;
+    private int size;
 
-    public position(int posX1, int posY1, int size) {
+    public Position(int posX1, int posY1, int size) {
         this.posX1 = posX1;
         this.posY1 = posY1;
         this.size = size;

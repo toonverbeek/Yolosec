@@ -1,7 +1,8 @@
-package com.server;
+package com.yolosec.launcher;
 
-import com.console.ConsoleApp;
-import com.modules.thread.ClientBroadcastThread;
+import com.yolosec.service.GameService;
+import com.yolosec.util.ConsoleApp;
+import com.yolosec.service.GameBroadcastService;
 
 /**
  *
@@ -11,13 +12,12 @@ public class LoadModules {
 
     public static void main(String[] args) throws Exception {
          
-        DbConnector.readDataBase();
         //Create broadcast module
-        ClientBroadcastThread broadcastModule = new ClientBroadcastThread();
+        GameBroadcastService broadcastModule = new GameBroadcastService();
         Thread broadcastThread = new Thread(broadcastModule);
         
         //Create server module
-        ConnectionServer serverModule = new ConnectionServer(broadcastModule);
+        GameService serverModule = new GameService(broadcastModule);
         Thread receiverThread = new Thread(serverModule);
         
         //set the servermodule

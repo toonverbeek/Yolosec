@@ -1,6 +1,6 @@
-package com.console;
+package com.yolosec.util;
 
-import com.server.ConnectionServer;
+import com.yolosec.service.GameService;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
@@ -13,9 +13,9 @@ import java.util.Scanner;
 public class ConsoleApp implements Runnable {
 
     private final Boolean isRunning;
-    private final ConnectionServer connServer;
+    private final GameService connServer;
 
-    public ConsoleApp(ConnectionServer connServer) {
+    public ConsoleApp(GameService connServer) {
         this.connServer = connServer;
         System.out.println("---[CONSOLE] Starting console...");
         System.out.println("---[CONSOLE] Available commands are:");

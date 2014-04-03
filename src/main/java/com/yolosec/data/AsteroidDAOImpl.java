@@ -1,7 +1,8 @@
 
-package com.modules.server;
+package com.yolosec.data;
 
-import com.server.ClientConnection;
+import com.yolosec.domain.Position;
+import com.yolosec.domain.GameClient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,27 +10,81 @@ import java.util.Random;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
 import com.ptsesd.groepb.shared.Serializer;
+import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.service.GameService;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  *
  * @author user
  */
-public class ServerAsteroidGenerator {
+public class AsteroidDAOImpl implements AsteroidDAO {
     
     private final int mapSizeX = 16000;
     private final int mapSizeY = 16000;
     
     private int[][] map;
-    private List<position> occupiedPositions;
+    private List<Position> occupiedPositions;
+    
+    private List<AsteroidComm> asteroids;
     
     private final int amountOfAsteroids = 50;
     
-    public ServerAsteroidGenerator(){
+    public AsteroidDAOImpl(){
         map = new int[1600][1600];
-        occupiedPositions = new ArrayList<position>();
+        occupiedPositions = new ArrayList<>();
+        asteroids = new ArrayList<>();
+        generateAsteroids();
     }
     
-    public List<AsteroidComm> generateAsteroids(){
+    @Override
+    public List<AsteroidComm> findAll() {
+        return this.asteroids;
+    }
+
+    @Override
+    public void resetAsteroids() {
+        generateAsteroids();
+    }
+
+    @Override
+    public void updateAsteroid(AsteroidComm asteroid) {
+        for(AsteroidComm ast : asteroids){
+            if(ast.getX() == asteroid.getX() && ast.getY() == asteroid.getY()){
+                ast.setResourceAmount(asteroid.getResourceAmount());
+                if(GameService.debug){
+                    System.out.println(String.format("---[ASTEROID] X1 [ %s ] X2 [ %s ] Y1 [ %s ] Y2 [ %s ] NEW RESOURCE AMOUNT [ %s ]", ast.getX(), asteroid.getX(), ast.getY(), asteroid.getY(), asteroid.getResourceAmount()));
+                    System.out.println(String.format("---[ASTEROID] Setted asteroid resource amount %s \n", asteroid.getResourceAmount()));
+                }
+                break;
+            }
+        }
+    }
+    
+    /**
+     * send all the current asteroids
+     * @param clients
+     */
+    public void sendAsteroidComms(List<GameClient> clients) {
+        PrintWriter writer = null;
+        for (GameClient client : clients) {
+            try {
+                writer = new PrintWriter(client.getSocket().getOutputStream(), true);
+
+                for (AsteroidComm asteroidComm : asteroids) {
+                    String aster = Serializer.serializeAsteroidAsGamePacket(asteroidComm.getHeader(), asteroidComm.getType(), asteroidComm.getResourceAmount(), (int) asteroidComm.getX(), (int) asteroidComm.getY());
+                    //System.out.println("Aster" + aster);
+                    writer.println(aster);
+                }
+            } catch (IOException ex) {
+                System.err.println(String.format("Error in PlayerLocationModule.broadcastAsteroids() - %s", ex.getMessage()));
+            }
+        }
+    }
+    
+    private void generateAsteroids(){
         List<AsteroidComm> _asteroids = new ArrayList<>();
         
         while (_asteroids.size() < amountOfAsteroids) {
@@ -55,20 +110,20 @@ public class ServerAsteroidGenerator {
             }
         }
         
-        return _asteroids;
+        this.asteroids = _asteroids;
     }
     
     private boolean isColliding(int posUnitX, int posUnitY, int resourceAmount, Collection<AsteroidComm> checkAsteroids){
         boolean isColliding = false;
         int newAstSize = calculateSizeFromResource(resourceAmount);
-        position newAsteroidPos = new position(posUnitX, posUnitY, newAstSize);
+        Position newAsteroidPos = new Position(posUnitX, posUnitY, newAstSize);
         for(AsteroidComm asteroid : checkAsteroids){
             //get the position parameters
             int astPosX = (int) asteroid.getX();
             int astPosY = (int) asteroid.getY();
             int size = calculateSizeFromResource(asteroid.getResourceAmount());
             //create the position from the exisitng asteroid
-            position p = new position(astPosX, astPosY, size);
+            Position p = new Position(astPosX, astPosY, size);
             
             //check if the positions are colliding
             if(positionsColliding(newAsteroidPos, p)){
@@ -81,65 +136,65 @@ public class ServerAsteroidGenerator {
         return isColliding;
     }
     
-    public boolean positionsColliding(position a, position b){
+    private boolean positionsColliding(Position a, Position b){
         boolean posColliding = false;
         
-        int aposX2 = a.posX1 + a.size;
-        int aposY2 = a.posY1 + a.size;
+        int aposX2 = a.getPosX1() + a.getSize();
+        int aposY2 = a.getPosY1() + a.getSize();
         
-        int bposX2 = b.posX1 + a.size;
-        int bposY2 = b.posY1 + a.size;
+        int bposX2 = b.getPosX1() + a.getSize();
+        int bposY2 = b.getPosY1() + a.getSize();
         
         //if point bX1 is between point aX1 and point aX2
-        if(b.posX1 >= a.posX1 && b.posX1 <= aposX2){
+        if(b.getPosX1() >= a.getPosX1() && b.getPosX1() <= aposX2){
             //if point bY1 is between point aY1 and point aY2
-            if(b.posY1 >= a.posY1 && b.posY1 <= aposY2){
+            if(b.getPosY1() >= a.getPosY1() && b.getPosY1() <= aposY2){
                 posColliding = true;
             }
             
             //if point bY2 is between point aY1 and point aY2
-            if(bposY2 >= a.posY1 && bposY2 <= aposY2){
+            if(bposY2 >= a.getPosY1() && bposY2 <= aposY2){
                 posColliding = true;
             }
             
             //if point bY1 is left of aY1 and bY2 is right of aY2
-            if(b.posY1 <= a.posY1 && bposY2 >= aposY2){
+            if(b.getPosY1() <= a.getPosY1() && bposY2 >= aposY2){
                 posColliding = true;
             }
         }
         
         //if point bX2 is between point aX1 and point aX2
-        if(bposX2 >= a.posX1 && bposX2 <= aposX2){
+        if(bposX2 >= a.getPosX1() && bposX2 <= aposX2){
             //if point bY1 is between point aY1 and point aY2
-            if(b.posY1 >= a.posY1 && b.posY1 <= aposY2){
+            if(b.getPosY1() >= a.getPosY1() && b.getPosY1() <= aposY2){
                 posColliding = true;
             }
             
             //if point bY2 is between point aY1 and point aY2
-            if(bposY2 >= a.posY1 && bposY2 <= aposY2){
+            if(bposY2 >= a.getPosY1() && bposY2 <= aposY2){
                 posColliding = true;
             }
             
             //if point bY1 is left of aY1 and bY2 is right of aY2
-            if(b.posY1 <= a.posY1 && bposY2 >= aposY2){
+            if(b.getPosY1() <= a.getPosY1() && bposY2 >= aposY2){
                 posColliding = true;
             }
         }
         
         //if point bX1 is left of point aX1 and point bX2 is right of point aX2
-        if(b.posX1 <= a.posX1 && bposX2 >= aposX2){
+        if(b.getPosX1() <= a.getPosX1() && bposX2 >= aposX2){
             //if point bY1 is between point aY1 and point aY2
-            if(b.posY1 >= a.posY1 && b.posY1 <= aposY2){
+            if(b.getPosY1() >= a.getPosY1() && b.getPosY1() <= aposY2){
                 posColliding = true;
             }
             
             //if point bY2 is between point aY1 and point aY2
-            if(bposY2 >= a.posY1 && bposY2 <= aposY2){
+            if(bposY2 >= a.getPosY1() && bposY2 <= aposY2){
                 posColliding = true;
             }
             
             //if point bY1 is left of aY1 and bY2 is right of aY2
-            if(b.posY1 <= a.posY1 && bposY2 >= aposY2){
+            if(b.getPosY1() <= a.getPosY1() && bposY2 >= aposY2){
                 posColliding = true;
             }
         }
@@ -150,4 +205,6 @@ public class ServerAsteroidGenerator {
     private int calculateSizeFromResource(int resourceAmount){
         return resourceAmount;
     }
+
+    
 }
