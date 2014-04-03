@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.jms.TradeUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -53,6 +54,9 @@ public class SpaceClient extends StateBasedGame {
                 mainMenuIsOpen = false;
                 this.enterState(0);
             }
+        } else if(key == Input.KEY_T) {
+            //trade
+            TradeUtil.LaunchAuctionHouse();
         }
     }
 
