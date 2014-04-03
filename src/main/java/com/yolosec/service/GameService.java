@@ -134,9 +134,9 @@ public class GameService implements Runnable {
     public void sendLoginError(GameClient conn) {
         try {
             PrintWriter writer = new PrintWriter(conn.getSocket().getOutputStream());
-            LoginCommError er = new LoginCommError();
+            LoginCommError er = new LoginCommError(LoginCommError.class.getSimpleName());
             String json = Serializer.serializeLoginCommErrorAsGamePacktet(er);
-            
+            System.out.println("---[LOGIN] JSON: " + json);
             writer.println(json);
         } catch (IOException ex) {
             System.out.println(String.format("---[LOGIN] Excepting in PlayerLoginModule.sendLoginError() - %s", ex.getMessage()));
