@@ -1,20 +1,10 @@
 package com.yolosec.spaceclient.gui;
 
 import com.yolosec.spaceclient.game.player.User;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import com.yolosec.spaceclient.game.world.GameWorldImpl;
-import com.yolosec.spaceclient.game.player.Spaceship;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
 import javax.swing.JFrame;
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class SpaceClient extends StateBasedGame {

@@ -73,8 +73,9 @@ public class Communicator {
                     Spaceship spaceship = new Spaceship(sc);
 
                     if (gameObjects.contains(spaceship)) {
+                    } else {
+                        gameObjects.add(spaceship); //always add, for now
                     }
-                    gameObjects.add(spaceship); //always add, for now
 
                 } else if (gp instanceof AsteroidComm) {
                     AsteroidComm ac = (AsteroidComm) gp;
@@ -117,18 +118,13 @@ public class Communicator {
         SpaceshipComm spacecomm = null;
         while (spacecomm == null) {
             try {
-                System.out.println("----start receiving");
                 GamePacket gp = Serializer.getSingleGamePacket(jreader);
-                System.out.println("----" + gp.getHeader());
                 if (gp instanceof SpaceshipComm) {
                     spacecomm = (SpaceshipComm) gp;
-                    System.out.println("----received");
                 } else if (gp instanceof LoginCommError) {
                     spacecomm = null;
-                    System.out.println("----loginComm Error");
                     break;
                 }
-                System.out.println("----end receiving");
             } catch (Exception ex) {
                 spacecomm = null;
                 ex.printStackTrace();
