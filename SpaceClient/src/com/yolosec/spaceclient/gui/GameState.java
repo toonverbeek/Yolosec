@@ -52,6 +52,7 @@ public class GameState extends BasicGameState {
             AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
             fontSet.put("resource_font", resourceFont);
         } catch (SlickException ex) {
+                ex.printStackTrace();
             //Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

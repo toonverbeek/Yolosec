@@ -38,7 +38,12 @@ public class LoginForm extends javax.swing.JFrame {
             setLocationRelativeTo(null);
             Communicator.initiate();
             l_wrong.setVisible(false);
+
+            Runnable receiver = new LoginReceiver();
+            Thread t = new Thread(receiver);
+            t.start();
         } catch (SocketException ex) {
+            ex.printStackTrace();
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -140,33 +145,11 @@ public class LoginForm extends javax.swing.JFrame {
         for (char c : password) {
             password2 += c;
         }
-        
+
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password2);
         String json = Serializer.serializeLogin(lc);
         Communicator.sendLogin(json);
-        try {
-            sc = Communicator.receiveLogin();
-        } catch (IOException ex) {
-            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(sc.getId());
-        System.out.println("Receive login");
-        try {
-            if (sc != null) {
-                Spaceship s = new Spaceship(sc);
-                User user = new User(s, "Space_Invader1337");
-                AppGameContainer appgc;
-                SpaceClient client = new SpaceClient("Yolosec", user);
-                appgc = new AppGameContainer(client);
-                screenHeight = appgc.getScreenHeight();
-                screenWidth = appgc.getScreenWidth();
-                appgc.setDisplayMode(screenWidth, screenHeight, true);
-                appgc.start();
-            }
-        } catch (SlickException ex) {
-            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.setVisible(false);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -213,4 +196,34 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JTextField jtf_username;
     private javax.swing.JLabel l_wrong;
     // End of variables declaration//GEN-END:variables
+
+    class LoginReceiver implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                sc = Communicator.receiveLogin();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(sc.getId());
+            System.out.println("Receive login");
+            try {
+                if (sc != null) {
+                    Spaceship s = new Spaceship(sc);
+                    User user = new User(s, "Space_Invader1337");
+                    AppGameContainer appgc;
+                    SpaceClient client = new SpaceClient("Yolosec", user);
+                    appgc = new AppGameContainer(client);
+                    screenHeight = appgc.getScreenHeight();
+                    screenWidth = appgc.getScreenWidth();
+                    appgc.setDisplayMode(screenWidth, screenHeight, true);
+                    appgc.start();
+                }
+                setVisible(false);
+            } catch (SlickException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

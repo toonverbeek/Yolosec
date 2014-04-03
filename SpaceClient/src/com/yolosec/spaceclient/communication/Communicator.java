@@ -10,6 +10,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.GamePacket;
+import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import java.io.BufferedReader;
@@ -38,6 +39,7 @@ public class Communicator {
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "145.93.58.174";
+    private static JsonReader jreader;
 
     public static void sendData(String json) {
         writer.println(json);
@@ -47,10 +49,9 @@ public class Communicator {
         return socket;
     }
 
-    
     /*
-      Retrieves 
-    */
+     Retrieves 
+     */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
         gameObjects = new ArrayList<>();
         if (jreader.hasNext()) {
@@ -90,7 +91,7 @@ public class Communicator {
         System.out.println("login: " + json);
         writer.println(json);
     }
-   
+
     public static boolean initiate() throws SocketException {
         try {
             System.out.println("-----Initializing Comm Link to Server");
@@ -101,6 +102,9 @@ public class Communicator {
                     true);
             reader = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
+
+            jreader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
+            jreader.setLenient(true);
             return true;
         } catch (UnknownHostException e) {
             return false;
@@ -109,21 +113,25 @@ public class Communicator {
         }
     }
 
-    public static SpaceshipComm receiveLogin() throws IOException {
+    public static SpaceshipComm receiveLogin() throws Exception {
         SpaceshipComm spacecomm = null;
         while (spacecomm == null) {
-            JsonReader jreader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
-            jreader.setLenient(true);
             try {
                 System.out.println("----start receiving");
                 GamePacket gp = Serializer.getSingleGamePacket(jreader);
+                System.out.println("----" + gp.getHeader());
                 if (gp instanceof SpaceshipComm) {
                     spacecomm = (SpaceshipComm) gp;
                     System.out.println("----received");
+                } else if (gp instanceof LoginCommError) {
+                    spacecomm = null;
+                    System.out.println("----loginComm Error");
+                    break;
                 }
                 System.out.println("----end receiving");
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 spacecomm = null;
+                ex.printStackTrace();
             }
         }
         return spacecomm;
