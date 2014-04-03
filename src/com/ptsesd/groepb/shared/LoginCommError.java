@@ -11,5 +11,7 @@ package com.ptsesd.groepb.shared;
  * @author user
  */
 public class LoginCommError extends GamePacket {
-    
+    public LoginCommError(String header){
+        super(header);
+    }
 }
