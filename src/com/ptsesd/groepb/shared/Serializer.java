@@ -82,7 +82,7 @@ public class Serializer {
                 LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                 gameobject = lcomm;
             } else if (header.equals(LoginCommError.class.getSimpleName())){
-                gameobject = new LoginCommError();
+                gameobject = new LoginCommError(LoginCommError.class.getSimpleName());
             }
 
         }
@@ -133,7 +133,7 @@ public class Serializer {
                     LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                     gameobjects.add(lcomm);
                 } else if (header.equals(LoginCommError.class.getSimpleName())){
-                    gameobjects.add(new LoginCommError());
+                    gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
                 }
             }
         }
