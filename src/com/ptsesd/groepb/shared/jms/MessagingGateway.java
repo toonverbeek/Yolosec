@@ -46,7 +46,8 @@ public abstract class MessagingGateway {
     private void setupConnection() {
         try {
             Properties prop = new Properties();
-            prop.put(Context.PROVIDER_URL, "https://192.168.24.11:4848");
+//            prop.put("org.omg.CORBA.ORBInitialHost", "192.168.24.11");
+//            prop.put("org.omg.CORBA.ORBInitialPort", "4848");
             jndiContext = new InitialContext(prop);
             ConnectionFactory factory = (ConnectionFactory) jndiContext.lookup(factoryName);
             connection = factory.createConnection();
@@ -68,7 +69,13 @@ public abstract class MessagingGateway {
 
                 @Override
                 public void onMessage(Message message) {
-                    onReceivedMessage(message);
+                    try {
+                        ItemSerializer serializer = new ItemSerializer();
+                        ItemComm item = serializer.jsonToItem(message.getBody(String.class));
+                        onReceivedMessage(item);
+                    } catch (JMSException ex) {
+                        Logger.getLogger(MessagingGateway.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
         } catch (JMSException | NamingException ex) {
@@ -76,7 +83,7 @@ public abstract class MessagingGateway {
         }
     }
 
-    public abstract void onReceivedMessage(Message msg);
+    public abstract void onReceivedMessage(ItemComm item);
 
     public void sendItemComm(ItemComm item) {
         Message msg = null;
