@@ -127,8 +127,8 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             g.setColor(Color.pink);
         }
         
-        int locX = (int) x + ((maxResourceAmount) / 2);
-        int locY = (int) y + ((maxResourceAmount) / 2);
+        int locX = (int) x + ((maxResourceAmount - resourceAmount) / 2);
+        int locY = (int) y + ((maxResourceAmount - resourceAmount) / 2);
         
         g.drawOval(locX, locY, resourceAmount, resourceAmount);
         g.setColor(Color.white);
