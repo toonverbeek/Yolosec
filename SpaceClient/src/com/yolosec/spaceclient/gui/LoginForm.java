@@ -11,6 +11,7 @@ import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.spaceclient.communication.Communicator;
 import com.yolosec.spaceclient.dao.GameObjectDAOImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.player.User;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.io.IOException;
@@ -153,8 +154,9 @@ public class LoginForm extends javax.swing.JFrame {
         try {
             if (sc != null) {
                 Spaceship s = new Spaceship(sc);
+                User user = new User(s, "Space_Invader1337");
                 AppGameContainer appgc;
-                SpaceClient client = new SpaceClient("Simple Slick Game", s);
+                SpaceClient client = new SpaceClient("Yolosec", user);
                 appgc = new AppGameContainer(client);
                 screenHeight = appgc.getScreenHeight();
                 screenWidth = appgc.getScreenWidth();

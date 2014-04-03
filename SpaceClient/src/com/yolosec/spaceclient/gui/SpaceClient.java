@@ -23,23 +23,25 @@ public class SpaceClient extends StateBasedGame {
     public static int screenHeight;
     public static int screenWidth;
     private boolean mainMenuIsOpen = false;
+    public User user;
 
-    public SpaceClient(String gamename) {
+    public SpaceClient(String gamename, User user) {
         super(gamename);
+        this.user = user;
     }
     
-    public static void main(String[] args) {
-        try {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new SpaceClient("Yolosec"));
-            screenHeight = appgc.getScreenHeight();
-            screenWidth = appgc.getScreenWidth();
-            appgc.setDisplayMode(screenWidth, screenHeight, true);
-            appgc.start();
-        } catch (SlickException ex) {
-            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            AppGameContainer appgc;
+//            appgc = new AppGameContainer(new SpaceClient("Yolosec"));
+//            screenHeight = appgc.getScreenHeight();
+//            screenWidth = appgc.getScreenWidth();
+//            appgc.setDisplayMode(screenWidth, screenHeight, true);
+//            appgc.start();
+//        } catch (SlickException ex) {
+//            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     @Override
     public void keyPressed(int key, char c) {
@@ -58,7 +60,7 @@ public class SpaceClient extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
-        this.addState(new GameState());
+        this.addState(new GameState(user));
         this.addState(new MainMenuState());
     }
 }

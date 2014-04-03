@@ -37,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.182";
+    public static final String IP_ADDRESS = "145.93.58.174";
 
     public static void sendData(String json) {
         writer.println(json);
@@ -86,11 +86,11 @@ public class Communicator {
 
     }
 
-    public static void login(String json) {
+    public static void sendLogin(String json) {
         System.out.println("login: " + json);
         writer.println(json);
     }
-
+   
     public static boolean initiate() throws SocketException {
         try {
             System.out.println("-----Initializing Comm Link to Server");
@@ -107,6 +107,26 @@ public class Communicator {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static SpaceshipComm receiveLogin() throws IOException {
+        SpaceshipComm spacecomm = null;
+        while (spacecomm == null) {
+            JsonReader jreader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
+            jreader.setLenient(true);
+            try {
+                System.out.println("----start receiving");
+                GamePacket gp = Serializer.getSingleGamePacket(jreader);
+                if (gp instanceof SpaceshipComm) {
+                    spacecomm = (SpaceshipComm) gp;
+                    System.out.println("----received");
+                }
+                System.out.println("----end receiving");
+            } catch (IOException ex) {
+                spacecomm = null;
+            }
+        }
+        return spacecomm;
     }
 
 }

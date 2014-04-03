@@ -31,6 +31,9 @@ public class GameState extends BasicGameState {
     private AngelCodeFont font;
     private HashMap<String, AngelCodeFont> fontSet = new HashMap<String, AngelCodeFont>();
 
+    public GameState(User user){
+        this.user = user;
+    }
 
     @Override
     public int getID() {
@@ -42,7 +45,7 @@ public class GameState extends BasicGameState {
         try {
             container.setTargetFrameRate(FPS);
             container.setFullscreen(true);
-            user = new User(new Spaceship(10, 10), "Space_Invader1337");
+//            user = new User(new Spaceship(10, 10), "Space_Invader1337");
             gameWorld = new GameWorldImpl(user.getSpaceship());
             //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
             font = new AngelCodeFont("font.fnt", "font_0.png");

@@ -41,10 +41,10 @@ public class BroadcastHandler implements Runnable {
 
     @Override
     public void run() {
-        try {
+//        try {
             //communicator = new Communicator();
             //communicator.initiate();
-            Communicator.initiate();
+            //Communicator.initiate();
 
             //login("asdf3", "asdf3");
             try {
@@ -57,9 +57,9 @@ public class BroadcastHandler implements Runnable {
             } catch (Exception ex) {
                 Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SocketException ex) {
-            Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (SocketException ex) {
+//            Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public void login(String username, String password) throws Exception {
