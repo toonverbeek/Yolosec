@@ -10,7 +10,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.GamePacket;
-import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import java.io.BufferedReader;
@@ -25,8 +24,6 @@ import java.util.List;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -40,7 +37,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.182";//"192.168.24.78";
+    public static final String IP_ADDRESS = "145.93.58.182";
 
     public static void sendData(String json) {
         writer.println(json);
@@ -50,9 +47,10 @@ public class Communicator {
         return socket;
     }
 
+    
     /*
-     Retrieves 
-     */
+      Retrieves 
+    */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
         gameObjects = new ArrayList<>();
         if (jreader.hasNext()) {
@@ -88,26 +86,9 @@ public class Communicator {
 
     }
 
-    public static void sendLogin(String json) {
+    public static void login(String json) {
         System.out.println("login: " + json);
         writer.println(json);
-    }
-
-    public static SpaceshipComm receiveLogin() throws IOException {
-        SpaceshipComm spacecomm = null;
-        while (spacecomm == null) {
-            JsonReader jreader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
-            jreader.setLenient(true);
-            try {
-                GamePacket gp = Serializer.getSingleGamePacket(jreader);
-                if (gp instanceof SpaceshipComm) {
-                    spacecomm = (SpaceshipComm) gp;
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Communicator.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return spacecomm;
     }
 
     public static boolean initiate() throws SocketException {
