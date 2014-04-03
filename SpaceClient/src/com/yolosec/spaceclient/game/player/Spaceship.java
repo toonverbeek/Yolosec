@@ -26,7 +26,7 @@ import com.yolosec.spaceclient.game.world.Asteroid;
  */
 public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
-    private int id = 2;
+    private int id = 3;
 
     private float[] polygonPoints;
     private Polygon polygon;

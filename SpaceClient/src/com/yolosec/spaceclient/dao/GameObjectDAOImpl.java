@@ -45,10 +45,6 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
         broadcastHandler.sendData(gameObject);
     }
 
-    public void login(String username, String password) {
-        broadcastHandler.login(username, password);
-    }
-
     @Override
     public List<GameObjectImpl> getGameObjects() {
         return gameObjects;

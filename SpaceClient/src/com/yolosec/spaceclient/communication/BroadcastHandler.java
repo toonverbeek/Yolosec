@@ -41,31 +41,30 @@ public class BroadcastHandler implements Runnable {
 
     @Override
     public void run() {
-        try {
+//        try {
             //communicator = new Communicator();
             //communicator.initiate();
-            Communicator.initiate();
-            
-            login("asdf2", "asdf2");
+            //Communicator.initiate();
+
+            //login("asdf3", "asdf3");
             try {
                 JsonReader reader = new JsonReader(new InputStreamReader(Communicator.getSocket().getInputStream()));
                 reader.setLenient(true);
-                
+
                 while (true) {
                     handleData(reader);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SocketException ex) {
-            Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (SocketException ex) {
+//            Logger.getLogger(BroadcastHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password) throws Exception {
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password);
-        Communicator.login(Serializer.serializeLogin(lc));
-
+        Communicator.sendLogin(Serializer.serializeLogin(lc));
     }
 
     public void sendData(GameObjectImpl gObject) {

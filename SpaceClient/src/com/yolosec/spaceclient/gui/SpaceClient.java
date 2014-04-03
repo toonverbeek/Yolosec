@@ -10,7 +10,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import com.yolosec.spaceclient.jms.TradeUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -24,23 +23,25 @@ public class SpaceClient extends StateBasedGame {
     public static int screenHeight;
     public static int screenWidth;
     private boolean mainMenuIsOpen = false;
+    public User user;
 
-    public SpaceClient(String gamename) {
+    public SpaceClient(String gamename, User user) {
         super(gamename);
+        this.user = user;
     }
     
-    public static void main(String[] args) {
-        try {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new SpaceClient("Yolosec"));
-            screenHeight = appgc.getScreenHeight();
-            screenWidth = appgc.getScreenWidth();
-            appgc.setDisplayMode(screenWidth, screenHeight, true);
-            appgc.start();
-        } catch (SlickException ex) {
-            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            AppGameContainer appgc;
+//            appgc = new AppGameContainer(new SpaceClient("Yolosec"));
+//            screenHeight = appgc.getScreenHeight();
+//            screenWidth = appgc.getScreenWidth();
+//            appgc.setDisplayMode(screenWidth, screenHeight, true);
+//            appgc.start();
+//        } catch (SlickException ex) {
+//            Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     @Override
     public void keyPressed(int key, char c) {
@@ -54,15 +55,12 @@ public class SpaceClient extends StateBasedGame {
                 mainMenuIsOpen = false;
                 this.enterState(0);
             }
-        } else if(key == Input.KEY_T) {
-            //trade
-            TradeUtil.LaunchAuctionHouse();
         }
     }
 
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
-        this.addState(new GameState());
+        this.addState(new GameState(user));
         this.addState(new MainMenuState());
     }
 }
