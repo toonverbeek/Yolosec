@@ -82,15 +82,8 @@ public class GameClient implements Runnable {
                         break;
 
                     case "LoginComm":
-                        
                         LoginComm lcomm = (LoginComm) packet;
-                        SpaceshipComm login = this.server.login(lcomm, this);
-                        
-                        this.server.sendLoggedIn(login, this);
-                        
-                        if(login != null){
-                            this.server.broadcastAsteroids();
-                        }
+                        this.server.login(lcomm, this);
                         break;
 
                     case "AsteroidComm":
@@ -116,11 +109,7 @@ public class GameClient implements Runnable {
 
                 case "LoginComm":
                     LoginComm lcomm = (LoginComm) packet;
-                    SpaceshipComm login = this.server.login(lcomm, this);
-                        
-                    this.server.sendLoggedIn(login, this);
-                    
-                    //this.server.broadcastAsteroids();
+                    this.server.login(lcomm, this);
                     break;
 
                 case "AsteroidComm":

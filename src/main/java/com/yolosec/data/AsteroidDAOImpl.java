@@ -22,18 +22,25 @@ import java.util.Map;
  */
 public class AsteroidDAOImpl implements AsteroidDAO {
     
-    private final int mapSizeX = 16000;
-    private final int mapSizeY = 16000;
+    //private final int mapSizeX = 16000;
+    //private final int mapSizeY = 16000;
+    private final int mapSizeX = 1300;
+    private final int mapSizeY = 800;
+    
+    private final int unitSizeX;
+    private final int unitSizeY;
     
     private int[][] map;
     private List<Position> occupiedPositions;
     
     private List<AsteroidComm> asteroids;
     
-    private final int amountOfAsteroids = 50;
+    private final int amountOfAsteroids = 10;
     
     public AsteroidDAOImpl(){
-        map = new int[1600][1600];
+        unitSizeX = mapSizeX / 10;
+        unitSizeY = mapSizeY / 10;
+        map = new int[unitSizeX][unitSizeY];
         occupiedPositions = new ArrayList<>();
         asteroids = new ArrayList<>();
         generateAsteroids();
@@ -55,8 +62,8 @@ public class AsteroidDAOImpl implements AsteroidDAO {
             if(ast.getX() == asteroid.getX() && ast.getY() == asteroid.getY()){
                 ast.setResourceAmount(asteroid.getResourceAmount());
                 if(GameService.debug){
-                    System.out.println(String.format("---[ASTEROID] X1 [ %s ] X2 [ %s ] Y1 [ %s ] Y2 [ %s ] NEW RESOURCE AMOUNT [ %s ]", ast.getX(), asteroid.getX(), ast.getY(), asteroid.getY(), asteroid.getResourceAmount()));
-                    System.out.println(String.format("---[ASTEROID] Setted asteroid resource amount %s \n", asteroid.getResourceAmount()));
+                    //System.out.println(String.format("---[ASTEROID] X1 [ %s ] X2 [ %s ] Y1 [ %s ] Y2 [ %s ] NEW RESOURCE AMOUNT [ %s ]", ast.getX(), asteroid.getX(), ast.getY(), asteroid.getY(), asteroid.getResourceAmount()));
+                    //System.out.println(String.format("---[ASTEROID] Setted asteroid resource amount %s \n", asteroid.getResourceAmount()));
                 }
                 break;
             }
@@ -91,10 +98,12 @@ public class AsteroidDAOImpl implements AsteroidDAO {
             Random r = new Random();
             //Remove 20 units from total range and add 10 to it
             //This way the asteroids cannot spawn 10 unit (==100pixels) from the map borders
-            int rMapUnitX = r.nextInt(1580);
+            int rUnitSizeX = unitSizeX - 20;
+            int rMapUnitX = r.nextInt(rUnitSizeX);
             rMapUnitX += 10;
             
-            int rMapUnitY = r.nextInt(1580);
+            int rUnitSizeY = unitSizeY - 20;
+            int rMapUnitY = r.nextInt(rUnitSizeY);
             rMapUnitY += 10;
             
             //#TODO: Determine asteroid type

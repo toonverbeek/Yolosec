@@ -80,10 +80,11 @@ public class SpaceshipDAOImpl implements SpaceshipDAO{
             connect = DriverManager.getConnection(ConnectionString.getConnectionString());
 
             preparedStatement = connect.prepareStatement("UPDATE spaceship SET position_x = ?, position_y = ?, direction = ?, resource_common = ?, resource_magic = ?, resource_rare = ? WHERE id = ?");
-            
+            int x = (int) ship.getX();
+            int y = (int) ship.getY();
             int[] resources = ship.getResources();
-            preparedStatement.setInt(1, (int) ship.getX());
-            preparedStatement.setInt(2, (int) ship.getY());
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
             preparedStatement.setInt(3, ship.getDirection());
             preparedStatement.setInt(4, resources[0]);
             preparedStatement.setInt(5, resources[1]);

@@ -16,6 +16,7 @@ import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.data.DatabaseDAO;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,28 +119,30 @@ public class GameService implements Runnable {
         } catch (Exception ex) {
             System.out.println(String.format("---[LOGIN] Excepting in PlayerLoginModule.login() - %s", ex.getMessage()));
         }
+        sendLoggedIn(spaceship, connection);
         //Always return the login request
         return spaceship;
     }
     
-    public void sendLoggedIn(SpaceshipComm ship, GameClient conn) {
+    public synchronized void sendLoggedIn(SpaceshipComm ship, GameClient conn) {
         if(ship != null){
             this.spaceshipDAO.sendSpaceshipComm(ship.getId(), conn);
+            this.broadcastAsteroids();
         } else {
             System.out.println("---[LOGIN] SENDING ERROR INLOG");
-            this.sendLoginError(conn);
+            this.spaceshipDAO.sendSpaceshipComm(-1, conn);
         }
     }
     
-    public void sendLoginError(GameClient conn) {
+    public synchronized void sendLoginError(GameClient conn) {
         try {
-            PrintWriter writer = new PrintWriter(conn.getSocket().getOutputStream());
+            PrintWriter writer = new PrintWriter(conn.getSocket().getOutputStream(), true);
             LoginCommError er = new LoginCommError(LoginCommError.class.getSimpleName());
             String json = Serializer.serializeLoginCommErrorAsGamePacktet(er);
-            System.out.println("---[LOGIN] JSON: " + json);
+            //Send
             writer.println(json);
         } catch (IOException ex) {
-            System.out.println(String.format("---[LOGIN] Excepting in PlayerLoginModule.sendLoginError() - %s", ex.getMessage()));
+            System.err.println(String.format("@@@[LOGIN] Excepting in PlayerLoginModule.sendLoginError() - %s", ex.getMessage()));
         }
     }
     
@@ -160,7 +163,8 @@ public class GameService implements Runnable {
     }
     
     public void broadcastAsteroids(){
-        asteroidDAO.sendAsteroidComms((List<GameClient>)this.clients.keySet());
+        List<GameClient> clien = new ArrayList<>(this.clients.keySet());
+        asteroidDAO.sendAsteroidComms(clien);
     }
     
     /* ---------------------------------------------------------------------------------------------------------------------------
@@ -173,13 +177,16 @@ public class GameService implements Runnable {
     
     public synchronized void updateSpaceshipDatabase(GameClient conn){
         try {
-            Integer shipId = clients.get(conn);
+            int shipId = clients.get(conn);
+            System.out.println("---[UPDATESHIP] ship ID: "+shipId);
             SpaceshipComm onlineSpaceship = spaceshipDAO.getOnlineSpaceship(shipId);
-            spaceshipDAO.updateSpaceshipDatabase(onlineSpaceship);
+            if(onlineSpaceship != null){
+                spaceshipDAO.updateSpaceshipDatabase(onlineSpaceship);
+            }
         } catch (ClassNotFoundException ex) {
-            System.err.println(String.format("MySQL connector not found in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
+            System.err.println(String.format("@@@[ERROR] MySQL connector not found in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
         } catch (SQLException ex) {
-            System.err.println(String.format("SQL Exception in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
+            System.err.println(String.format("@@@[ERROR] SQL Exception in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
         }
     }
     

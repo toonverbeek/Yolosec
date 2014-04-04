@@ -43,6 +43,7 @@ public class ConsoleApp implements Runnable {
                 case "a":
                     System.out.println("---[CONSOLE] Reset Asteroids");
                     this.connServer.resetAsteroids();
+                    this.connServer.broadcastAsteroids();
                     break;
                 case "getIp":
                 case "ip":
