@@ -5,20 +5,12 @@
  */
 package com.yolosec.spaceclient.dao;
 
-import com.ptsesd.groepb.shared.AsteroidType;
-import com.ptsesd.groepb.shared.LoginComm;
-import com.ptsesd.groepb.shared.Serializer;
 import com.yolosec.spaceclient.dao.interfaces.GameObjectDAO;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.communication.BroadcastHandler;
-import com.yolosec.spaceclient.communication.Communicator;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
@@ -62,12 +54,16 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 Asteroid ast = (Asteroid) goi;
                 Asteroid existing = asteroidExists(ast);
                 if (existing == null) {
-                    System.out.println("adding new asteroid");
+                    //System.out.println("adding new asteroid");
                     gameObjects.add(goi);
                 } else {
                     //update resource amount of asteroid
                     //check of resource amount has changed
+                    //System.out.println("existing asteroid perform check");
+                    //System.out.println("Existing resource amount: " + existing.getResourceAmount());
+                    //System.out.println("Asteroid resource amount: " + ast.getResourceAmount());
                     if (ast.getResourceAmount() != existing.getResourceAmount()) {
+                        //System.out.println("got updated asteroid");
                         existing.setResourceAmount(ast.getResourceAmount());
                     }
                 }

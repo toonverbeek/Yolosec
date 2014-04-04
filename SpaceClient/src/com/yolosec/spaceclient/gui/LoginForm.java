@@ -39,9 +39,6 @@ public class LoginForm extends javax.swing.JFrame {
             Communicator.initiate();
             l_wrong.setVisible(false);
 
-            Runnable receiver = new LoginReceiver();
-            Thread t = new Thread(receiver);
-            t.start();
         } catch (SocketException ex) {
             ex.printStackTrace();
             Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,6 +143,9 @@ public class LoginForm extends javax.swing.JFrame {
             password2 += c;
         }
 
+        Runnable receiver = new LoginReceiver();
+        Thread t = new Thread(receiver);
+        t.start();
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password2);
         String json = Serializer.serializeLogin(lc);
         Communicator.sendLogin(json);
@@ -206,10 +206,8 @@ public class LoginForm extends javax.swing.JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            System.out.println(sc.getId());
-            System.out.println("Receive login");
             try {
-                if (sc != null) {
+                if (sc != null && sc.getId() != -1) {
                     Spaceship s = new Spaceship(sc);
                     User user = new User(s, "Space_Invader1337");
                     AppGameContainer appgc;
@@ -219,8 +217,10 @@ public class LoginForm extends javax.swing.JFrame {
                     screenWidth = appgc.getScreenWidth();
                     appgc.setDisplayMode(screenWidth, screenHeight, true);
                     appgc.start();
+                    setVisible(false);
+                } else {
+                    l_wrong.setVisible(true);
                 }
-                setVisible(false);
             } catch (SlickException ex) {
                 ex.printStackTrace();
             }
