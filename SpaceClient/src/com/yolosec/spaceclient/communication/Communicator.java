@@ -38,7 +38,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.174";
+    public static final String IP_ADDRESS = "145.93.58.8";
     private static JsonReader jreader;
 
     public static void sendData(String json) {
@@ -60,6 +60,7 @@ public class Communicator {
                 for (GamePacket gp : packets) {
                     if (gp instanceof SpaceshipComm) {
                         SpaceshipComm sc = (SpaceshipComm) gp;
+
                         gameObjects.add(new Spaceship(sc));
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
@@ -73,6 +74,7 @@ public class Communicator {
                     Spaceship spaceship = new Spaceship(sc);
 
                     if (gameObjects.contains(spaceship)) {
+                        
                     }
                     gameObjects.add(spaceship); //always add, for now
 

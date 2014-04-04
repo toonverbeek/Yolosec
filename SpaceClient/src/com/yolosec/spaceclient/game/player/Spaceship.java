@@ -61,8 +61,10 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     public Spaceship(SpaceshipComm fromPacket) {
         this.width = 10;
         this.height = 10;
-        fromPacket.getResources();
-        fromPacket.getId();
+        commonResources = fromPacket.getResources()[0];
+        magicResources = fromPacket.getResources()[1];
+        rareResources = fromPacket.getResources()[2];
+        id = fromPacket.getId();
         fromPacket.getDirection();
         position = new Vector2f(fromPacket.getX(), fromPacket.getY());
         init();
@@ -217,14 +219,12 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         if (input.isKeyDown(Input.KEY_SPACE)) {
             mining = true;
             miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
-            mininglasers2 = new Vector2f(minedAsteroid.getX() + (minedAsteroid.maxResourceAmount /2), minedAsteroid.getY() + (minedAsteroid.maxResourceAmount / 2));
+            mininglasers2 = new Vector2f(minedAsteroid.getX() + (minedAsteroid.maxResourceAmount / 2), minedAsteroid.getY() + (minedAsteroid.maxResourceAmount / 2));
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
-                this.commonResources += .1;
-                 System.out.println("Current mined res: " + minedAsteroid.resourceAmount);
-                 System.out.println("Current calc res: " + (commonResources - oldCommonResources));
-            Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int)minedAsteroid.getX(), (int)minedAsteroid.getY()));
-            minedAsteroid.resourceAmount -= .1;
+                this.commonResources += 1;
+                Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getX(), (int) minedAsteroid.getY()));
+                minedAsteroid.resourceAmount -= .1;
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
             } else if (type == AsteroidType.rare) {
@@ -232,7 +232,6 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
             }
             return mining;
         }
-       
 
         mining = false;
         return mining;
@@ -240,5 +239,11 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
     public void stopMining() {
         mining = false;
+    }
+
+    public void setResources(int[] resources) {
+        this.commonResources = resources[0];
+        this.magicResources = resources[1];
+        this.rareResources = resources[2];
     }
 }

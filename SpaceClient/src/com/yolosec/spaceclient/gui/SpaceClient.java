@@ -1,5 +1,7 @@
 package com.yolosec.spaceclient.gui;
 
+import com.ptsesd.groepb.shared.ItemComm;
+import com.ptsesd.groepb.shared.jms.MessagingGateway;
 import com.yolosec.spaceclient.game.player.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +57,17 @@ public class SpaceClient extends StateBasedGame {
                 mainMenuIsOpen = false;
                 this.enterState(0);
             }
+        } else if (key == Input.KEY_T) {
+            MessagingGateway mg = new MessagingGateway("clientRequestorQueue", "clientReplierQueue") {
+                
+                @Override
+                public void onReceivedMessage(ItemComm item) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            
+            mg.openConnection();
+            mg.sendItemComm(new ItemComm(1, 1, true));
         }
     }
 

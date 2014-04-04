@@ -67,11 +67,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 } else {
                     //update resource amount of asteroid
                     //check of resource amount has changed
-                    System.out.println("existing asteroid perform check");
-                    System.out.println("Existing resource amount: " + existing.getResourceAmount());
-                    System.out.println("Asteroid resource amount: " + ast.getResourceAmount());
                     if (ast.getResourceAmount() != existing.getResourceAmount()) {
-                        System.out.println("got updated asteroid");
                         existing.setResourceAmount(ast.getResourceAmount());
                     }
                 }
@@ -84,6 +80,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 } else {
                     //update position from spaceship
                     existing.setPosition(spa.getPosition());
+                    existing.setResources(spa.getResources());
                 }
             }
         }
