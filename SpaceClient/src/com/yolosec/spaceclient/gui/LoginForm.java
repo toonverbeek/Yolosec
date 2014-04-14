@@ -27,10 +27,11 @@ import org.newdawn.slick.SlickException;
  */
 public class LoginForm extends javax.swing.JFrame {
 
-    SpaceshipComm sc = null;
+    SpaceshipComm spaceshipComm = null;
 
     /**
-     * Creates new form LoginForm
+     * Creates a new LoginForm which enables the user to enter his username and
+     * password.
      */
     public LoginForm() {
         try {
@@ -133,8 +134,18 @@ public class LoginForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         l_wrong.setVisible(false);
+        handleLogin();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    /**
+     * Gets the username and password from the associated input fields and c
+     * constructs a new loginComm object and sends it to the server as Json in a new thread.
+     */
+    private void handleLogin() {
         String username = jtf_username.getText();
         char[] password = jp_password.getPassword();
 
@@ -143,14 +154,13 @@ public class LoginForm extends javax.swing.JFrame {
             password2 += c;
         }
 
-        Runnable receiver = new LoginReceiver();
+        Runnable receiver = new LoginListener();
         Thread t = new Thread(receiver);
         t.start();
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password2);
         String json = Serializer.serializeLogin(lc);
         Communicator.sendLogin(json);
-
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -197,18 +207,23 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JLabel l_wrong;
     // End of variables declaration//GEN-END:variables
 
-    class LoginReceiver implements Runnable {
+    /**
+     * Listens for a login response from the server. If the value returned by the server (of type
+     * SpaceshipComm) is not null, a new Spaceship object is constructed as well
+     * as a new user. The gamescreen is then launched alongside the gameworld.
+     */
+    class LoginListener implements Runnable {
 
         @Override
         public void run() {
             try {
-                sc = Communicator.receiveLogin();
+                spaceshipComm = Communicator.receiveLogin();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             try {
-                if (sc != null && sc.getId() != -1) {
-                    Spaceship s = new Spaceship(sc);
+                if (spaceshipComm != null && spaceshipComm.getId() != -1) {
+                    Spaceship s = new Spaceship(spaceshipComm);
                     User user = new User(s, "Space_Invader1337");
                     AppGameContainer appgc;
                     SpaceClient client = new SpaceClient("Yolosec", user);

@@ -18,7 +18,6 @@ import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import org.newdawn.slick.AngelCodeFont;
 
@@ -27,14 +26,36 @@ import org.newdawn.slick.AngelCodeFont;
  * @author Toon
  */
 public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableComponent, GameWorld {
-
+    /**
+     * The TiledMap that will define the location of the GameObjects and Players.
+     */
     private TiledMap tileMap;
+    
+    /**
+     * The GameObjectDAO is the link between the GameServer and the Gameworld.
+     * It passes all the new incoming GameObjects to the GameWorld from the Gameserver.
+     */
     private GameObjectDAOImpl gameObjectDAO;
+    
     private Spaceship player;
+    
     private Camera camera;
+    
+    /**
+     * A list of all active GameObjects.
+     * The GameObjects in this list will be drawn and updated as necessary. 
+     */
     private List<GameObjectImpl> gameObjects = new ArrayList<>();
+    
     private HashMap<String, AngelCodeFont> fontSet;
 
+    /**
+     * Creates a new instance of GameWorldImpl.
+     * The GameWorld handles the update and draw methods for all GameObjects.
+     * The GameWorld also handles the drawing of the Map.
+     * @param player the player owning this instance.
+     * @throws SlickException 
+     */
     public GameWorldImpl(Spaceship player) throws SlickException {
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
@@ -71,7 +92,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 //        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
 //        camera.translate(g, player.getSpaceship());
 
-        g.drawString("Amount of gameObjects " +gameObjects.size(), 50, 250);
+        g.drawString("Amount of gameObjects " + gameObjects.size(), 50, 250);
         player.render(g, true);
         AngelCodeFont resourceFont = fontSet.get("resource_font");
         for (GameObject gObject : gameObjects) {

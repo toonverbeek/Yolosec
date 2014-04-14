@@ -38,7 +38,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.58.8";
+    public static final String IP_ADDRESS = "145.93.50.24";
     private static JsonReader jreader;
 
     public static void sendData(String json) {
@@ -49,8 +49,13 @@ public class Communicator {
         return socket;
     }
 
-    /*
-     Retrieves 
+    /**
+     * Uses a jReader that is wrapped around a socket to listen for an incoming datastream.
+     * The incoming data is segregated per type and a corresponding "COMM"(communication) class is constructed using this data.
+     * The COMM class is finally added to a list and returned to the caller.
+     * @param jreader which listens for a stream on the socket.
+     * @return the list of COMM objects which were constructed with data read from the socket.
+     * @throws Exception 
      */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
         gameObjects = new ArrayList<>();
@@ -89,11 +94,20 @@ public class Communicator {
 
     }
 
+    /**
+     * Sends a login request as json to the socket output stream.
+     * @param json the json to be sent.
+     */
     public static void sendLogin(String json) {
         System.out.println("login: " + json);
         writer.println(json);
     }
 
+    /**
+     * Initiates the socket and thus the connection the server.
+     * @return true if the connection was successful, false otherwise.
+     * @throws SocketException 
+     */
     public static boolean initiate() throws SocketException {
         try {
             System.out.println("-----Initializing Comm Link to Server");
@@ -115,6 +129,11 @@ public class Communicator {
         }
     }
 
+    /**
+     * Listens for a response to a login request.
+     * @return the SpaceShipComm object that belongs to the login request, null if an exception occurred.
+     * @throws Exception 
+     */
     public static SpaceshipComm receiveLogin() throws Exception {
         SpaceshipComm spacecomm = null;
         while (spacecomm == null) {

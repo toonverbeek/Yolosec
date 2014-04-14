@@ -22,9 +22,21 @@ import com.yolosec.spaceclient.observing.NodeImpl;
  */
 public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameObjectDAO, DrawCallback {
 
+    /**
+     * Holds the GameObjects that are currently relevant for the GameWorld.
+     */
     private List<GameObjectImpl> gameObjects;
+    
+    /**
+     * Used for communication with the GameServer.
+     */
     private BroadcastHandler broadcastHandler;
 
+    /**
+     * Creates a new instance of type GameObjectDAOImpl.s Keeps track of all the
+     * (relevant)GameObjects in the world. Receives updates from the server and
+     * sends the to the GameWorldImpl and vice versa.
+     */
     public GameObjectDAOImpl() {
         broadcastHandler = new BroadcastHandler(this);
         Thread th = new Thread(broadcastHandler);
@@ -33,6 +45,11 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     }
 
+    /**
+     * Sends a gameObject to the server.
+     *
+     * @param gameObject the GameObject to send.
+     */
     public void sendData(GameObjectImpl gameObject) {
         broadcastHandler.sendData(gameObject);
     }
@@ -59,9 +76,6 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 } else {
                     //update resource amount of asteroid
                     //check of resource amount has changed
-                    //System.out.println("existing asteroid perform check");
-                    //System.out.println("Existing resource amount: " + existing.getResourceAmount());
-                    //System.out.println("Asteroid resource amount: " + ast.getResourceAmount());
                     if (ast.getResourceAmount() != existing.getResourceAmount()) {
                         //System.out.println("got updated asteroid");
                         existing.setResourceAmount(ast.getResourceAmount());
@@ -85,7 +99,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
     /**
      * *
      * Checks if a spaceship already exists in the local gameclient gameobject
-     * list
+     * list.
      *
      * @param ship the object to check
      * @return an instance of the ship if it exists, null otherwise.
@@ -105,19 +119,19 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     /**
      * *
-     * Checks if an asteroid exists in the local gameclient gameobject list
+     * Checks if an asteroid exists in the local gameclient gameobject list.
      *
      * @param ast the asteroid to check for
      * @return an instance of the asteroid if it exists, null otherwise.
      */
     private Asteroid asteroidExists(Asteroid ast) {
-        float astX = ast.getX();
-        float astY = ast.getY();
+        float astX = ast.getXPosition();
+        float astY = ast.getYPosition();
 
         for (GameObjectImpl goimpl : gameObjects) {
             if (goimpl instanceof Asteroid) {
                 Asteroid compareAst = (Asteroid) goimpl;
-                if (compareAst.getX() == astX && compareAst.getY() == astY) {
+                if (compareAst.getXPosition() == astX && compareAst.getYPosition() == astY) {
                     return compareAst;
                 }
             }

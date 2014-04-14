@@ -7,9 +7,6 @@ package com.yolosec.spaceclient.game.world;
 
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
-import com.ptsesd.groepb.shared.Serializer;
-import com.ptsesd.groepb.shared.SpaceshipComm;
-import com.yolosec.spaceclient.communication.Communicator;
 import java.awt.Rectangle;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -18,10 +15,7 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -29,7 +23,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Asteroid extends GameObjectImpl implements DrawableComponent {
 
-    private float x, y;
+    private float xPosition, yPosition;
     public int resourceAmount;
     private final AsteroidType type;
     private Rectangle asteroidBounding;
@@ -37,22 +31,42 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
     public int maxResourceAmount;
     private AngelCodeFont resourceFont;
 
-    public float getX() {
-        return x;
+    /**
+     * 
+     * @return the x Position of the asteroid.
+     */
+    public float getXPosition() {
+        return xPosition;
     }
 
-    public float getY() {
-        return y;
+    /**
+     * 
+     * @return the y Position of the asteroid.
+     */
+    public float getYPosition() {
+        return yPosition;
     }
 
+    /**
+     * Sets the amount of resources this asteroid can hold.
+     * @param resourceAmount the new amount of resources this asteroid will contain.
+     */
     public void setResourceAmount(int resourceAmount) {
         this.resourceAmount = resourceAmount;
     }
 
+    /**
+     * 
+     * @return the amount of resources currently available in the asteroid.
+     */
     public int getResourceAmount() {
         return resourceAmount;
     }
 
+    /**
+     * 
+     * @return the type of the asteroid (Common, Magic, Rare)
+     */
     public AsteroidType getType() {
         return type;
     }
@@ -66,26 +80,43 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         this.resourceFont = font;
     }
 
+    /**
+     * Creates a new instance of Asteroid. 
+     * An Asteroid is a game object that allows a player to mine from it. 
+     * By mining, the player will gain resources while the Asteroid's available resources will slowly get depleted.
+     * Asteroids spawn randomly and it's positions are obtained from the gameserver.
+     * @param fromPacket the packet that was received from the gameserver from which the asteroid will be constructed.
+     */
     public Asteroid(AsteroidComm fromPacket) {
-        this.x = fromPacket.getX();
-        this.y = fromPacket.getY();
+        this.xPosition = fromPacket.getX();
+        this.yPosition = fromPacket.getY();
         this.resourceAmount = fromPacket.getResourceAmount();
         this.maxResourceAmount = resourceAmount;
-        astroidCircle = new Circle(x, y, resourceAmount);
+        astroidCircle = new Circle(xPosition, yPosition, resourceAmount);
 
         this.asteroidBounding = new Rectangle((int) astroidCircle.getX(), (int) astroidCircle.getY(), resourceAmount, resourceAmount);
         this.type = fromPacket.getType();
 
     }
 
+    /**
+     * Creates a new instance of Asteroid. 
+     * An Asteroid is a game object that allows a player to mine from it. 
+     * By mining, the player will gain resources while the Asteroid's available resources will slowly get depleted.
+     * Asteroids spawn randomly and it's positions are usually obtained from the gameserver.
+     * @param x the x-position to spawn the asteroid at.
+     * @param y the y-position to spawn the asteroid at.
+     * @param resourceAmount the amount of resources this Asteroid should initially hold.
+     * @param type defines the type of this Asteroid (Common, Magic, Rare)
+     */
     public Asteroid(float x, float y, int resourceAmount, AsteroidType type) {
-        this.x = x;
-        this.y = y;
+        this.xPosition = x;
+        this.yPosition = y;
         this.resourceAmount = resourceAmount;
         this.maxResourceAmount = resourceAmount;
         astroidCircle = new Circle(x, y, resourceAmount);
-        this.x = astroidCircle.getX();
-        this.y = astroidCircle.getY();
+        this.xPosition = astroidCircle.getX();
+        this.yPosition = astroidCircle.getY();
         this.asteroidBounding = new Rectangle((int) astroidCircle.getX(), (int) astroidCircle.getY(), resourceAmount, resourceAmount);
 
         this.type = type;
@@ -97,6 +128,12 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Updates this instance of Asteroid. 
+     * Checks for player collision, and if colliding, starts depleting the amount of resources this asteroid holds.
+     * @param gc the gameContainer which handles drawing logic.
+     * @param spaceship the spaceship that is initializing mining.
+     */
     public void updateAsteroid(GameContainer gc, Spaceship spaceship) {
         //TODO resourceamount to formula
 
@@ -127,12 +164,12 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             g.setColor(Color.pink);
         }
         
-        int locX = (int) x + ((maxResourceAmount - resourceAmount) / 2);
-        int locY = (int) y + ((maxResourceAmount - resourceAmount) / 2);
+        int locX = (int) xPosition + ((maxResourceAmount - resourceAmount) / 2);
+        int locY = (int) yPosition + ((maxResourceAmount - resourceAmount) / 2);
         
         g.drawOval(locX, locY, resourceAmount, resourceAmount);
         g.setColor(Color.white);
-        g.drawRect(x, y, asteroidBounding.width, asteroidBounding.height);
-        resourceFont.drawString(x, y, String.valueOf(resourceAmount));
+        g.drawRect(xPosition, yPosition, asteroidBounding.width, asteroidBounding.height);
+        resourceFont.drawString(xPosition, yPosition, String.valueOf(resourceAmount));
     }
 }

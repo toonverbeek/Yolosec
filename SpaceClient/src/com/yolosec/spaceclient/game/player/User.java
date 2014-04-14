@@ -8,7 +8,6 @@ package com.yolosec.spaceclient.game.player;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
-import com.yolosec.spaceclient.game.player.Spaceship;
 
 /**
  *
