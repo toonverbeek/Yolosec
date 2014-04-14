@@ -19,6 +19,8 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.world.Asteroid;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.fills.GradientFill;
 
 /**
  *
@@ -144,7 +146,12 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         if (mining) {
             g.drawLine(miningLasers1.x, miningLasers1.y, mininglasers2.x, mininglasers2.y);
         }
+        
+        if (self) {
+            g.setColor(Color.blue);
+        }
         g.draw(polygon);
+        g.setColor(Color.white);
     }
 
     /**
@@ -287,6 +294,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
     /**
      * Sets the current direction for this spaceship.
+     *
      * @param direction the new direction.
      */
     public void setDirection(int direction) {
@@ -299,11 +307,14 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     }
 
     /**
-     * Called when the spaceship is currently colliding with an asteroid.
-     * If the spacebar key is pressed, the player will start collection resources and updates will be sent to the server.
+     * Called when the spaceship is currently colliding with an asteroid. If the
+     * spacebar key is pressed, the player will start collection resources and
+     * updates will be sent to the server.
+     *
      * @param type the Type of Asteroid the player is mining.
      * @param minedAsteroid the Asteroid the player is mining.
-     * @return true if the player is effectively mining (i.e. pressing spacebar), false otherwise.
+     * @return true if the player is effectively mining (i.e. pressing
+     * spacebar), false otherwise.
      */
     public boolean mine(AsteroidType type, Asteroid minedAsteroid) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
@@ -333,7 +344,9 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
 
     /**
      * Sets the Common, Magic and Rare resources for this spacehip.
-     * @param resources the new int[] containing the new values for the resources.
+     *
+     * @param resources the new int[] containing the new values for the
+     * resources.
      */
     public void setResources(int[] resources) {
         this.commonResources = resources[0];

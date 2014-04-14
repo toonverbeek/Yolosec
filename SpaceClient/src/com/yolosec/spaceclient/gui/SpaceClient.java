@@ -59,16 +59,16 @@ public class SpaceClient extends StateBasedGame {
                 this.enterState(0);
             }
         } else if (key == Input.KEY_T) {
-            MessagingGateway mg = new MessagingGateway("clientRequestorQueue", "clientReplierQueue") {
-
-                @Override
-                public void onReceivedMessage(ItemComm item) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-            };
-
-            mg.openConnection();
-            mg.sendItemComm(new ItemComm(1, 1, true));
+//            MessagingGateway mg = new MessagingGateway("clientRequestorQueue", "clientReplierQueue") {
+//
+//                @Override
+//                public void onReceivedMessage(ItemComm item) {
+//                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                }
+//            };
+//
+//            mg.openConnection();
+//            mg.sendItemComm(new ItemComm(1, 1, true));
         }
     }
 
