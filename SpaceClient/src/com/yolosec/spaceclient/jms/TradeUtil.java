@@ -15,8 +15,7 @@ import com.yolosec.auctionhouse.gui.AuctionHouseFrame;
 public class TradeUtil {
     
     public static void LaunchAuctionHouse() {
-        AuctionHouseFrame aFrame = new AuctionHouseFrame();
-        aFrame.setVisible(true);
+        
     }
     
 }
