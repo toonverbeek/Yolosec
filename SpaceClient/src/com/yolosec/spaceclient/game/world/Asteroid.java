@@ -145,20 +145,49 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
      */
     public void updateAsteroid(GameContainer gc, Spaceship spaceship) {
         //TODO resourceamount to formula
+        boolean toDraw1 = false;
+        boolean toDraw2 = false;
+        if (xPosition >= Viewport.viewportPos.x && xPosition <= Viewport.viewportPos.x + (SpaceClient.screenWidth - asteroidBounding.width)) {
+            toDraw1 = true;
+        }
+        if (yPosition >= Viewport.viewportPos.y && yPosition <= Viewport.viewportPos.y + (SpaceClient.screenHeight - asteroidBounding.height)) {
+            toDraw2 = true;
+        }
+        if (toDraw1 && toDraw2) {
+            int drawPositionX = (int) (xPosition - Viewport.viewportPos.x);
+            int drawPositionY = (int) (yPosition - Viewport.viewportPos.y);
+            Shape astroidCircleDraw = new Circle(drawPositionX, drawPositionY, resourceAmount);
+            Rectangle asteroidBoundingDraw =new Rectangle((int) astroidCircleDraw.getX(), (int) astroidCircleDraw.getY(), resourceAmount, resourceAmount);
 
-        if (this.asteroidBounding.intersects(spaceship.getRectangle())) {
-            if (resourceAmount > 5) {
+            if (asteroidBoundingDraw.intersects(spaceship.getRectangle())) {
+                if (resourceAmount > 5) {
                 //callback
-                //if player is mining (i.e. pressing spacebar)
-                if (spaceship.mine(this.getType(), this)) {
+                    //if player is mining (i.e. pressing spacebar)
+                    if (spaceship.mine(this.getType(), this)) {
+
+                    }
+                } else {
+                    spaceship.stopMining();
 
                 }
             } else {
                 spaceship.stopMining();
-
             }
         } else {
-            spaceship.stopMining();
+            if (this.asteroidBounding.intersects(spaceship.getRectangle())) {
+                if (resourceAmount > 5) {
+                    //callback
+                    //if player is mining (i.e. pressing spacebar)
+                    if (spaceship.mine(this.getType(), this)) {
+
+                    }
+                } else {
+                    spaceship.stopMining();
+
+                }
+            } else {
+                spaceship.stopMining();
+            }
         }
         //asteroidBounding.width = resourceAmount * 2;
     }
@@ -177,8 +206,7 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
         if (toDraw1 && toDraw2) {
             int drawPositionX = (int) (xPosition - Viewport.viewportPos.x);
             int drawPositionY = (int) (yPosition - Viewport.viewportPos.y);
-            
-            
+
             if (this.type == AsteroidType.common) {
                 g.setColor(Color.red);
             } else if (this.type == AsteroidType.magic) {
