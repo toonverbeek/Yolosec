@@ -384,8 +384,8 @@ public class Spaceship extends GameObjectImpl {
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += 1;
+                minedAsteroid.resourceAmount -= 1;
                 Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
-                minedAsteroid.resourceAmount -= .1;
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
             } else if (type == AsteroidType.rare) {
