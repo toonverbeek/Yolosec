@@ -30,6 +30,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
      * The TiledMap that will define the location of the GameObjects and Players.
      */
     private TiledMap tileMap;
+    public static long MAPSIZE = 8000;
     
     /**
      * The GameObjectDAO is the link between the GameServer and the Gameworld.
@@ -37,9 +38,10 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
      */
     private GameObjectDAOImpl gameObjectDAO;
     
-    private Spaceship player;
+    private Viewport playerViewport;
     
-    private Camera camera;
+    //private Camera camera;
+    
     
     /**
      * A list of all active GameObjects.
@@ -59,27 +61,29 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     public GameWorldImpl(Spaceship player) throws SlickException {
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
-        tileMap = new TiledMap("/map.tmx");
-        this.player = player;
-        camera = new Camera(tileMap, tileMap.getWidth(), tileMap.getHeight());
+        tileMap = new TiledMap("/newmap.tmx");
+        
+        this.playerViewport = new Viewport(player, tileMap);
+        //camera = new Camera(tileMap, tileMap.getWidth(), tileMap.getHeight());
     }
 
     @Override
     public void update(GameContainer gc) {
-        player.update(gc);
-        gameObjectDAO.sendData(player);
+        playerViewport.update(gc);
+        gameObjectDAO.sendData(playerViewport);
         gameObjects.clear();
         gameObjects.addAll(gameObjectDAO.getGameObjects());
         for (GameObjectImpl gObject : gameObjects) {
             if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
-                ast.updateAsteroid(gc, player);
-                if (ast.isIntersecting(player)) {
+                ast.updateAsteroid(gc, playerViewport.getSpaceship());
+                if (ast.isIntersecting(playerViewport)) {
                     //if asteroid is being mined, start sending updates to server 
                     //gameObjectDAO.sendData(ast);
                 }
             } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
+                //playerViewport.getSpaceship().update(gc);
                 spaceship.update(gc);
             }
         }
@@ -92,19 +96,20 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 //        tileMap.render((int) player.getSpaceship().getPosition().x + (tileWidth * 2), (int) player.getSpaceship().getPosition().y + (tileHeight * 2), mapX, mapY, mapX + tileCountWidth, mapY + tileCountHeight);
 //        camera.translate(g, player.getSpaceship());
 
+        
+        //player.render(g, true);
+        playerViewport.render(g, true);
+        
+        g.drawString("X : " + playerViewport.getSpaceship().getPosition().x + " Y: " + playerViewport.getSpaceship().getPosition().y, 50, 50);
+        g.drawString("Accel: " + playerViewport.getSpaceship().getAcceleration(), 50, 70);
+        g.drawString("Common Resources: " + playerViewport.getSpaceship().getResources()[0], 50, 90);
+        g.drawString("Magic Resources: " + playerViewport.getSpaceship().getResources()[1], 50, 110);
+        g.drawString("Rare Resources: " + playerViewport.getSpaceship().getResources()[2], 50, 130);
         g.drawString("Amount of gameObjects " + gameObjects.size(), 50, 250);
-        player.render(g, true);
+        
         AngelCodeFont resourceFont = fontSet.get("resource_font");
-        for (GameObject gObject : gameObjects) {
-            if (gObject instanceof Asteroid) {
-                Asteroid ast = (Asteroid) gObject;
-                ast.setResourceFont(resourceFont);
-                ast.render(g, false);
-            } else if (gObject instanceof Spaceship) {
-                Spaceship spaceship = (Spaceship) gObject;
-                spaceship.render(g, false);
-            }
-        }
+        playerViewport.renderGameObjects(g, resourceFont,gameObjects);
+        
     }
 
     public void setFontSet(HashMap<String, AngelCodeFont> fontSet) {

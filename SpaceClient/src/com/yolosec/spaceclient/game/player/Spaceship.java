@@ -10,23 +10,28 @@ import com.ptsesd.groepb.shared.AsteroidType;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.spaceclient.communication.Communicator;
+import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
+import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.GameWorldImpl;
+import com.yolosec.spaceclient.game.world.Viewport;
+import com.yolosec.spaceclient.gui.SpaceClient;
+import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
+import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.awt.Rectangle;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
-import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
-import com.yolosec.spaceclient.game.world.Asteroid;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.fills.GradientFill;
 
 /**
  *
  * @author Toon
  */
-public class Spaceship extends GameObjectImpl implements DrawableComponent {
+public class Spaceship extends GameObjectImpl {
 
     //id
     private int id = 3;
@@ -38,7 +43,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     //vectors
     private final Vector2f velocity = new Vector2f(0, 0);
     private final Vector2f acceleration = new Vector2f(0, 0);
-    private Vector2f position, miningLasers1, mininglasers2;
+    private Vector2f position, miningLasers1, mininglasers2, viewportPos;
 
     //numbers
     private final float horizontalAcceleration = 0, resistance = .001f, speed = 10;
@@ -98,6 +103,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         id = fromPacket.getId();
         fromPacket.getDirection();
         position = new Vector2f(fromPacket.getX(), fromPacket.getY());
+        viewportPos = new Vector2f(screenWidth, screenHeight);
         init();
     }
 
@@ -120,33 +126,44 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         prevDirection = Direction.NEUTRAL;
     }
 
-    @Override
+    //@Override
     public void update(GameContainer gc) {
         this.input = gc.getInput();
         calculateMovement(input);
         boundingRectangle.x = (int) position.x;
         boundingRectangle.y = (int) position.y;
-
     }
 
-    @Override
+    //@Override
     public void render(Graphics g, boolean self) {
 //        if (self) {
 //            polygon.setLocation(new Vector2f(SpaceClient.screenWidth / 2, SpaceClient.screenHeight / 2));
 //        } else {
 //            polygon.setLocation(position.x + (SpaceClient.screenWidth /2), position.y + (SpaceClient.screenHeight /2));
 //        }
-        polygon.setLocation(position.x, position.y);
-        g.drawString("X : " + position.x + " Y: " + position.y, 50, 50);
-        g.drawString("Accel: " + acceleration, 50, 70);
-        g.drawString("Common Resources: " + this.getResources()[0], 50, 90);
-        g.drawString("Magic Resources: " + this.getResources()[1], 50, 110);
-        g.drawString("Rare Resources: " + this.getResources()[2], 50, 130);
+        if (self) {
+            polygon.setLocation(position.x, position.y);
+        } else {
+            boolean toDraw1 = false;
+            boolean toDraw2 = false;
+            if (position.x >= Viewport.viewportPos.x && position.x <= Viewport.viewportPos.x + (SpaceClient.screenWidth - width)) {
+                toDraw1 = true;
+            }
+            if (position.x >= Viewport.viewportPos.y && position.x <= Viewport.viewportPos.y + (SpaceClient.screenHeight - height)) {
+                toDraw2 = true;
+            }
+            if (toDraw1 && toDraw2) {
+                int drawPositionX = (int) (position.x - Viewport.viewportPos.x);
+                int drawPositionY = (int) (position.y - Viewport.viewportPos.y);
+                polygon.setLocation(drawPositionX, drawPositionY);
+            }
+        }
+
         g.drawRect((int) position.x, (int) position.y, width, height);
         if (mining) {
             g.drawLine(miningLasers1.x, miningLasers1.y, mininglasers2.x, mininglasers2.y);
         }
-        
+
         if (self) {
             g.setColor(Color.blue);
         }
@@ -179,7 +196,48 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
      */
     private void setLocation() {
         //set x and y
-        position.add(velocity);
+        //position.add(velocity);
+
+        Vector2f newTranslation = new Vector2f();
+        //for every direction check if the spaceship is colliding with a border
+        //if the player is colliding set its acceleration on the particular axis to 0
+        //if the player is not colliding update his position
+
+        if (this.position.x > 0) {
+            newTranslation.x += this.velocity.x;
+        } else {
+            this.position.x = 1;
+            this.velocity.x = 0;
+            this.acceleration.x = 0;
+        }
+
+        if (this.position.x < (screenWidth - width)) {
+            newTranslation.x += this.velocity.x;
+        } else {
+            this.position.x = screenWidth - width;
+            this.velocity.x = 0;
+            this.acceleration.x = 0;
+        }
+
+        if (this.position.y > 0) {
+            newTranslation.y += this.velocity.y;
+        } else {
+            this.position.y = 1;
+            this.velocity.y = 0;
+            this.acceleration.y = 0;
+        }
+
+        if (this.position.y < (screenHeight - height)) {
+            newTranslation.y += this.velocity.y;
+        } else {
+            this.position.y = (screenHeight - height);
+            this.velocity.y = 0;
+            this.acceleration.y = 0;
+        }
+
+        this.position.add(newTranslation);
+        //this.position.add(velocity);
+
     }
 
     /**
@@ -301,7 +359,7 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         direction = 1;
     }
 
-    @Override
+    //@Override
     public java.awt.Rectangle getRectangle() {
         return this.boundingRectangle;
     }
@@ -319,8 +377,10 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
     public boolean mine(AsteroidType type, Asteroid minedAsteroid) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
             mining = true;
+            int drawPositionX = (int) (minedAsteroid.getXPosition() - Viewport.viewportPos.x);
+            int drawPositionY = (int) (minedAsteroid.getYPosition() - Viewport.viewportPos.y);
             miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
-            mininglasers2 = new Vector2f(minedAsteroid.getXPosition() + (minedAsteroid.maxResourceAmount / 2), minedAsteroid.getYPosition() + (minedAsteroid.maxResourceAmount / 2));
+            mininglasers2 = new Vector2f(drawPositionX + (minedAsteroid.maxResourceAmount / 2), drawPositionY + (minedAsteroid.maxResourceAmount / 2));
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += 1;
@@ -352,5 +412,17 @@ public class Spaceship extends GameObjectImpl implements DrawableComponent {
         this.commonResources = resources[0];
         this.magicResources = resources[1];
         this.rareResources = resources[2];
+    }
+
+    public Vector2f getAcceleration() {
+        return this.acceleration;
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 }

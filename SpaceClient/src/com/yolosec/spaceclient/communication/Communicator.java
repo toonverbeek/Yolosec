@@ -38,7 +38,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.217.200";
+    public static final String IP_ADDRESS = "145.93.209.249";
     private static JsonReader jreader;
 
     public static void sendData(String json) {
