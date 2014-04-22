@@ -1,11 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ptsesd.groepb.shared;
-
-;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -132,6 +126,12 @@ public class Serializer {
                     String password = (String) map.get("password");
                     LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                     gameobjects.add(lcomm);
+                } else if (header.equals(MessagingComm.class.getSimpleName())) {
+                    Integer spaceshipid = (Integer) map.get("spaceShipId");
+                    String username = (String) map.get("username");
+                    String message = (String) map.get("message");
+                    Date timestamp = (Date) map.get("timestamp");
+                    gameobjects.add(new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username, timestamp));
                 } else if (header.equals(LoginCommError.class.getSimpleName())){
                     gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
                 }
@@ -168,6 +168,11 @@ public class Serializer {
     
     public static String serializeLoginCommErrorAsGamePacktet(LoginCommError err) {
         String json = gson.toJson(err, LoginCommError.class);
+        return json;
+    }
+    
+    public static String serializeMessageAsGamePacket(MessagingComm mCom) {
+        String json = gson.toJson(mCom, MessagingComm.class);
         return json;
     }
 }

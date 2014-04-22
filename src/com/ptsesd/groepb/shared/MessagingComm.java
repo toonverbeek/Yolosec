@@ -1,25 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.ptsesd.groepb.shared;
+
+import java.util.Date;
 
 /**
  *
  * @author Tim
  */
-public class MessagingComm {
+public class MessagingComm extends GamePacket {
     
     private int spaceShipId;
     private String message;
     private String username;
+    private Date timestamp;
 
-    public MessagingComm(int spaceShipId, String message, String username) {
+    public MessagingComm(String header, int spaceShipId, String message, String username, Date timestamp) {
+        super(header);
         this.spaceShipId = spaceShipId;
         this.message = message;
         this.username = username;
+        this.timestamp = timestamp;
     }
 
     public int getSpaceShipId() {
@@ -46,7 +45,7 @@ public class MessagingComm {
         this.username = username;
     }
     
-    
-
-    
+    public Date getTimestamp() {
+        return this.timestamp;
+    }
 }
