@@ -20,13 +20,13 @@ import org.junit.Test;
 public class StressTest extends TestCase {
 
     private ExecutorService executor;
-    private final int amountOfClients = 10;
+    private final int amountOfClients = 5;
     private int amountLoggedIn = 0;
     private static final int USERIDBASE = 2000000000;
     private static final int WAITTIME = 5000;
-//    private static final String IP_ADDRESS = "127.0.0.1";
+    private static final String IP_ADDRESS = "127.0.0.1";
 //    private static final String IP_ADDRESS = "192.168.24.78‏";
-    private static final String IP_ADDRESS = "145.93.57.150";
+//    private static final String IP_ADDRESS = "145.93.57.150";
     private static HashMap<Integer, String> userList;
     private static boolean hasData = false;
     private static int testsCompleted = 0;
@@ -142,7 +142,7 @@ public class StressTest extends TestCase {
             assertNull(ErrM);
             assertTrue(userList.isEmpty());
             assertEquals(amountOfClients, amountLoggedIn);
-            
+
             System.out.println("---Users removed---");
             if (ErrM != null) {
                 System.out.println("Errors occurred: " + ErrM.getMessage());
@@ -208,41 +208,14 @@ public class StressTest extends TestCase {
      */
     @Test
     public synchronized void testClient() {
+        System.out.println("---[STRESSTEST] Start testClient");
         Exception ErrM;
 
         ErrM = initializeTestClient();
         assertNull(ErrM);
 
         try {
-            System.out.println("---[STRESSTEST] Start testClient");
             wait(WAITTIME);
-//            int i = 0;
-//            while (true) {
-//                if (running) {
-//                    int j = 1;
-//                    i += j;
-//                } else {
-//                    break;
-//                }
-//            }
-//            System.out.println(i);
-
-//            String input = "";
-//            boolean isRunning = true;
-//            while (isRunning) {
-//                Scanner sc = new Scanner(System.in);
-//                input = sc.next();
-//                switch (input) {
-//                    case "e":
-//                    case "exit":
-//                        System.out.println("---[CONSOLE] Exit runtime...");
-//                        isRunning = false;
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-            System.out.println("---[STRESSTEST] Stop testClient");
         } catch (Exception e) {
             ErrM = e;
         }
@@ -250,6 +223,7 @@ public class StressTest extends TestCase {
 
         ErrM = shutDownTestClient();
         assertNull(ErrM);
+        System.out.println("---[STRESSTEST] Stop testClient");
     }
 
     // TODO add test methods here. The name must begin with 'test'. For example:

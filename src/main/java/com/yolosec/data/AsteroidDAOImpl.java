@@ -1,4 +1,3 @@
-
 package com.yolosec.data;
 
 import com.yolosec.domain.Position;
@@ -10,11 +9,9 @@ import java.util.Random;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
 import com.ptsesd.groepb.shared.Serializer;
-import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.service.GameService;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 /**
  *
@@ -22,10 +19,10 @@ import java.util.Map;
  */
 public class AsteroidDAOImpl implements AsteroidDAO {
     
-    //private final int mapSizeX = 16000;
-    //private final int mapSizeY = 16000;
-    private final int mapSizeX = 1300;
-    private final int mapSizeY = 800;
+    private final int mapSizeX = 16000;
+    private final int mapSizeY = 16000;
+    //private final int mapSizeX = 1300;
+    //private final int mapSizeY = 800;
     
     private final int unitSizeX;
     private final int unitSizeY;
@@ -35,7 +32,7 @@ public class AsteroidDAOImpl implements AsteroidDAO {
     
     private List<AsteroidComm> asteroids;
     
-    private final int amountOfAsteroids = 10;
+    private final int amountOfAsteroids = 50;
     
     public AsteroidDAOImpl(){
         unitSizeX = mapSizeX / 10;
@@ -214,6 +211,4 @@ public class AsteroidDAOImpl implements AsteroidDAO {
     private int calculateSizeFromResource(int resourceAmount){
         return resourceAmount;
     }
-
-    
 }

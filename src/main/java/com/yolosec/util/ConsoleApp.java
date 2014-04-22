@@ -17,14 +17,7 @@ public class ConsoleApp implements Runnable {
 
     public ConsoleApp(GameService connServer) {
         this.connServer = connServer;
-        System.out.println("---[CONSOLE] Starting console...");
-        System.out.println("---[CONSOLE] Available commands are:");
-        System.out.println("---[CONSOLE] -getStatus [-g]");
-        System.out.println("---[CONSOLE] -resetAsteroids [-a]");
-        System.out.println("---[CONSOLE] -getIp [-ip]");
-        System.out.println("---[CONSOLE] -logCpu [-c]");
-        System.out.println("---[CONSOLE] -exit");
-        System.out.println("------------------------------------");
+        this.printCommands();
         isRunning = true;
     }
 
@@ -53,6 +46,10 @@ public class ConsoleApp implements Runnable {
                 case "c":
                     System.out.println(logCpuTime());
                     break;
+                case "h":
+                case "help":
+                    printCommands();
+                    break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
                     //Runtime.getRuntime().exit(0);
@@ -62,6 +59,18 @@ public class ConsoleApp implements Runnable {
                     break;
             }
         }
+    }
+
+    private void printCommands() {
+        System.out.println("---[CONSOLE] Starting console...");
+        System.out.println("---[CONSOLE] Available commands are:");
+        System.out.println("---[CONSOLE] -getStatus [-g]");
+        System.out.println("---[CONSOLE] -resetAsteroids [-a]");
+        System.out.println("---[CONSOLE] -getIp [-ip]");
+        System.out.println("---[CONSOLE] -logCpu [-c]");
+        System.out.println("---[CONSOLE] -help [-h]");
+        System.out.println("---[CONSOLE] -exit");
+        System.out.println("------------------------------------");
     }
 
     private String getIpAddresses() {

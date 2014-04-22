@@ -1,7 +1,6 @@
 package com.yolosec.service;
 
 import com.yolosec.domain.GameClient;
-import com.yolosec.data.AsteroidDAOImpl;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,9 +10,12 @@ import java.util.Map;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.LoginCommError;
+import com.ptsesd.groepb.shared.MessagingComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.data.AsteroidDAOImpl;
 import com.yolosec.data.DatabaseDAO;
+import com.yolosec.data.MessageDAOImpl;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,23 +28,25 @@ import java.util.logging.Logger;
  * @author user
  */
 public class GameService implements Runnable {
+
     public static boolean debug = true;
     private ServerSocket server;
 
     private boolean isRunning = false;
-    
+
     private Map<GameClient, Integer> clients;
 
     //Service responsible for the spaceships
     private SpaceshipServiceImpl spaceshipDAO;
-    
+
     private GameBroadcastService broadcastModule;
-    
+
     private AsteroidDAOImpl asteroidDAO;
+    private MessageDAOImpl messagingDAO;
 
     public GameService(GameBroadcastService broadcastModule) {
         this.clients = new HashMap<>();
-        
+
         this.broadcastModule = broadcastModule;
         try {
             spaceshipDAO = new SpaceshipServiceImpl(this);
@@ -51,9 +55,10 @@ public class GameService implements Runnable {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         asteroidDAO = new AsteroidDAOImpl();
-        
+        messagingDAO = new MessageDAOImpl();
+
         try {
             this.server = new ServerSocket(1337);
 
@@ -64,7 +69,7 @@ public class GameService implements Runnable {
             System.exit(-1);
         }
     }
-    
+
     @Override
     public void run() {
         System.out.println("---[SERVER] Started PlayerLocationModule run()");
@@ -72,9 +77,9 @@ public class GameService implements Runnable {
             try {
                 Socket newClient = server.accept();
                 newClient.setKeepAlive(true);
-                
+
                 GameClient runnable = new GameClient(newClient, this);
-                
+
                 Thread t = new Thread(runnable);
                 t.start();
                 System.out.println("\n");
@@ -84,17 +89,16 @@ public class GameService implements Runnable {
             }
         }
     }
-    
+
     /* ---------------------------------------------------------------------------------------------------------------------------
-    *  -------------------------------------------------------- Login Methods ----------------------------------------------------
-    *  --------------------------------------------------------------------------------------------------------------------------- */
-    
-    public synchronized void logout(GameClient connection){
+     *  -------------------------------------------------------- Login Methods ----------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
+    public synchronized void logout(GameClient connection) {
         System.out.println(String.format("---[LOGOUT] Cleaning up after: %s", connection.getSocket().getInetAddress().getHostAddress()));
         //Remove spaceship information
         int spaceshipId = clients.get(connection);
         spaceshipDAO.removeOnlineSpaceship(spaceshipId);
-        
+
         //Remove GameClient
         clients.remove(connection);
     }
@@ -115,7 +119,7 @@ public class GameService implements Runnable {
             }
 
             System.out.println(String.format("---[LOGIN] Returned logged user = %s || connected = %s", lcomm.getUsername(), spaceship != null));
-            
+
         } catch (Exception ex) {
             System.out.println(String.format("---[LOGIN] Excepting in PlayerLoginModule.login() - %s", ex.getMessage()));
         }
@@ -123,9 +127,9 @@ public class GameService implements Runnable {
         //Always return the login request
         return spaceship;
     }
-    
+
     public synchronized void sendLoggedIn(SpaceshipComm ship, GameClient conn) {
-        if(ship != null){
+        if (ship != null) {
             this.spaceshipDAO.sendSpaceshipComm(ship.getId(), conn);
             this.broadcastAsteroids();
         } else {
@@ -133,7 +137,7 @@ public class GameService implements Runnable {
             this.spaceshipDAO.sendSpaceshipComm(-1, conn);
         }
     }
-    
+
     public synchronized void sendLoginError(GameClient conn) {
         try {
             PrintWriter writer = new PrintWriter(conn.getSocket().getOutputStream(), true);
@@ -145,77 +149,101 @@ public class GameService implements Runnable {
             System.err.println(String.format("@@@[LOGIN] Excepting in PlayerLoginModule.sendLoginError() - %s", ex.getMessage()));
         }
     }
-    
+
     /* ---------------------------------------------------------------------------------------------------------------------------
-    *  ---------------------------------------------------- Asteroid Methods -----------------------------------------------------
-    *  --------------------------------------------------------------------------------------------------------------------------- */
-        
+     *  ---------------------------------------------------- Asteroid Methods -----------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
     public List<AsteroidComm> getAsteroids() {
         return asteroidDAO.findAll();
     }
-    
-    public synchronized void recievedAsteroid(AsteroidComm asteroid){
+
+    public synchronized void recievedAsteroid(AsteroidComm asteroid) {
         this.asteroidDAO.updateAsteroid(asteroid);
     }
-    
+
     public void resetAsteroids() {
         this.asteroidDAO.resetAsteroids();
     }
-    
-    public void broadcastAsteroids(){
+
+    public void broadcastAsteroids() {
         List<GameClient> clien = new ArrayList<>(this.clients.keySet());
         asteroidDAO.sendAsteroidComms(clien);
     }
-    
+
     /* ---------------------------------------------------------------------------------------------------------------------------
-    *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
-    *  --------------------------------------------------------------------------------------------------------------------------- */
-    
+     *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
     public synchronized void updateSpaceship(SpaceshipComm ship) {
         spaceshipDAO.updateSpaceship(ship);
     }
-    
-    public synchronized void updateSpaceshipDatabase(GameClient conn){
+
+    public synchronized void updateSpaceshipDatabase(GameClient conn) {
         try {
             int shipId = clients.get(conn);
-            System.out.println("---[UPDATESHIP] ship ID: "+shipId);
+            System.out.println("---[UPDATESHIP] ship ID: " + shipId);
             SpaceshipComm onlineSpaceship = spaceshipDAO.getOnlineSpaceship(shipId);
-            if(onlineSpaceship != null){
+            if (onlineSpaceship != null) {
                 spaceshipDAO.updateSpaceshipDatabase(onlineSpaceship);
             }
         } catch (ClassNotFoundException ex) {
             System.err.println(String.format("@@@[ERROR] MySQL connector not found in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
         } catch (SQLException ex) {
             System.err.println(String.format("@@@[ERROR] SQL Exception in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
+        } catch (Exception ex) {
+            System.err.println(String.format("@@@[ERROR] Exception in GameService.updateSpaceshipDatabase() - %s", ex.getMessage()));
         }
+
     }
-    
-    public void broadcastPositions(){
+
+    public void broadcastPositions() {
         spaceshipDAO.sendSpaceshipComms(clients);
     }
-    
+
     /* ---------------------------------------------------------------------------------------------------------------------------
-    *  ------------------------------------------------- Information Methods -----------------------------------------------------
-    *  --------------------------------------------------------------------------------------------------------------------------- */
-    
-    public String getStatusInformation(){
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append(String.format("\n ---[INFO] Status information { %s } \n", new Date().toString()));
-        
-        for(Map.Entry<GameClient, Integer> connection : clients.entrySet()){
-            SpaceshipComm ship = spaceshipDAO.getOnlineSpaceship(connection.getValue());
-            builder.append(String.format("---[INFO] Spaceship ID {%s} X {%s} Y {%s} DIRECTION {%s}", new Object[]{ship.getId(), ship.getX(), ship.getY(), ship.getDirection()}));
-            
-            GameClient value = connection.getKey();
-            builder.append(String.format("---[INFO] Connection IP {%s} PORT {%s} \n" , new Object[]{value.getSocket().getLocalAddress().toString(), value.getSocket().getPort()}));
-            
+     *  ------------------------------------------------- Messaging Methods -------------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
+    public synchronized void receivedMessage(MessagingComm message) {
+        try {
+            this.messagingDAO.addMessage(message);
+        } catch (Exception ex) {
+            System.err.println(String.format("@@@[ERROR] Exception in GameService.updateMessageDatabase() - %s", ex.getMessage()));
         }
-        builder.append("-----------------------------------------------------------");
-        
-        return builder.toString();
+    }
+
+    public void broadcastMessages() {
+        List<GameClient> cliens = new ArrayList<>(this.clients.keySet());
+        messagingDAO.sendMessageComms(cliens);
+    }
+
+    public List<MessagingComm> getMessages() {
+        return messagingDAO.findAll();
     }
     
+    public void resetMessages() {
+        messagingDAO.resetMessages();
+    }
+
+    /* ---------------------------------------------------------------------------------------------------------------------------
+     *  ------------------------------------------------- Information Methods -----------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
+    public String getStatusInformation() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(String.format("\n ---[INFO] Status information { %s } \n", new Date().toString()));
+
+        for (Map.Entry<GameClient, Integer> connection : clients.entrySet()) {
+            SpaceshipComm ship = spaceshipDAO.getOnlineSpaceship(connection.getValue());
+            builder.append(String.format("---[INFO] Spaceship ID {%s} X {%s} Y {%s} DIRECTION {%s}", new Object[]{ship.getId(), ship.getX(), ship.getY(), ship.getDirection()}));
+
+            GameClient value = connection.getKey();
+            builder.append(String.format("---[INFO] Connection IP {%s} PORT {%s} \n", new Object[]{value.getSocket().getLocalAddress().toString(), value.getSocket().getPort()}));
+
+        }
+        builder.append("-----------------------------------------------------------");
+
+        return builder.toString();
+    }
+
     public Boolean logCpuTime() {
         return this.broadcastModule.logCpuTime();
     }
