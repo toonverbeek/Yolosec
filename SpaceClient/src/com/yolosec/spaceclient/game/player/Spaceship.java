@@ -10,10 +10,8 @@ import com.ptsesd.groepb.shared.AsteroidType;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.spaceclient.communication.Communicator;
-import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.world.Viewport;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
@@ -23,7 +21,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -103,7 +100,6 @@ public class Spaceship extends GameObjectImpl {
         id = fromPacket.getId();
         fromPacket.getDirection();
         position = new Vector2f(fromPacket.getX(), fromPacket.getY());
-        viewportPos = new Vector2f(screenWidth, screenHeight);
         init();
     }
 
@@ -130,6 +126,7 @@ public class Spaceship extends GameObjectImpl {
     public void update(GameContainer gc) {
         this.input = gc.getInput();
         calculateMovement(input);
+
         boundingRectangle.x = (int) position.x;
         boundingRectangle.y = (int) position.y;
     }
@@ -141,34 +138,27 @@ public class Spaceship extends GameObjectImpl {
 //        } else {
 //            polygon.setLocation(position.x + (SpaceClient.screenWidth /2), position.y + (SpaceClient.screenHeight /2));
 //        }
+
+        int drawSpaceshipPositionX = 0;
+        int drawSpaceshipPositionY = 0;
         if (self) {
-            polygon.setLocation(position.x, position.y);
+            g.setColor(Color.blue);
+            drawSpaceshipPositionX = (int) (this.position.x - Viewport.viewportPos.x);
+            drawSpaceshipPositionY = (int) (this.position.y - Viewport.viewportPos.y);
         } else {
-            boolean toDraw1 = false;
-            boolean toDraw2 = false;
-            if (position.x >= Viewport.viewportPos.x && position.x <= Viewport.viewportPos.x + (SpaceClient.screenWidth - width)) {
-                toDraw1 = true;
-            }
-            if (position.x >= Viewport.viewportPos.y && position.x <= Viewport.viewportPos.y + (SpaceClient.screenHeight - height)) {
-                toDraw2 = true;
-            }
-            if (toDraw1 && toDraw2) {
-                int drawPositionX = (int) (position.x - Viewport.viewportPos.x);
-                int drawPositionY = (int) (position.y - Viewport.viewportPos.y);
-                polygon.setLocation(drawPositionX, drawPositionY);
-            }
+            g.setColor(Color.white);
+            drawSpaceshipPositionX = (int) this.position.x;
+            drawSpaceshipPositionY = (int) this.position.y;
         }
 
-        g.drawRect((int) position.x, (int) position.y, width, height);
+        polygon.setX(drawSpaceshipPositionX);
+        polygon.setY(drawSpaceshipPositionY);
+        g.draw(polygon);
+        g.drawRect((int) drawSpaceshipPositionX, (int) drawSpaceshipPositionY, width, height);
+        g.setColor(Color.white);
         if (mining) {
             g.drawLine(miningLasers1.x, miningLasers1.y, mininglasers2.x, mininglasers2.y);
         }
-
-        if (self) {
-            g.setColor(Color.blue);
-        }
-        g.draw(polygon);
-        g.setColor(Color.white);
     }
 
     /**
@@ -211,10 +201,10 @@ public class Spaceship extends GameObjectImpl {
             this.acceleration.x = 0;
         }
 
-        if (this.position.x < (screenWidth - width)) {
+        if (this.position.x < ((Viewport.tilemapWidth * Viewport.TILESIZE) - width)) {
             newTranslation.x += this.velocity.x;
         } else {
-            this.position.x = screenWidth - width;
+            this.position.x = ((Viewport.tilemapWidth * Viewport.TILESIZE) - width);
             this.velocity.x = 0;
             this.acceleration.x = 0;
         }
@@ -227,10 +217,10 @@ public class Spaceship extends GameObjectImpl {
             this.acceleration.y = 0;
         }
 
-        if (this.position.y < (screenHeight - height)) {
+        if (this.position.y < ((Viewport.tilemapHeight * Viewport.TILESIZE) - height)) {
             newTranslation.y += this.velocity.y;
         } else {
-            this.position.y = (screenHeight - height);
+            this.position.y =((Viewport.tilemapHeight * Viewport.TILESIZE) - height);
             this.velocity.y = 0;
             this.acceleration.y = 0;
         }
@@ -359,8 +349,12 @@ public class Spaceship extends GameObjectImpl {
         direction = 1;
     }
 
-    //@Override
+    @Override
     public java.awt.Rectangle getRectangle() {
+        int drawPositionX = (int) (position.x - Viewport.viewportPos.x);
+        int drawPositionY = (int) (position.y - Viewport.viewportPos.y);
+        boundingRectangle.x = drawPositionX;
+        boundingRectangle.y = drawPositionY;
         return this.boundingRectangle;
     }
 
@@ -377,10 +371,12 @@ public class Spaceship extends GameObjectImpl {
     public boolean mine(AsteroidType type, Asteroid minedAsteroid) {
         if (input.isKeyDown(Input.KEY_SPACE)) {
             mining = true;
-            int drawPositionX = (int) (minedAsteroid.getXPosition() - Viewport.viewportPos.x);
-            int drawPositionY = (int) (minedAsteroid.getYPosition() - Viewport.viewportPos.y);
-            miningLasers1 = new Vector2f(this.position.getX(), this.position.getY());
-            mininglasers2 = new Vector2f(drawPositionX + (minedAsteroid.maxResourceAmount / 2), drawPositionY + (minedAsteroid.maxResourceAmount / 2));
+            int drawAsteroidPositionX = (int) (minedAsteroid.getXPosition() - Viewport.viewportPos.x);
+            int drawAsteroidPositionY = (int) (minedAsteroid.getYPosition() - Viewport.viewportPos.y);
+            int drawSpaceshipPositionX = (int) (this.position.x - Viewport.viewportPos.x);
+            int drawSpaceshipPositionY = (int) (this.position.y - Viewport.viewportPos.y);
+            miningLasers1 = new Vector2f(drawSpaceshipPositionX, drawSpaceshipPositionY);
+            mininglasers2 = new Vector2f(drawAsteroidPositionX + (minedAsteroid.maxResourceAmount / 2), drawAsteroidPositionY + (minedAsteroid.maxResourceAmount / 2));
             int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += 1;

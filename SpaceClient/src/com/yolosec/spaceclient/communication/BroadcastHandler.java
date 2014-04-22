@@ -19,6 +19,7 @@ import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.world.Viewport;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import java.io.InputStreamReader;
 
