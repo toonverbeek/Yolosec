@@ -57,6 +57,11 @@ public class ConsoleApp implements Runnable {
                 case "getMessages":
                     this.getMessages();
                     break;
+                case "tm":
+                    MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 1, "TEST","ADMIN");
+                    mcom.setTimestamp();
+                    connServer.receivedMessage(mcom);
+                    break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
                     //Runtime.getRuntime().exit(0);

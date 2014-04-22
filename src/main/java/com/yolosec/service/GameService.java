@@ -204,6 +204,7 @@ public class GameService implements Runnable {
      *  --------------------------------------------------------------------------------------------------------------------------- */
     public synchronized void receivedMessage(MessagingComm message) {
         try {
+            message.setTimestamp();
             this.messagingDAO.addMessage(message);
         } catch (Exception ex) {
             System.err.println(String.format("@@@[ERROR] Exception in GameService.updateMessageDatabase() - %s", ex.getMessage()));
@@ -230,7 +231,7 @@ public class GameService implements Runnable {
             System.err.println(String.format("@@@[ERROR] Exception in GameService.getMessageDatabase() - %s", ex.getMessage()));
         }
     }
-
+    
     /* ---------------------------------------------------------------------------------------------------------------------------
      *  ------------------------------------------------- Information Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */

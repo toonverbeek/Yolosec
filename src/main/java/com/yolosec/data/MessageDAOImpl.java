@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,9 +61,10 @@ public class MessageDAOImpl implements MessageDAO {
             connect = DriverManager.getConnection(ConnectionString.getConnectionString());
             System.out.println("---[DATABASE] Connection established");
 
-            preparedStatementMessage = connect.prepareStatement("INSERT INTO messages (spaceship_id, message) VALUES (?, ?);");
+            preparedStatementMessage = connect.prepareStatement("INSERT INTO messages (spaceship_id, message, timestamp) VALUES (?, ?, ?);");
             preparedStatementMessage.setInt(1, message.getSpaceShipId());
             preparedStatementMessage.setString(2, message.getMessage());
+            preparedStatementMessage.setTimestamp(3, new Timestamp(message.getTimestamp().getTime()));
             preparedStatementMessage.executeUpdate();
             messages.add(message);
         } catch (ClassNotFoundException | SQLException e) {
@@ -78,6 +80,12 @@ public class MessageDAOImpl implements MessageDAO {
         return ErrM == null;
     }
 
+    /**
+     * Fetches all messages from the database and adds them to this.messages.
+     *
+     * @return Returns if the fetch succeeded
+     * @throws Exception
+     */
     public boolean getMessages() throws Exception {
         messages = new ArrayList<>();
         Exception ErrM = null;
@@ -90,15 +98,16 @@ public class MessageDAOImpl implements MessageDAO {
             connect = DriverManager.getConnection(ConnectionString.getConnectionString());
             System.out.println("---[DATABASE] Connection established");
 
-            preparedStatementMessage = connect.prepareStatement("SELECT messages.spaceship_id, messages.message, messages.timestamp, account.username FROM account RIGHT JOIN messages ON account.spaceship_id=messages.spaceship_id;");
+            preparedStatementMessage = connect.prepareStatement("SELECT messages.spaceship_id, messages.message, messages.timestamp, account.username FROM account RIGHT JOIN messages ON account.spaceship_id=messages.spaceship_id ORDER BY messages.timestamp;");
             ResultSet rs = preparedStatementMessage.executeQuery();
 
             while (rs.next()) {
                 Integer spaceshipid = rs.getInt("spaceship_id");
                 String message = rs.getString("message");
-                Date timestamp = rs.getDate("timestamp");
+                Date timestamp = (Date) rs.getTimestamp("timestamp");
                 String username = rs.getString("username");
-                MessagingComm mCom = new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username, timestamp);
+                MessagingComm mCom = new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username);
+                mCom.setTimestamp(timestamp);
                 messages.add(mCom);
             }
             System.out.println("---[DATABASE] GetMessages queried");
