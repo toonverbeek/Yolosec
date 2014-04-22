@@ -7,7 +7,7 @@ import java.util.Date;
  * @author Tim
  */
 public class MessagingComm extends GamePacket {
-    
+
     private int spaceShipId;
     private String message;
     private String username;
@@ -44,8 +44,12 @@ public class MessagingComm extends GamePacket {
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     public Date getTimestamp() {
+        if (this.timestamp == null) {
+            return new Date(1970, 1, 1);
+        }
+
         return this.timestamp;
     }
 }
