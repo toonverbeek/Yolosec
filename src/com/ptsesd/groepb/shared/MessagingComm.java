@@ -13,20 +13,15 @@ public class MessagingComm extends GamePacket {
     private String username;
     private Date timestamp;
 
-    public MessagingComm(String header, int spaceShipId, String message, String username, Date timestamp) {
+    public MessagingComm(String header, int spaceShipId, String message, String username) {
         super(header);
         this.spaceShipId = spaceShipId;
         this.message = message;
         this.username = username;
-        this.timestamp = timestamp;
     }
 
     public int getSpaceShipId() {
         return spaceShipId;
-    }
-
-    public void setSpaceShipId(int spaceShipId) {
-        this.spaceShipId = spaceShipId;
     }
 
     public String getMessage() {
@@ -51,5 +46,13 @@ public class MessagingComm extends GamePacket {
         }
 
         return this.timestamp;
+    }
+    
+    public void setTimestamp() {
+        this.timestamp = new Date();
+    }
+    
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

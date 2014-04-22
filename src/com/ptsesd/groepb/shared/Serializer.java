@@ -131,7 +131,9 @@ public class Serializer {
                     String username = (String) map.get("username");
                     String message = (String) map.get("message");
                     Date timestamp = (Date) map.get("timestamp");
-                    gameobjects.add(new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username, timestamp));
+                    MessagingComm mComm = new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username);
+                    mComm.setTimestamp(); //sets timestamp to now
+                    gameobjects.add(mComm);
                 } else if (header.equals(LoginCommError.class.getSimpleName())){
                     gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
                 }
