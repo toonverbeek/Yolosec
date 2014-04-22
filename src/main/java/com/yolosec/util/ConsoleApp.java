@@ -1,9 +1,12 @@
 package com.yolosec.util;
 
+import com.ptsesd.groepb.shared.MessagingComm;
 import com.yolosec.service.GameService;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -50,6 +53,10 @@ public class ConsoleApp implements Runnable {
                 case "help":
                     printCommands();
                     break;
+                case "m":
+                case "getMessages":
+                    this.getMessages();
+                    break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
                     //Runtime.getRuntime().exit(0);
@@ -67,6 +74,7 @@ public class ConsoleApp implements Runnable {
         System.out.println("---[CONSOLE] -getStatus [-g]");
         System.out.println("---[CONSOLE] -resetAsteroids [-a]");
         System.out.println("---[CONSOLE] -getIp [-ip]");
+        System.out.println("---[CONSOLE] -getMessages [-m]");
         System.out.println("---[CONSOLE] -logCpu [-c]");
         System.out.println("---[CONSOLE] -help [-h]");
         System.out.println("---[CONSOLE] -exit");
@@ -98,6 +106,18 @@ public class ConsoleApp implements Runnable {
             return "CPU logging enabled.";
         } else {
             return "CPU logging disabled.";
+        }
+    }
+
+    private void getMessages() {
+        this.connServer.getMessagesFromServer();
+        List<MessagingComm> messages = this.connServer.getMessages();
+        
+        for (MessagingComm item : messages) {
+            String username = item.getUsername();
+            String message = item.getMessage();
+            Date timestamp = item.getTimestamp();
+            System.out.println(String.format("-[CHAT] %s (%s): %s", username, timestamp.toString(), message));
         }
     }
 }

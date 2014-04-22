@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class MessageDAOImpl implements MessageDAO {
 
-    private List<MessagingComm> messages;
+    private ArrayList<MessagingComm> messages;
 
     @Override
     public List<MessagingComm> findAll() {
@@ -66,7 +67,7 @@ public class MessageDAOImpl implements MessageDAO {
             messages.add(message);
         } catch (ClassNotFoundException | SQLException e) {
             ErrM = e;
-            System.out.println("-Exception occurred while removing user: " + e.getMessage());
+            System.out.println("-Exception occurred while adding message: " + e.getMessage());
         } finally {
             preparedStatementMessage.close();
             connect.close();
@@ -78,6 +79,7 @@ public class MessageDAOImpl implements MessageDAO {
     }
 
     public boolean getMessages() throws Exception {
+        messages = new ArrayList<>();
         Exception ErrM = null;
         Connection connect = null;
         PreparedStatement preparedStatementMessage = null;
@@ -88,7 +90,7 @@ public class MessageDAOImpl implements MessageDAO {
             connect = DriverManager.getConnection(ConnectionString.getConnectionString());
             System.out.println("---[DATABASE] Connection established");
 
-            preparedStatementMessage = connect.prepareStatement("SELECT messages.spaceship_id, messages.message, messages,timestamp, account.username FROM account RIGHT JOIN messages ON account.spaceship_id=messages.spaceship_id;");
+            preparedStatementMessage = connect.prepareStatement("SELECT messages.spaceship_id, messages.message, messages.timestamp, account.username FROM account RIGHT JOIN messages ON account.spaceship_id=messages.spaceship_id;");
             ResultSet rs = preparedStatementMessage.executeQuery();
 
             while (rs.next()) {
@@ -102,7 +104,7 @@ public class MessageDAOImpl implements MessageDAO {
             System.out.println("---[DATABASE] GetMessages queried");
         } catch (ClassNotFoundException | SQLException e) {
             ErrM = e;
-            System.out.println("-Exception occurred while removing user: " + e.getMessage());
+            System.out.println("-Exception occurred while retrieving messages: " + e.getMessage());
         } finally {
             preparedStatementMessage.close();
             connect.close();

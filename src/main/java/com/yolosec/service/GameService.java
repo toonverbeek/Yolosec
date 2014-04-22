@@ -222,6 +222,14 @@ public class GameService implements Runnable {
     public void resetMessages() {
         messagingDAO.resetMessages();
     }
+    
+    public void getMessagesFromServer() {
+        try {
+            messagingDAO.getMessages();
+        } catch (Exception ex) {
+            System.err.println(String.format("@@@[ERROR] Exception in GameService.getMessageDatabase() - %s", ex.getMessage()));
+        }
+    }
 
     /* ---------------------------------------------------------------------------------------------------------------------------
      *  ------------------------------------------------- Information Methods -----------------------------------------------------
