@@ -25,40 +25,43 @@ public class EconomyService implements Serializable {
     private final ItemDAO itemDAO;
     private final AuctionHouse ah;
 
-    private final GameserverGateway gameserverGateway = new GameserverGateway() {
-
-        @Override
-        public boolean processRequest(Message message) {
-            try {
-                //process request going to gameserver (i.e. the reply after buy/sell occurred)
-                String json = message.getBody(String.class);
-                //extract all data from incoming json
-                JsonObject jObject = new JsonParser().parse(json).getAsJsonObject();
-
-                String requestType = jObject.get("request").getAsString();
-                ItemComm incomingItem = ItemSerializer.jsonToItem(json);
-                switch (requestType) {
-                    case "BuyItemRequest":
-                        return ah.newBuyItemRequest(incomingItem);
-                    case "SellItemRequest":
-                        return ah.newItemForSaleRequest(incomingItem);
-                    case "CancelItemForSale":
-                        return ah.cancelItemForSaleRequest(incomingItem);
-                    default:
-                        System.out.println("derp");
-                        break;
-                }
-            } catch (JMSException ex) {
-                Logger.getLogger(EconomyService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return false;
-        }
-    };
+    private final GameserverGateway gameserverGateway;
 
     public EconomyService() {
         this.itemDAO = new ItemDAO_JPAImpl();
         ah = new AuctionHouse();
         initItems();
+
+        gameserverGateway = new GameserverGateway() {
+
+            @Override
+            public boolean processRequest(Message message) {
+                try {
+                    System.out.println("hallo mama!");
+                    //process request going to gameserver (i.e. the reply after buy/sell occurred)
+                    String json = message.getBody(String.class);
+                    //extract all data from incoming json
+                    JsonObject jObject = new JsonParser().parse(json).getAsJsonObject();
+
+                    String requestType = jObject.get("request").getAsString();
+                    ItemComm incomingItem = ItemSerializer.jsonToItem(json);
+                    switch (requestType) {
+                        case "BuyItemRequest":
+                            return ah.newBuyItemRequest(incomingItem);
+                        case "SellItemRequest":
+                            return ah.newItemForSaleRequest(incomingItem);
+                        case "CancelItemForSale":
+                            return ah.cancelItemForSaleRequest(incomingItem);
+                        default:
+                            System.out.println("derp");
+                            break;
+                    }
+                } catch (JMSException ex) {
+                    Logger.getLogger(EconomyService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return false;
+            }
+        };
     }
 
     public void closeEntityManager() {

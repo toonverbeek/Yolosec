@@ -11,12 +11,12 @@
             <test-roots>
                 <root id="test.src.dir"/>
             </test-roots>
-            <included-library dirs="200">reference.SpaceLibraries.jar</included-library>
             <included-library dirs="200">libs.junit_4.classpath</included-library>
             <included-library dirs="200">libs.eclipselink.classpath</included-library>
             <included-library dirs="200">libs.jpa20-persistence.classpath</included-library>
             <included-library dirs="200">libs.MySQLDriver.classpath</included-library>
             <included-library dirs="200">file.reference.gson-2.2.4.jar</included-library>
+            <included-library dirs="200">reference.SpaceLibraries.jar</included-library>
             <included-library dirs="200">file.reference.gf-client.jar</included-library>
             <included-library dirs="200">file.reference.imq.jar</included-library>
             <included-library dirs="200">file.reference.jms.jar</included-library>
