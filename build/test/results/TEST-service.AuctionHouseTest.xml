@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="1" failures="0" hostname="Tonnu" name="service.AuctionHouseTest" skipped="0" tests="3" time="85.763" timestamp="2014-04-23T12:36:47">
+  <properties>
+    <property name="libs.jsp-compiler.javadoc" value="" />
+    <property name="netbeans.autoupdate.country" value="US" />
+    <property name="project.SpaceLibraries" value="../yolosec-libraries" />
+    <property name="javac.test.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar" />
+    <property name="libs.jsf20.maven-pom" value="" />
+    <property name="source.root" value="src" />
+    <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 7.4\java\docs\junit-3.8.2-api.zip" />
+    <property name="javac.includes" value="service/AuctionHouseTest.java" />
+    <property name="ant.core.lib" value="C:\Program Files\NetBeans 7.4\extide\ant\lib\ant.jar" />
+    <property name="javadoc.windowtitle" value="" />
+    <property name="libs.jsp-compilation.javadoc" value="" />
+    <property name="user.dir" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy" />
+    <property name="libs.javaee-api-7.0.src" value="C:\Users\Toon\Downloads\javaee-api-7.0.jar" />
+    <property name="libs.hibernate-persistence.javadoc" value="" />
+    <property name="java.vm.version" value="24.51-b03" />
+    <property name="file.reference.jms.jar" value="C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar" />
+    <property name="libs.MySQLDriver.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar" />
+    <property name="libs.eclipselinkmodelgen.src" value="" />
+    <property name="javadoc.notree" value="false" />
+    <property name="netbeans.autoupdate.version" value="1.23" />
+    <property name="libs.EclipseLink-GlassFish-v3.classpath" value="C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.antlr.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.asm.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.core.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.dbws.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.jpa.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.jpa.jpql.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.jpa.modelgen.processor.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.moxy.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\org.eclipse.persistence.oracle.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.persistence.jar" />
+    <property name="libs.javaee-web-api-6.0.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee-web-api-6.0.jar" />
+    <property name="libs.hibernate-support.maven-pom" value="" />
+    <property name="libs.hibernate-support.javadoc" value="" />
+    <property name="file.reference.gf-client.jar" value="C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar" />
+    <property name="libs.Java-EE-GlassFish-v3-Prelude.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="jdk.home" value="C:\Program Files\Java\jdk1.7.0_51" />
+    <property name="libs.javac-api.src" value="" />
+    <property name="javadoc.noindex" value="false" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="libs.Java-EE-GlassFish-v3-Prelude.src" value="" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="nb.show.statistics.ui" value="usageStatisticsEnabled" />
+    <property name="netbeans.autoupdate.variant" value="" />
+    <property name="have.tests" value="true" />
+    <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
+    <property name="j2ee.server.instance" value="[C:\Users\Toon\GlassFish_Server\glassfish;C:\Users\Toon\GlassFish_Server\glassfish\domains\domain2]deployer:gfv3ee6wc:localhost:38850" />
+    <property name="libs.javac-api.javadoc" value="" />
+    <property name="os.name" value="Windows 8" />
+    <property name="ant.file.EnterpriseEconomy-impl" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\nbproject\build-impl.xml" />
+    <property name="libs.beans-binding.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\beansbinding-1.2.1.jar" />
+    <property name="libs.javaee-endorsed-api-7.0.maven-pom" value="" />
+    <property name="ap.proc.none.internal" value="" />
+    <property name="j2ee.appclient.tool.mainclass" value="org.glassfish.appclient.client.AppClientFacade" />
+    <property name="libs.restapi.javadoc" value="" />
+    <property name="libs.JWSAntTasks.maven-pom" value="" />
+    <property name="libs.jstl.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jstl-api.jar" />
+    <property name="libs.testng.src" value="" />
+    <property name="libs.spring-webmvc3.0.src" value="" />
+    <property name="libs.restapi.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jaxrs-2.0\javax.ws.rs-api-2.0.jar" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="libs.jaxb.maven-pom" value="" />
+    <property name="os.arch" value="amd64" />
+    <property name="libs.eclipselink.src" value="" />
+    <property name="user.name" value="Toon" />
+    <property name="libs.jsf12.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="run.jvmargs.param" value="" />
+    <property name="libs.Comet-GlassFish-v3.javadoc" value="" />
+    <property name="libs.YAPT_RMI.classpath" value="C:\Users\Toon\Documents\NetBeansProjects\yapt\YAPT_RMI\dist\YAPT_RMI.jar" />
+    <property name="libs.spring-webmvc3.0.maven-pom" value="" />
+    <property name="libs.swing-layout.maven-pom" value="" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner service.AuctionHouseTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\test\results\TEST-service.AuctionHouseTest.xml crashfile=C:\Users\Toon\AppData\Local\Temp\junitvmwatcher1194222216067501651.properties propsfile=C:\Users\Toon\AppData\Local\Temp\junit8141266506163794222.properties" />
+    <property name="build.classes.dir" value="build/jar" />
+    <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
+    <property name="build.sysclasspath" value="ignore" />
+    <property name="ap.supported.internal" value="true" />
+    <property name="libs.javaee-endorsed-api-7.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.jaxws21.javadoc" value="C:\Program Files\NetBeans 7.4\java\docs\jaxws-api-doc.zip" />
+    <property name="includes" value="**" />
+    <property name="j2ee.platform.wsimport.classpath" value="C:/Users/Toon/GlassFish_Server/glassfish/modules/webservices-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/webservices-api-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/jaxb-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/jaxb-api-osgi.jar" />
+    <property name="user.country" value="US" />
+    <property name="manifest.file" value="src/conf/MANIFEST.MF" />
+    <property name="javadoc.encoding" value="UTF-8" />
+    <property name="javac.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar" />
+    <property name="libs.jsp-compilation-syscp.src" value="" />
+    <property name="libs.JAVADB_DRIVER_LABEL.src" value="" />
+    <property name="meta.inf" value="src/conf" />
+    <property name="netbeans.home" value="C:\Program Files\NetBeans 7.4\platform" />
+    <property name="build.compiler.emacs" value="true" />
+    <property name="libs.javaee-web-api-6.0.src" value="" />
+    <property name="libs.ejb3-persistence.src" value="" />
+    <property name="libs.jsp-compilation-syscp.classpath" value="C:\Program Files\NetBeans 7.4\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\glassfish-jspparser-4.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.7.0_51\jre\lib\endorsed" />
+    <property name="libs.hibernate-persistencemodelgen.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-jpamodelgen-1.1.1.Final.jar" />
+    <property name="user.language.format" value="nl" />
+    <property name="libs.Comet-GlassFish-v3.maven-pom" value="" />
+    <property name="test.includes" value="service/AuctionHouseTest.java" />
+    <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 7.4\platform\core\core.jar;C:\Program Files\NetBeans 7.4\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\core_ja.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\core_ru.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\org-openide-filesystems_ru.jar;C:\Program Files\NetBeans 7.4\platform\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 7.4\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\core_nb.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\core_nb_ru.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\org-netbeans-upgrader_ru.jar;C:\Program Files\NetBeans 7.4\nb\core\locale\org-netbeans-upgrader_zh_CN.jar" />
+    <property name="libs.Slick2D.src" value="" />
+    <property name="java.vm.specification.version" value="1.7" />
+    <property name="libs.primefaces.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\primefaces\primefaces-3.5.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\commons-fileupload-1.3.jar" />
+    <property name="libs.javaee-api-6.0.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee-api-6.0.jar" />
+    <property name="netbeans.productversion" value="NetBeans IDE 7.4 (Build 201310111528)" />
+    <property name="libs.hibernate-persistence.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\antlr-2.7.6.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\cglib-2.2.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\commons-collections-3.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\dom4j-1.6.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\jta-1.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-core-3.6.10.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-commons-annotations-3.2.0.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-entitymanager-3.6.10.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-tools-3.6.0.CR1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\javassist-3.12.0.GA.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\c3p0-0.9.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\oscache-2.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\slf4j-api-1.6.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\slf4j-simple-1.6.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-jpa-2.0-api-1.0.1.Final.jar" />
+    <property name="libs.jaxws21.src" value="" />
+    <property name="libs.YolosecLibs.src" value="" />
+    <property name="netbeans.autoupdate.language" value="en" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="debug-transport-appclient" value="dt_shmem" />
+    <property name="libs.javaee-api-6.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="javac.debug" value="true" />
+    <property name="libs.YolosecLibs.javadoc" value="" />
+    <property name="javadoc.splitindex" value="true" />
+    <property name="file.reference.gson-2.2.4.jar" value="C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar" />
+    <property name="file.separator" value="\" />
+    <property name="libs.Java-EE-GlassFish-v3-Prelude.maven-pom" value="" />
+    <property name="libs.Slick2D.classpath" value="C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\slick\lib\jinput.jar;C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\slick\lib\lwjgl_util.jar;C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\slick\lib\slick.jar;C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\lwjgl-2.9.1\jar\lwjgl.jar" />
+    <property name="libs.junit_4.maven-pom" value="" />
+    <property name="resource.dir" value="setup" />
+    <property name="javac.test.processorpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar" />
+    <property name="netbeans.buildnumber" value="201310111528" />
+    <property name="libs.JWSAntTasks.javadoc" value="" />
+    <property name="build.generated.sources.dir" value="build/generated-sources" />
+    <property name="user.variant" value="" />
+    <property name="libs.eclipselinkmodelgen.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.modelgen_2.5.1.v20130918-f2b9fc5.jar" />
+    <property name="libs.javaee-endorsed-api-7.0.src" value="" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="libs.junit.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\junit-3.8.2.jar" />
+    <property name="libs.jaxb.javadoc" value="C:\Program Files\NetBeans 7.4\ide\docs\jaxb-api-doc.zip" />
+    <property name="libs.struts.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\antlr-2.7.2.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\bsf-2.3.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-beanutils-1.8.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-chain-1.2.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-digester-1.8.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-fileupload-1.1.1.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-io-1.1.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-logging-1.0.4.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\commons-validator-1.3.1.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\jstl-1.0.2.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\oro-2.0.8.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\standard-1.0.6.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-core-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-el-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-extras-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-faces-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-mailreader-dao-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-scripting-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-taglib-1.3.10.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\struts\struts-tiles-1.3.10.jar" />
+    <property name="application.args.param" value="" />
+    <property name="org.openide.awt.SwingBrowserImpl.do-not-block-awt" value="false" />
+    <property name="ant.home" value="C:\Program Files\NetBeans 7.4\extide\ant" />
+    <property name="libs.junit_4.src" value="C:\Program Files\NetBeans 7.4\java\docs\junit-4.10-sources.jar" />
+    <property name="libs.testng.classpath" value="C:\Program Files\NetBeans 7.4\platform\modules\ext\testng-6.8.1-dist.jar" />
+    <property name="libs.absolutelayout.maven-pom" value="" />
+    <property name="ant.java.version" value="1.7" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_51\jre\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\maven\apache-maven-3.2.1\bin;C:\HashiCorp\Vagrant\bin;C:\Python27;." />
+    <property name="javadoc.author" value="false" />
+    <property name="libs.metro.maven-pom" value="" />
+    <property name="libs.EclipseLink-GlassFish-v3.src" value="" />
+    <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
+    <property name="libs.PostgreSQLDriver.src" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="basedir" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy" />
+    <property name="libs.jpa20-persistence.maven-pom" value="" />
+    <property name="build.ear.classes.dir" value="build/jar" />
+    <property name="jar.compress" value="false" />
+    <property name="libs.javaee-web-api-7.0.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee-web-api-7.0.jar" />
+    <property name="path.separator" value=";" />
+    <property name="libs.javaee-web-api-6.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="ant.junit.enabletestlistenerevents" value="true" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="libs.jaxws21.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\FastInfoset.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\gmbal-api-only.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\ha-api.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\javax.mail_1.4.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\jaxws-rt.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\jaxws-tools.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\management-api.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\mimepull.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\policy.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\saaj-impl.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\stax-ex.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\stax2-api.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\streambuffer.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\woodstox-core-asl.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\api\jaxws-api.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\api\jsr181-api.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\api\javax.annotation.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\jaxws22\api\saaj-api.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
+    <property name="libs.struts.src" value="" />
+    <property name="j2ee.appclient.mainclass.args" value="${j2ee.appclient.tool.args}" />
+    <property name="apple.awt.graphics.UseQuartz" value="true" />
+    <property name="user.language" value="en" />
+    <property name="j2ee.platform.classpath" value="C:/Users/Toon/GlassFish_Server/mq/lib/jaxm-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/javax.annotation-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/jaxb-api-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/webservices-api-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/bean-validator.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.batch-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.ejb-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.el.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.enterprise.concurrent-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.enterprise.concurrent.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.enterprise.deploy-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.faces.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.inject.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.interceptor-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.jms-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.json.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.mail.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.management.j2ee-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.persistence.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.resource-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.security.auth.message-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.security.jacc-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.servlet-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.servlet.jsp-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.servlet.jsp.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.servlet.jsp.jstl-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.servlet.jsp.jstl.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.transaction-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.websocket-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.ws.rs-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.xml.registry-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/javax.xml.rpc-api.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/jaxb-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/webservices-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/weld-osgi-bundle.jar" />
+    <property name="testng.mode" value="testng" />
+    <property name="libs.JAXB-ENDORSED.maven-pom" value="" />
+    <property name="libs.spring-framework.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring\spring-2.5.6.SEC03.jar" />
+    <property name="libs.eclipselink.maven-pom" value="" />
+    <property name="libs.YAPT_RMI.src" value="" />
+    <property name="libs.primefaces.javadoc" value="" />
+    <property name="libs.spring-framework300.maven-pom" value="" />
+    <property name="run.test.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar:build/test/classes" />
+    <property name="ant.project.invoked-targets" value="test-single" />
+    <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 7.4\platform\docs\swing-layout-1.0.4-doc.zip" />
+    <property name="sun.java2d.dpiaware" value="true" />
+    <property name="libs.ejb3-persistence.maven-pom" value="" />
+    <property name="https.nonProxyHosts" value="localhost|127.0.0.1|Tonnu" />
+    <property name="libs.PostgreSQLDriver.maven-pom" value="" />
+    <property name="java.class.version" value="51.0" />
+    <property name="libs.JAVADB_DRIVER_LABEL.classpath" value="C:\Program Files\Java\jdk1.7.0_51\db\lib\derby.jar;C:\Program Files\Java\jdk1.7.0_51\db\lib\derbyclient.jar;C:\Program Files\Java\jdk1.7.0_51\db\lib\derbynet.jar" />
+    <property name="libs.javaee-endorsed-api-6.0.src" value="" />
+    <property name="libs.eclipselink.javadoc" value="" />
+    <property name="libs.jsp-compilation.maven-pom" value="" />
+    <property name="user.properties.file" value="C:\Users\Toon\AppData\Roaming\NetBeans\7.4\build.properties" />
+    <property name="libs.spring-framework.src" value="" />
+    <property name="libs.javac-api.maven-pom" value="" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="libs.JAXB-ENDORSED.javadoc" value="" />
+    <property name="j2ee.server.middleware" value="C:/Users/Toon/GlassFish_Server" />
+    <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\NetBeans 7.4\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
+    <property name="libs.spring-framework300.src" value="" />
+    <property name="libs.YolosecLibs.classpath" value="C:\Users\Toon\Documents\NetBeansProjects\yolosec-libs" />
+    <property name="libs.jstl.src" value="" />
+    <property name="empty.dir" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\empty" />
+    <property name="version-output" value="java version &quot;1.7" />
+    <property name="javadoc.preview" value="true" />
+    <property name="libs.jpa20-persistence.javadoc" value="" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_51\jre" />
+    <property name="libs.jsp-compilation.src" value="" />
+    <property name="ant.file.type.EnterpriseEconomy" value="file" />
+    <property name="libs.spring-webmvc.src" value="" />
+    <property name="debug.test.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar:build/test/classes" />
+    <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
+    <property name="libs.javaee-api-6.0.src" value="" />
+    <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
+    <property name="ant.project.default-target" value="default" />
+    <property name="annotation.processing.run.all.processors" value="true" />
+    <property name="libs.PostgreSQLDriver.javadoc" value="" />
+    <property name="libs.restlib.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\asm-all-repackaged-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\cglib-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\guava-14.0.1.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\hk2-api-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\hk2-locator-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\hk2-utils-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\javax.annotation-api-1.2.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\javax.inject-2.1.88.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\javax.servlet-api-3.1.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\jaxb-api-2.2.7.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\org.osgi.core-4.2.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\osgi-resource-locator-1.0.1.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\persistence-api-1.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\ext\validation-api-1.1.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\jersey-client.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\jersey-common.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\jersey-container-servlet.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\jersey-container-servlet-core.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\jersey-server.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jackson-core-asl-1.9.11.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jackson-jaxrs-1.9.11.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jackson-mapper-asl-1.9.11.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jackson-xc-1.9.11.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jersey-media-json-jackson-2.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jersey-media-json-jettison-2.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jersey2\extensions\jettison-1.3.3.jar" />
+    <property name="libs.MySQLDriver.maven-pom" value="" />
+    <property name="j2ee.platform.wsgen.classpath" value="C:/Users/Toon/GlassFish_Server/glassfish/modules/webservices-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/webservices-api-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/jaxb-osgi.jar:C:/Users/Toon/GlassFish_Server/glassfish/modules/endorsed/jaxb-api-osgi.jar" />
+    <property name="http.nonProxyHosts" value="localhost|127.0.0.1|Tonnu" />
+    <property name="libs.junit_4.javadoc" value="C:\Program Files\NetBeans 7.4\java\docs\junit-4.10-javadoc.jar" />
+    <property name="libs.spring-webmvc.javadoc" value="" />
+    <property name="libs.EclipseLink-GlassFish-v3.maven-pom" value="" />
+    <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
+    <property name="jar.name" value="EnterpriseEconomy.jar" />
+    <property name="run.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar" />
+    <property name="libs.hibernate-support.src" value="" />
+    <property name="jna.boot.library.name" value="jnidispatch-340" />
+    <property name="libs.javaee-endorsed-api-6.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.javaee-api-7.0.classpath" value="C:\Users\Toon\Downloads\javaee-api-7.0.jar" />
+    <property name="sun.awt.datatransfer.timeout" value="1000" />
+    <property name="libs.spring-webmvc3.0.javadoc" value="" />
+    <property name="annotation.processing.enabled.in.editor" value="true" />
+    <property name="reference.SpaceLibraries.jar" value="../yolosec-libraries/dist/SpaceLibraries.jar" />
+    <property name="ant.file.EnterpriseEconomy" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build.xml" />
+    <property name="nb.native.filechooser" value="false" />
+    <property name="libs.restapi.src" value="" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="javac.deprecation" value="false" />
+    <property name="javadoc.use" value="true" />
+    <property name="sun.java2d.noddraw" value="true" />
+    <property name="libs.jsp-compiler.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\ant\extra\jspcompile.jar" />
+    <property name="javac.processorpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.modelgen_2.5.1.v20130918-f2b9fc5.jar" />
+    <property name="libs.spring-webmvc.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\spring\spring-webmvc-2.5.6.SEC03.jar" />
+    <property name="javac.compilerargs" value="" />
+    <property name="ant.file" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build.xml" />
+    <property name="libs.beans-binding.maven-pom" value="" />
+    <property name="j2ee.appclient.tool.jvmoptions" value="-Djava.endorsed.dirs=&quot;C:\Users\Toon\GlassFish_Server\glassfish\lib\endorsed&quot;;&quot;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed&quot; -javaagent:&quot;C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar&quot;=mode=acscript,arg=-configxml,arg=&quot;C:\Users\Toon\GlassFish_Server\glassfish\domains\domain2\config\glassfish-acc.xml&quot;,client=jar=" />
+    <property name="libs.jsf12.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\commons-beanutils.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\commons-collections.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\commons-digester.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\commons-logging.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\jsf-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-1_2\jsf-impl.jar" />
+    <property name="libs.Java-EE-GlassFish-v3-Prelude.classpath" value="C:\Users\Toon\GlassFish_Server\mq\lib\jaxm-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\javax.annotation-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\jaxb-api-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\webservices-api-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\bean-validator.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.batch-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.ejb-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.el.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.concurrent-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.concurrent.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.deploy-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.faces.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.inject.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.interceptor-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.jms-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.json.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.mail.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.management.j2ee-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.persistence.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.resource-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.security.auth.message-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.security.jacc-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jstl-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jstl.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.transaction-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.websocket-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.ws.rs-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.xml.registry-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.xml.rpc-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\jaxb-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\webservices-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\weld-osgi-bundle.jar" />
+    <property name="has.custom.manifest" value="true" />
+    <property name="libs.jstl.maven-pom" value="" />
+    <property name="libs.restapi.maven-pom" value="" />
+    <property name="libs.beans-binding.src" value="" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="libs.swing-layout.src" value="C:\Program Files\NetBeans 7.4\platform\docs\swing-layout-1.0.4-src.zip" />
+    <property name="org.openide.major.version" value="IDE/1" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="netbeans.user" value="C:\Users\Toon\AppData\Roaming\NetBeans\7.4" />
+    <property name="javadoc.additionalparam" value="" />
+    <property name="java.io.tmpdir" value="C:\Users\Toon\AppData\Local\Temp\" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="endorsed.classpath.cmd.line.arg" value="-Xbootclasspath/p:&apos;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar&apos;" />
+    <property name="junit.available" value="true" />
+    <property name="j2ee.platform.wsit.classpath" value="" />
+    <property name="j2ee.appclient.tool.runtime" value="" />
+    <property name="libs.jsp-compiler.src" value="" />
+    <property name="org.openide.awt.ActionReference.completion" value="org.netbeans.modules.apisupport.project.layers.PathCompletions" />
+    <property name="libs.YAPT_RMI.javadoc" value="" />
+    <property name="deploy.ant.properties.file" value="C:\Users\Toon\AppData\Roaming\NetBeans\7.4\config\GlassFishEE6\Properties\gfv31304452647.properties" />
+    <property name="j2ee.platform.wscompile.classpath" value="C:/Users/Toon/GlassFish_Server/glassfish/modules/webservices-osgi.jar" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_51\jre\bin" />
+    <property name="file.reference.imq.jar" value="C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar" />
+    <property name="have.sources" value="true" />
+    <property name="debug.classpath" value="../yolosec-libraries/dist/SpaceLibraries.jar:C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar:C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar:C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar:C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar:C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar:C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar:C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar:build/jar" />
+    <property name="javadoc.private" value="false" />
+    <property name="test.src.dir" value="test" />
+    <property name="libs.jsf20.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
+    <property name="ap.processors.internal" value="" />
+    <property name="javadoc.encoding.used" value="UTF-8" />
+    <property name="dist.jar" value="dist/EnterpriseEconomy.jar" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="ant.project.name" value="EnterpriseEconomy" />
+    <property name="ant.file.type.EnterpriseEconomy-impl" value="file" />
+    <property name="netbeans.hash.code" value="unique=NBJDK_EXTIDE_GFMOD_JAVA_JDK_WEBCOMMON_WEBEE0fe80bb75-f85e-459b-bfa1-6ba66c123fed_0c4b2051-729d-488e-a006-7832aee6d64d" />
+    <property name="netbeans.default_userdir_root" value="C:\Users\Toon\AppData\Roaming\NetBeans" />
+    <property name="libs.jsp-compilation-syscp.maven-pom" value="" />
+    <property name="sun.cpu.isalist" value="amd64" />
+    <property name="libs.CopyLibs.javadoc" value="" />
+    <property name="libs.hibernate-persistencemodelgen.maven-pom" value="" />
+    <property name="j2ee.server.domain" value="C:/Users/Toon/GlassFish_Server/glassfish/domains/domain2" />
+    <property name="org.openide.specification.version" value="6.2" />
+    <property name="wa.copy.client.jar.from" value="C:\Users\Toon\GlassFish_Server\glassfish\domains\domain2\generated\xml" />
+    <property name="j2ee.server.home" value="C:/Users/Toon/GlassFish_Server/glassfish" />
+    <property name="libs.hibernate-support.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\dom4j-1.6.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\antlr-2.7.6.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\cglib-2.2.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\commons-collections-3.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\jta-1.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-core-3.6.10.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-commons-annotations-3.2.0.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-entitymanager-3.6.10.Final.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-tools-3.6.0.CR1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\javassist-3.12.0.GA.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\c3p0-0.9.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\oscache-2.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\slf4j-api-1.6.1.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\slf4j-simple-1.6.1.jar" />
+    <property name="user.home" value="C:\Users\Toon" />
+    <property name="annotation.processing.processors.list" value="" />
+    <property name="libs.primefaces.maven-pom" value="" />
+    <property name="debug-args-line" value="-Xdebug" />
+    <property name="libs.javaee-api-6.0.maven-pom" value="" />
+    <property name="libs.JWSAntTasks.src" value="" />
+    <property name="libs.CopyLibs.maven-pom" value="" />
+    <property name="libs.spring-framework300.javadoc" value="" />
+    <property name="libs.hibernate-persistence.maven-pom" value="" />
+    <property name="libs.absolutelayout.javadoc" value="" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="no.dist.ear.dir" value="true" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="libs.javac-api.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\nb-javac-api.jar" />
+    <property name="java.version" value="1.7.0_51" />
+    <property name="javadoc.version" value="false" />
+    <property name="libs.MySQLDriver.javadoc" value="" />
+    <property name="org.openide.version" value="deprecated" />
+    <property name="source.encoding" value="UTF-8" />
+    <property name="ap.cmd.line.internal" value="" />
+    <property name="libs.eclipselinkmodelgen.maven-pom" value="" />
+    <property name="libs.jsp-compilation-syscp.javadoc" value="" />
+    <property name="libs.junit.maven-pom" value="" />
+    <property name="libs.eclipselinkmodelgen.javadoc" value="" />
+    <property name="libs.javaee-endorsed-api-7.0.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee7-endorsed\javax.annotation-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee7-endorsed\javax.xml.soap-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee7-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee7-endorsed\jaxws-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee7-endorsed\jsr181-api.jar" />
+    <property name="libs.metro.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\metro-1.4-doc.zip" />
+    <property name="libs.struts.maven-pom" value="" />
+    <property name="netbeans.home+have.tests" value="true" />
+    <property name="annotation.processing.processor.options" value="-Aeclipselink.canonicalmodel.use_static_factory=false" />
+    <property name="libs.testng.maven-pom" value="" />
+    <property name="libs.jaxb.src" value="" />
+    <property name="work.dir" value="C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy" />
+    <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\jaxb1-impl.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
+    <property name="classes.dir" value="build/jar" />
+    <property name="dist.javadoc.dir" value="dist/javadoc" />
+    <property name="libs.spring-webmvc3.0.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-webmvc-3.2.3.RELEASE.jar" />
+    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 7.4\platform\modules\ext\swing-layout-1.0.4.jar" />
+    <property name="libs.javaee-web-api-7.0.maven-pom" value="" />
+    <property name="libs.restlib.src" value="" />
+    <property name="javac.source" value="1.7" />
+    <property name="build.generated.dir" value="build/generated" />
+    <property name="line.separator" value="&#xd;&#xa;" />
+    <property name="libs.hibernate-persistence.src" value="" />
+    <property name="java.specification.version" value="1.7" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="libs.jaxws21.maven-pom" value="" />
+    <property name="nb.junit.batch" value="true" />
+    <property name="user.country.format" value="NL" />
+    <property name="libs.spring-framework.maven-pom" value="" />
+    <property name="sun.boot.class.path" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_51\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_51\jre\classes" />
+    <property name="javac.target" value="1.7" />
+    <property name="build.test.classes.dir" value="build/test/classes" />
+    <property name="src.dir" value="src/java" />
+    <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
+    <property name="annotation.processing.enabled" value="true" />
+    <property name="libs.jsf20.src" value="" />
+    <property name="libs.jpa20-persistence.src" value="" />
+    <property name="libs.jsf12.src" value="" />
+    <property name="j2ee.platform" value="1.7" />
+    <property name="libs.JAVADB_DRIVER_LABEL.maven-pom" value="" />
+    <property name="libs.struts.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\struts-1.3.10-javadoc.zip" />
+    <property name="ignore.failing.tests" value="true" />
+    <property name="libs.Comet-GlassFish-v3.classpath" value="" />
+    <property name="libs.javaee-web-api-7.0.src" value="" />
+    <property name="libs.primefaces.src" value="" />
+    <property name="j2ee.appclient.tool.jvmoptions.class" value="-Djava.endorsed.dirs=&quot;C:\Users\Toon\GlassFish_Server\glassfish\lib\endorsed&quot;;&quot;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed&quot; -javaagent:&quot;C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar&quot;=mode=acscript,arg=-configxml,arg=&quot;C:\Users\Toon\GlassFish_Server\glassfish\domains\domain\config\glassfish-acc.xml&quot;,client=class=" />
+    <property name="dist.dir" value="dist" />
+    <property name="dist.ear.jar" value="dist/EnterpriseEconomy.jar" />
+    <property name="testng.debug.mode" value="" />
+    <property name="javac.fork" value="false" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="default.javac.source" value="1.7" />
+    <property name="debug-transport-by-os" value="dt_shmem" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
+    <property name="libs.MySQLDriver.src" value="" />
+    <property name="libs.YolosecLibs.maven-pom" value="" />
+    <property name="build.test.results.dir" value="build/test/results" />
+    <property name="java.runtime.version" value="1.7.0_51-b13" />
+    <property name="libs.ejb3-persistence.javadoc" value="" />
+    <property name="default.javac.target" value="1.7" />
+    <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar" />
+    <property name="user.timezone" value="" />
+    <property name="nb.junit.single" value="false" />
+    <property name="libs.javaee-endorsed-api-6.0.maven-pom" value="" />
+    <property name="libs.JAVADB_DRIVER_LABEL.javadoc" value="" />
+    <property name="netbeans.dirs" value="C:\Program Files\NetBeans 7.4\nb;C:\Program Files\NetBeans 7.4\ergonomics;C:\Program Files\NetBeans 7.4\ide;C:\Program Files\NetBeans 7.4\extide;C:\Program Files\NetBeans 7.4\java;C:\Program Files\NetBeans 7.4\apisupport;C:\Program Files\NetBeans 7.4\webcommon;C:\Program Files\NetBeans 7.4\websvccommon;C:\Program Files\NetBeans 7.4\enterprise;C:\Program Files\NetBeans 7.4\mobility;C:\Program Files\NetBeans 7.4\profiler;C:\Program Files\NetBeans 7.4\python;C:\Program Files\NetBeans 7.4\php;C:\Program Files\NetBeans 7.4\identity;C:\Program Files\NetBeans 7.4\harness;C:\Program Files\NetBeans 7.4\cnd;C:\Program Files\NetBeans 7.4\dlight;C:\Program Files\NetBeans 7.4\groovy;C:\Program Files\NetBeans 7.4\extra;C:\Program Files\NetBeans 7.4\javacard;C:\Program Files\NetBeans 7.4\javafx" />
+    <property name="libs.Slick2D.javadoc" value="C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\slick\javadoc" />
+    <property name="libs.jstl.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.jsf20.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.YAPT_RMI.maven-pom" value="" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_51\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+    <property name="libs.metro.src" value="" />
+    <property name="endorsed.classpath" value="C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
+    <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\AbsoluteLayout.jar" />
+    <property name="excludes" value="" />
+    <property name="libs.restlib.maven-pom" value="" />
+    <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\metro\webservices-tools.jar" />
+    <property name="java.class.path" value="C:\Users\Toon\Documents\NetBeansProjects\yolosec-libraries\dist\SpaceLibraries.jar;C:\Program Files\NetBeans 7.4\platform\modules\ext\junit-4.10.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar;C:\Program Files\NetBeans 7.4\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar;C:\Users\Toon\Documents\NetBeansProjects\Yolosec\libs\gson-2.2.4.jar;C:\Users\Toon\GlassFish_Server\glassfish\lib\gf-client.jar;C:\Users\Toon\GlassFish_Server\mq\lib\imq.jar;C:\Users\Toon\GlassFish_Server\mq\lib\jms.jar;C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\jar;C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\test\classes;C:\Users\Toon\GlassFish_Server\mq\lib\jaxm-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\javax.annotation-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\jaxb-api-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\endorsed\webservices-api-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\bean-validator.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.batch-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.ejb-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.el.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.concurrent-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.concurrent.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.enterprise.deploy-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.faces.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.inject.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.interceptor-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.jms-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.json.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.mail.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.management.j2ee-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.persistence.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.resource-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.security.auth.message-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.security.jacc-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jstl-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.servlet.jsp.jstl.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.transaction-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.websocket-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.ws.rs-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.xml.registry-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\javax.xml.rpc-api.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\jaxb-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\webservices-osgi.jar;C:\Users\Toon\GlassFish_Server\glassfish\modules\weld-osgi-bundle.jar;C:\Program Files\NetBeans 7.4\extide\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 7.4\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 7.4\extide\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 7.4\extide\ant\lib\ant-junit4.jar" />
+    <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="libs.absolutelayout.src" value="" />
+    <property name="libs.jpa20-persistence.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar" />
+    <property name="j2ee.server.type" value="gfv3ee6" />
+    <property name="os.version" value="6.2" />
+    <property name="libs.hibernate-persistencemodelgen.src" value="" />
+    <property name="libs.EclipseLink-GlassFish-v3.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.javaee-api-7.0.maven-pom" value="" />
+    <property name="sun.awt.enableExtraMouseButtons" value="true" />
+    <property name="sun.desktop" value="windows" />
+    <property name="libs.Comet-GlassFish-v3.src" value="" />
+    <property name="libs.restlib.javadoc" value="" />
+    <property name="libs.JAXB-ENDORSED.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\jaxb\api\jaxb-api.jar" />
+    <property name="nb.internal.action.name" value="test.single" />
+    <property name="j2ee.platform.embeddableejb.classpath" value="C:/Users/Toon/GlassFish_Server/glassfish/lib/embedded/glassfish-embedded-static-shell.jar" />
+    <property name="libs.javaee-api-7.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.eclipselink.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 7.4\java\docs\beansbinding-1.2.1-doc.zip" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans 7.4\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
+    <property name="libs.spring-framework300.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-aop-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-aspects-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-beans-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-build-src-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-context-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-context-support-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-core-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-expression-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-instrument-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-instrument-tomcat-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-jdbc-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-jms-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-orm-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-oxm-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-struts-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-test-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-tx-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-web-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-webmvc-3.2.3.RELEASE.jar;C:\Program Files\NetBeans 7.4\java\modules\ext\spring-3.0\spring-webmvc-portlet-3.2.3.RELEASE.jar" />
+    <property name="libs.jsp-compiler.maven-pom" value="" />
+    <property name="libs.spring-webmvc.maven-pom" value="" />
+    <property name="run.jvmargs" value="" />
+    <property name="libs.ejb3-persistence.classpath" value="C:\Program Files\NetBeans 7.4\java\modules\ext\hibernate\hibernate-jpa-2.0-api-1.0.1.Final.jar" />
+    <property name="libs.hibernate-persistencemodelgen.javadoc" value="" />
+    <property name="libs.JAXB-ENDORSED.src" value="" />
+    <property name="libs.spring-framework.javadoc" value="" />
+    <property name="libs.testng.javadoc" value="C:\Program Files\NetBeans 7.4\platform\docs\testng-6.8.1-javadoc.zip" />
+    <property name="user.script" value="" />
+    <property name="libs.PostgreSQLDriver.classpath" value="C:\Program Files\NetBeans 7.4\ide\modules\ext\postgresql-9.2-1002.jdbc4.jar" />
+    <property name="libs.jsf12.maven-pom" value="" />
+    <property name="libs.junit.src" value="" />
+    <property name="annotation.processing.source.output" value="build/generated-sources/ap-source-output" />
+    <property name="main.class" value="enterpriseeconomy.Main" />
+    <property name="libs.CopyLibs.src" value="" />
+    <property name="build.dir" value="build" />
+    <property name="libs.jsp-compilation.classpath" value="C:\Program Files\NetBeans 7.4\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\glassfish-jspparser-4.0.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jsf-2_2\javax.faces.jar;C:\Program Files\NetBeans 7.4\enterprise\modules\ext\jstl-api.jar;C:\Program Files\NetBeans 7.4\extide\ant\lib\ant-launcher.jar" />
+    <property name="j2ee.platform.is.jsr109" value="true" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.9.1 compiled on May 15 2013" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="build.classes.excludes" value="**/*.java,**/*.form" />
+    <property name="libs.Slick2D.maven-pom" value="" />
+    <property name="jdkBug6558476" value="false" />
+    <property name="javadoc.nonavbar" value="false" />
+    <property name="platform.active" value="default_platform" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
+  </properties>
+  <testcase classname="service.AuctionHouseTest" name="boughtItemFromAuctionHouse" time="0.187" />
+  <testcase classname="service.AuctionHouseTest" name="newItemForSaleRequest" time="83.037">
+    <error message="failed to lookup instance of interface javax.jms.QueueConnectionFactory at queueConnectionFactory" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: failed to lookup instance of interface javax.jms.QueueConnectionFactory at queueConnectionFactory
+	at com.ptsesd.groepb.shared.jms.MessagingGateway.lookup(MessagingGateway.java:69)
+	at com.ptsesd.groepb.shared.jms.MessagingGateway.&lt;init&gt;(MessagingGateway.java:76)
+	at service.AuctionHouseTest.newItemForSaleRequest(AuctionHouseTest.java:139)
+Caused by: javax.naming.NamingException: Lookup failed for &apos;queueConnectionFactory&apos; in SerialContext[myEnv={java.naming.factory.initial=com.sun.enterprise.naming.impl.SerialInitContextFactory, java.naming.factory.url.pkgs=com.sun.enterprise.naming, java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl} [Root exception is javax.naming.NamingException: Unable to acquire SerialContextProvider for SerialContext[myEnv={java.naming.factory.initial=com.sun.enterprise.naming.impl.SerialInitContextFactory, java.naming.factory.url.pkgs=com.sun.enterprise.naming, java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl} [Root exception is org.omg.CORBA.COMM_FAILURE: FINE: 00410001: Connection failure: socketType: IIOP_CLEAR_TEXT; hostname: localhost; port: 3700  vmcid: OMG  minor code: 1  completed: No]]
+	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:491)
+	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:438)
+	at javax.naming.InitialContext.lookup(InitialContext.java:411)
+	at javax.naming.InitialContext.doLookup(InitialContext.java:284)
+	at com.ptsesd.groepb.shared.jms.MessagingGateway.lookup(MessagingGateway.java:67)
+Caused by: javax.naming.NamingException: Unable to acquire SerialContextProvider for SerialContext[myEnv={java.naming.factory.initial=com.sun.enterprise.naming.impl.SerialInitContextFactory, java.naming.factory.url.pkgs=com.sun.enterprise.naming, java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl} [Root exception is org.omg.CORBA.COMM_FAILURE: FINE: 00410001: Connection failure: socketType: IIOP_CLEAR_TEXT; hostname: localhost; port: 3700  vmcid: OMG  minor code: 1  completed: No]
+	at com.sun.enterprise.naming.impl.SerialContext.getProvider(SerialContext.java:334)
+	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:477)
+Caused by: org.omg.CORBA.COMM_FAILURE: FINE: 00410001: Connection failure: socketType: IIOP_CLEAR_TEXT; hostname: localhost; port: 3700  vmcid: OMG  minor code: 1  completed: No
+	at com.sun.proxy.$Proxy28.connectFailure(Unknown Source)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:253)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:276)
+	at com.sun.corba.ee.impl.transport.ContactInfoImpl.createConnection(ContactInfoImpl.java:129)
+	at com.sun.corba.ee.impl.protocol.ClientRequestDispatcherImpl.beginRequest(ClientRequestDispatcherImpl.java:243)
+	at com.sun.corba.ee.impl.protocol.ClientDelegateImpl.request(ClientDelegateImpl.java:227)
+	at com.sun.corba.ee.impl.protocol.ClientDelegateImpl.is_a(ClientDelegateImpl.java:392)
+	at org.omg.CORBA.portable.ObjectImpl._is_a(ObjectImpl.java:130)
+	at org.omg.CosNaming.NamingContextHelper.narrow(NamingContextHelper.java:69)
+	at com.sun.enterprise.naming.impl.SerialContext$ProviderCacheKey.getNameService(SerialContext.java:1205)
+	at com.sun.enterprise.naming.impl.SerialContext.getRemoteProvider(SerialContext.java:393)
+	at com.sun.enterprise.naming.impl.SerialContext.getProvider(SerialContext.java:329)
+Caused by: java.lang.RuntimeException: java.net.ConnectException: Connection refused: connect
+	at org.glassfish.enterprise.iiop.impl.IIOPSSLSocketFactory.createSocket(IIOPSSLSocketFactory.java:344)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:250)
+Caused by: java.net.ConnectException: Connection refused: connect
+	at sun.nio.ch.Net.connect0(Native Method)
+	at sun.nio.ch.Net.connect(Net.java:465)
+	at sun.nio.ch.Net.connect(Net.java:457)
+	at sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:670)
+	at com.sun.corba.ee.impl.misc.ORBUtility.openSocketChannel(ORBUtility.java:110)
+	at org.glassfish.enterprise.iiop.impl.IIOPSSLSocketFactory.createSocket(IIOPSSLSocketFactory.java:329)
+</error>
+  </testcase>
+  <testcase classname="service.AuctionHouseTest" name="postItemToAuctionHouse" time="0.104" />
+  <system-out><![CDATA[[EL Info]: 2014-04-23 14:36:48.501--ServerSession(926814604)--EclipseLink, version: Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5
+[EL Info]: connection: 2014-04-23 14:36:48.825--ServerSession(926814604)--file:/C:/Users/Toon/Documents/NetBeansProjects/EnterpriseEconomy/build/jar/_EnterpriseEconomyPU login successful
+]]></system-out>
+  <system-err><![CDATA[apr 23, 2014 2:36:47 PM org.hibernate.validator.internal.util.Version <clinit>
+INFO: HV000001: Hibernate Validator 5.0.0.Final
+org.omg.CORBA.COMM_FAILURE: FINE: 00410001: Connection failure: socketType: IIOP_CLEAR_TEXT; hostname: localhost; port: 3700  vmcid: OMG  minor code: 1  completed: No
+	at com.sun.proxy.$Proxy28.connectFailure(Unknown Source)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.<init>(ConnectionImpl.java:253)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.<init>(ConnectionImpl.java:276)
+	at com.sun.corba.ee.impl.transport.ContactInfoImpl.createConnection(ContactInfoImpl.java:129)
+	at com.sun.corba.ee.impl.protocol.ClientRequestDispatcherImpl.beginRequest(ClientRequestDispatcherImpl.java:243)
+	at com.sun.corba.ee.impl.protocol.ClientDelegateImpl.request(ClientDelegateImpl.java:227)
+	at com.sun.corba.ee.impl.protocol.ClientDelegateImpl.is_a(ClientDelegateImpl.java:392)
+	at org.omg.CORBA.portable.ObjectImpl._is_a(ObjectImpl.java:130)
+	at org.omg.CosNaming.NamingContextHelper.narrow(NamingContextHelper.java:69)
+	at com.sun.enterprise.naming.impl.SerialContext$ProviderCacheKey.getNameService(SerialContext.java:1205)
+	at com.sun.enterprise.naming.impl.SerialContext.getRemoteProvider(SerialContext.java:393)
+	at com.sun.enterprise.naming.impl.SerialContext.getProvider(SerialContext.java:329)
+	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:477)
+	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:438)
+	at javax.naming.InitialContext.lookup(InitialContext.java:411)
+	at javax.naming.InitialContext.doLookup(InitialContext.java:284)
+	at com.ptsesd.groepb.shared.jms.MessagingGateway.lookup(MessagingGateway.java:67)
+	at com.ptsesd.groepb.shared.jms.MessagingGateway.<init>(MessagingGateway.java:76)
+	at service.AuctionHouseTest.newItemForSaleRequest(AuctionHouseTest.java:139)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:30)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:523)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1063)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:914)
+Caused by: java.lang.RuntimeException: java.net.ConnectException: Connection refused: connect
+	at org.glassfish.enterprise.iiop.impl.IIOPSSLSocketFactory.createSocket(IIOPSSLSocketFactory.java:344)
+	at com.sun.corba.ee.impl.transport.ConnectionImpl.<init>(ConnectionImpl.java:250)
+	... 42 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at sun.nio.ch.Net.connect0(Native Method)
+	at sun.nio.ch.Net.connect(Net.java:465)
+	at sun.nio.ch.Net.connect(Net.java:457)
+	at sun.nio.ch.SocketChannelImpl.connect(SocketChannelImpl.java:670)
+	at com.sun.corba.ee.impl.misc.ORBUtility.openSocketChannel(ORBUtility.java:110)
+	at org.glassfish.enterprise.iiop.impl.IIOPSSLSocketFactory.createSocket(IIOPSSLSocketFactory.java:329)
+	... 43 more
+]]></system-err>
+</testsuite>
