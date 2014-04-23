@@ -15,21 +15,14 @@ import com.ptsesd.groepb.shared.ItemComm;
  */
 public class ItemSerializer {
     
-    private Gson gson;
-    
-    /*
-     Serializes an ItemComm object to a json string and back for JMS messaging
-    */
-    public ItemSerializer() {
-        gson = new Gson();
-    }
-    
-    public String itemToJson(ItemComm item) {
+    private static Gson gson = new Gson();
+        
+    public static String itemToJson(ItemComm item) {
         String json = gson.toJson(item);
         return json;
     }
     
-    public ItemComm jsonToItem(String json) {
+    public static ItemComm jsonToItem(String json) {
         ItemComm item = (ItemComm) gson.fromJson(json, ItemComm.class);
         return item;
     }

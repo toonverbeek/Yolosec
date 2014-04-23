@@ -47,7 +47,7 @@ public class MessagingGateway {
     private MessageConsumer consumer; // for receiving messages
 
     private JMSConsumer queueConsumer;
-    private final JMSConsumer replierQueueConsumer;
+//    private final JMSConsumer replierQueueConsumer;
 
     private JMSProducer jmsProducer;
     private String factoryName = "queueConnectionFactory";
@@ -79,7 +79,7 @@ public class MessagingGateway {
         replierQueue = lookup(Queue.class, "clientReplierQueue");
         jmsProducer = jmsContext.createProducer();
         queueConsumer = jmsContext.createConsumer(requestorQueue);
-        replierQueueConsumer = jmsContext.createConsumer(replierQueue);
+        //replierQueueConsumer = jmsContext.createConsumer(replierQueue);
         queueConsumer.setMessageListener(new MessageListener() {
             @Override
             public void onMessage(Message message) {
@@ -128,12 +128,14 @@ public class MessagingGateway {
         jmsProducer.send(requestorDestination, msg);
     }
 
+    public void send(boolean result, Destination requestorDestination) {
+        jmsProducer.send(requestorDestination, result);
+    }
+
     public void sendItemComm(ItemComm item) {
         Message msg = null;
-        ItemSerializer serializer = new ItemSerializer();
-        String json = serializer.itemToJson(item);
+        String json = ItemSerializer.itemToJson(item);
 
-        //this.jmsProducer.send(msg);
         this.send(json, requestorQueue);
 
     }
