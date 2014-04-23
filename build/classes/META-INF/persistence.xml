@@ -9,7 +9,7 @@
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/localeconomy?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="toor"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="toor"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>

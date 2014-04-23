@@ -25,8 +25,17 @@ public class AuctionHouse {
         return ahItemDao.find(ahItemId);
     }
 
-    AuctionHouseItem buyItem(int ahItemID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /***
+     * 
+     * @param ahItemID
+     * @return 
+     */
+    AuctionHouseItem buyItem(long ahItemID) {
+       //TODO JMS
+        AuctionHouseItem _item = ahItemDao.find(ahItemID);
+
+        ahItemDao.remove(_item);
+        return _item;
     }
 
     boolean addItem(AuctionHouseItem ahItem) {
