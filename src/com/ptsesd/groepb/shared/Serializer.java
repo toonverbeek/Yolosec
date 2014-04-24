@@ -3,6 +3,8 @@ package com.ptsesd.groepb.shared;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.ptsesd.groepb.shared.socket.InventoryReply;
+import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -75,8 +77,16 @@ public class Serializer {
                 String password = (String) map.get("password");
                 LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                 gameobject = lcomm;
-            } else if (header.equals(LoginCommError.class.getSimpleName())){
+            } else if (header.equals(LoginCommError.class.getSimpleName())) {
                 gameobject = new LoginCommError(LoginCommError.class.getSimpleName());
+            } else if (header.equals(InventoryRequest.class.getSimpleName())) {
+                InventoryRequest inventoryRequest = new InventoryRequest(InventoryRequest.class.getSimpleName(), (Integer) map.get("spaceshipId"));
+                gameobject = inventoryRequest;
+            } else if (header.equals(InventoryReply.class.getSimpleName())) {
+                Integer spaceshipId = (Integer) map.get("spaceshipId");
+                List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
+                InventoryReply inventoryReply = new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items);
+                gameobject = inventoryReply;
             }
 
         }
@@ -136,6 +146,12 @@ public class Serializer {
                     gameobjects.add(mComm);
                 } else if (header.equals(LoginCommError.class.getSimpleName())){
                     gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
+                } else if (header.equals(InventoryRequest.class.getSimpleName())){
+                    gameobjects.add(new InventoryRequest(InventoryRequest.class.getSimpleName(), (Integer) map.get("spaceshipId")));
+                } else if (header.equals(InventoryReply.class.getSimpleName())){
+                    Integer spaceshipId = (Integer) map.get("spaceshipId");
+                    List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
+                    gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(),spaceshipId, items));
                 }
             }
         }
@@ -175,6 +191,16 @@ public class Serializer {
     
     public static String serializeMessageAsGamePacket(MessagingComm mCom) {
         String json = gson.toJson(mCom, MessagingComm.class);
+        return json;
+    }
+    
+    public static String serializeInventoryRequestAsGamePacktet(InventoryRequest req) {
+        String json = gson.toJson(req, InventoryRequest.class);
+        return json;
+    }
+    
+    public static String serializeInventoryReplyAsGamePacktet(InventoryReply rep) {
+        String json = gson.toJson(rep, InventoryReply.class);
         return json;
     }
 }

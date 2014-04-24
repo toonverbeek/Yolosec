@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 
-package com.ptsesd.groepb.shared;
+package com.ptsesd.groepb.shared.socket;
 
+import com.ptsesd.groepb.shared.GamePacket;
+import com.ptsesd.groepb.shared.ItemComm;
 import java.util.List;
 
 /**
