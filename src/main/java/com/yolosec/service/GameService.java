@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import com.ptsesd.groepb.shared.AsteroidComm;
+import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.MessagingComm;
@@ -15,6 +16,8 @@ import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.data.AsteroidDAOImpl;
 import com.yolosec.data.DatabaseDAO;
+import com.yolosec.data.ItemDAO;
+import com.yolosec.data.ItemDAOImpl;
 import com.yolosec.data.MessageDAOImpl;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -43,6 +46,7 @@ public class GameService implements Runnable {
 
     private AsteroidDAOImpl asteroidDAO;
     private MessageDAOImpl messagingDAO;
+    private ItemDAO itemDAO;
 
     public GameService(GameBroadcastService broadcastModule) {
         this.clients = new HashMap<>();
@@ -58,6 +62,7 @@ public class GameService implements Runnable {
 
         asteroidDAO = new AsteroidDAOImpl();
         messagingDAO = new MessageDAOImpl();
+        itemDAO = new ItemDAOImpl();
 
         try {
             this.server = new ServerSocket(1337);
@@ -150,7 +155,7 @@ public class GameService implements Runnable {
         }
     }
 
-    /* ---------------------------------------------------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------------------------------------------------------
      *  ---------------------------------------------------- Asteroid Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */
     public List<AsteroidComm> getAsteroids() {
@@ -170,7 +175,7 @@ public class GameService implements Runnable {
         asteroidDAO.sendAsteroidComms(clien);
     }
 
-    /* ---------------------------------------------------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------------------------------------------------------
      *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */
     public synchronized void updateSpaceship(SpaceshipComm ship) {
@@ -197,6 +202,30 @@ public class GameService implements Runnable {
 
     public void broadcastPositions() {
         spaceshipDAO.sendSpaceshipComms(clients);
+    }
+    
+    /* ----------------------------------------------------------------------------------------------------------------------------
+     *  ------------------------------------------------- Item Methods ------------------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
+    
+    public List<ItemComm> getInventory(int spaceshipId){
+        return itemDAO.getInventory(spaceshipId);
+    }
+    
+    public List<ItemComm> getAuctionHouse(){
+        return itemDAO.getAuctionHouse();
+    }
+    
+    public void buyItem(int spaceshipId, int itemId){
+        itemDAO.buyItem(spaceshipId, itemId);
+    }
+    
+    public void sellItem(int spaceshipId, int itemId){
+        itemDAO.sellItem(spaceshipId, itemId);
+    }
+    
+    public void cancelAuction(int spaceshipId, int itemId){
+        itemDAO.cancelAuction(spaceshipId, itemId);
     }
 
     /* ---------------------------------------------------------------------------------------------------------------------------
