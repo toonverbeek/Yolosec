@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JFrame;
 
 /**
  *
@@ -58,9 +59,14 @@ public class ConsoleApp implements Runnable {
                     this.getMessages();
                     break;
                 case "tm":
-                    MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 1, "TEST","ADMIN");
+                    MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 1, "TEST", "ADMIN");
                     mcom.setTimestamp();
                     connServer.receivedMessage(mcom);
+                    break;
+                case "u":
+                case "accountManagement":
+                    Thread AccManagementThread = new Thread(new AccountManagementUI());
+                    AccManagementThread.start();
                     break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
@@ -76,10 +82,11 @@ public class ConsoleApp implements Runnable {
     private void printCommands() {
         System.out.println("---[CONSOLE] Starting console...");
         System.out.println("---[CONSOLE] Available commands are:");
-        System.out.println("---[CONSOLE] -getStatus [-g]");
-        System.out.println("---[CONSOLE] -resetAsteroids [-a]");
         System.out.println("---[CONSOLE] -getIp [-ip]");
         System.out.println("---[CONSOLE] -getMessages [-m]");
+        System.out.println("---[CONSOLE] -getStatus [-g]");
+        System.out.println("---[CONSOLE] -resetAsteroids [-a]");
+        System.out.println("---[CONSOLE] -accountManagement [u]");
         System.out.println("---[CONSOLE] -logCpu [-c]");
         System.out.println("---[CONSOLE] -help [-h]");
         System.out.println("---[CONSOLE] -exit");
@@ -117,7 +124,7 @@ public class ConsoleApp implements Runnable {
     private void getMessages() {
         this.connServer.getMessagesFromServer();
         List<MessagingComm> messages = this.connServer.getMessages();
-        
+
         for (MessagingComm item : messages) {
             String username = item.getUsername();
             String message = item.getMessage();
