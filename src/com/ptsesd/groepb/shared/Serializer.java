@@ -80,10 +80,11 @@ public class Serializer {
             } else if (header.equals(LoginCommError.class.getSimpleName())) {
                 gameobject = new LoginCommError(LoginCommError.class.getSimpleName());
             } else if (header.equals(InventoryRequest.class.getSimpleName())) {
-                InventoryRequest inventoryRequest = new InventoryRequest(InventoryRequest.class.getSimpleName(), (Integer) map.get("spaceshipId"));
+                Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
+                InventoryRequest inventoryRequest = new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipId);
                 gameobject = inventoryRequest;
             } else if (header.equals(InventoryReply.class.getSimpleName())) {
-                Integer spaceshipId = (Integer) map.get("spaceshipId");
+                Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                 List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
                 InventoryReply inventoryReply = new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items);
                 gameobject = inventoryReply;
@@ -137,7 +138,7 @@ public class Serializer {
                     LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
                     gameobjects.add(lcomm);
                 } else if (header.equals(MessagingComm.class.getSimpleName())) {
-                    Integer spaceshipid = (Integer) map.get("spaceShipId");
+                    Integer spaceshipid = ((Double) map.get("spaceShipId")).intValue();
                     String username = (String) map.get("username");
                     String message = (String) map.get("message");
                     Date timestamp = (Date) map.get("timestamp");
@@ -147,9 +148,10 @@ public class Serializer {
                 } else if (header.equals(LoginCommError.class.getSimpleName())){
                     gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
                 } else if (header.equals(InventoryRequest.class.getSimpleName())){
-                    gameobjects.add(new InventoryRequest(InventoryRequest.class.getSimpleName(), (Integer) map.get("spaceshipId")));
+                    Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
+                    gameobjects.add(new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipId));
                 } else if (header.equals(InventoryReply.class.getSimpleName())){
-                    Integer spaceshipId = (Integer) map.get("spaceshipId");
+                    Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                     List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
                     gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(),spaceshipId, items));
                 }
