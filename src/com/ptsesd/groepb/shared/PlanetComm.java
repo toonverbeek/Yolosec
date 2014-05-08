@@ -54,8 +54,4 @@ public class PlanetComm extends GamePacket {
     public void setY(float y) {
         this.y = y;
     }
-    
-    
-    
-    
 }

@@ -16,8 +16,6 @@ import java.util.Map;
  *
  * @author Tim
  */
-
-
 public class Serializer {
 
     private static final Gson gson = new Gson();
@@ -41,9 +39,9 @@ public class Serializer {
         if (reader.hasNext()) {
 
             Map map = gson.fromJson(reader, Map.class);
-            
+
             String header = (String) map.get("header");
-            
+
             if (header.equals(SpaceshipComm.class.getSimpleName())) {
                 //desirialize spaceshipcomm
                 int id = ((Double) map.get("id")).intValue();
@@ -145,16 +143,24 @@ public class Serializer {
                     MessagingComm mComm = new MessagingComm(MessagingComm.class.getSimpleName(), spaceshipid, message, username);
                     mComm.setTimestamp(); //sets timestamp to now
                     gameobjects.add(mComm);
-                } else if (header.equals(LoginCommError.class.getSimpleName())){
+                } else if (header.equals(LoginCommError.class.getSimpleName())) {
                     gameobjects.add(new LoginCommError(LoginCommError.class.getSimpleName()));
-                } else if (header.equals(InventoryRequest.class.getSimpleName())){
+                } else if (header.equals(InventoryRequest.class.getSimpleName())) {
                     Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                     gameobjects.add(new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipId));
-                } else if (header.equals(InventoryReply.class.getSimpleName())){
+                } else if (header.equals(InventoryReply.class.getSimpleName())) {
                     Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                     List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
-                    gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(),spaceshipId, items));
+                    gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items));
+                } else if (header.equals(PlanetComm.class.getSimpleName())) {
+                    int size = ((Double) map.get("size")).intValue();
+                    float x = ((Double) map.get("x")).floatValue();
+                    float y = ((Double) map.get("y")).floatValue();
+                    String planetname = (String) map.get("planetName");
+                    PlanetComm pcomm = new PlanetComm(header, planetname, size, x, y);
+                    gameobjects.add(pcomm);
                 }
+
             }
         }
         return gameobjects;
@@ -185,24 +191,30 @@ public class Serializer {
         String json = gson.toJson(ships, com);
         return json;
     }
-    
+
     public static String serializeLoginCommErrorAsGamePacktet(LoginCommError err) {
         String json = gson.toJson(err, LoginCommError.class);
         return json;
     }
-    
+
     public static String serializeMessageAsGamePacket(MessagingComm mCom) {
         String json = gson.toJson(mCom, MessagingComm.class);
         return json;
     }
-    
+
     public static String serializeInventoryRequestAsGamePacktet(InventoryRequest req) {
         String json = gson.toJson(req, InventoryRequest.class);
         return json;
     }
-    
+
     public static String serializeInventoryReplyAsGamePacktet(InventoryReply rep) {
         String json = gson.toJson(rep, InventoryReply.class);
+        return json;
+    }
+
+    public static String serializePlanetAsGamePacket(String header, String planetname, int size, float x, float y) {
+        PlanetComm pcom = new PlanetComm(header, planetname, size, x, y);
+        String json = gson.toJson(pcom, PlanetComm.class);
         return json;
     }
 }
