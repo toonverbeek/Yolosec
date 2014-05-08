@@ -282,6 +282,13 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
     private boolean CreateUser(String username, String password, Integer spaceshipid, boolean isModerator) throws Exception {
         Exception ErrM = null;
         Connection connect = null;
+
+        if (spaceshipid < 0) {
+            spaceshipid = GetLatestUserId();
+            if (spaceshipid == -1) {
+                throw new Exception("Failed to create new UserId");
+            }
+        }
         PreparedStatement preparedStatementSpaceship = null;
         PreparedStatement preparedStatementUser = null;
         try {
@@ -290,12 +297,6 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             Class.forName("com.mysql.jdbc.Driver");
             connect = DriverManager.getConnection(ConnectionString.getConnectionString());
             System.out.println("---[DATABASE] Connection established");
-
-            if (spaceshipid < 0) {
-                preparedStatementUser = connect.prepareStatement("SELECT MAX(spaceship_id) FROM account;");
-                ResultSet result = preparedStatementUser.executeQuery();
-                spaceshipid = result.getInt(1) + 1;
-            }
 
             preparedStatementSpaceship = connect.prepareStatement("INSERT INTO spaceship (id, position_x, position_y, direction, resource_common, resource_rare, resource_magic) VALUES (?, ?, ?, ?, ?, ? ,?);");
             preparedStatementUser = connect.prepareStatement("INSERT INTO account (username, password, spaceship_id, ismoderator) VALUES (?, ?, ?, ?);");
@@ -324,6 +325,37 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             connect.close();
         }
         return ErrM == null;
+    }
+
+    private int GetLatestUserId() throws Exception {
+        Exception ErrM = null;
+        Connection connect = null;
+        PreparedStatement preparedStatement = null;
+        int newId = -1;
+        try {
+            //System.out.println(String.format("---[DATABASE] %s", ConnectionString.getConnectionString()));
+            System.out.println("---[DATABASE] Setting up connection...");
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(ConnectionString.getConnectionString());
+            System.out.println("---[DATABASE] Connection established");
+
+            preparedStatement = connect.prepareStatement("SELECT MAX(spaceship_id) as maxid FROM account;");
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                newId = result.getInt("maxid") + 1;
+                System.out.println("---[DATABASE] Userid Retrieved: " + newId);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            ErrM = e;
+            System.out.println("-Exception occurred while fetching the last userid: " + e.getMessage());
+        } finally {
+            preparedStatement.close();
+            connect.close();
+        }
+        if (ErrM != null) {
+            newId = -1;
+        }
+        return newId;
     }
 
     /**
@@ -407,10 +439,10 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
     }
 
     /**
-     * 
+     *
      * @param users List of users to be updated in the database
      * @return Returns if the updates were successful
-     * @throws Exception 
+     * @throws Exception
      */
     private boolean UpdateUsers(List<User> users) throws Exception {
         Exception ErrM = null;
