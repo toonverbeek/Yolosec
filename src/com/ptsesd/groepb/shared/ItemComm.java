@@ -14,7 +14,7 @@ public class ItemComm {
     private final Long itemId;
     private final int sellerId;
     private final AuctionHouseRequestType requestType;
-    private final int resourceAmount;
+    private final int resourceAmount; 
     private final String resourceType;
 
     public ItemComm(Long itemId, int sellerId, int resourceAmount, String resourceType, AuctionHouseRequestType requestType) {

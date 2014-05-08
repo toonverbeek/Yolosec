@@ -6,10 +6,7 @@
 package com.ptsesd.groepb.shared.jms;
 
 import com.ptsesd.groepb.shared.ItemComm;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
@@ -22,7 +19,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -34,8 +30,8 @@ import javax.naming.NamingException;
  */
 public class MessagingGateway {
 
-    private static Queue requestorQueue;
-    private static Queue replierQueue;
+    private Queue requestorQueue;
+    //private static Queue replierQueue;
 
     /*
      * Connection to JMS
@@ -54,7 +50,7 @@ public class MessagingGateway {
     //private static final String JNDI_CONNECTION_FACTORY = "jms/__defaultConnectionFactory";
     private static final String JNDI_CONNECTION_FACTORY = "queueConnectionFactory";
 
-    private static String destinationName = "";
+    private String destinationName = "";
 
     /**
      * @param <T> the return type
@@ -71,26 +67,18 @@ public class MessagingGateway {
     }
 
     public MessagingGateway(String destinationName) {
-        MessagingGateway.destinationName = destinationName;
+        this.destinationName = destinationName;
         //Context jndiContext = new InitialContext();
         QueueConnectionFactory connectionFactory = (QueueConnectionFactory) lookup(QueueConnectionFactory.class, JNDI_CONNECTION_FACTORY);
         JMSContext jmsContext = connectionFactory.createContext();
         requestorQueue = lookup(Queue.class, destinationName);
-        replierQueue = lookup(Queue.class, "clientReplierQueue");
         jmsProducer = jmsContext.createProducer();
         queueConsumer = jmsContext.createConsumer(requestorQueue);
-        //replierQueueConsumer = jmsContext.createConsumer(replierQueue);
-        queueConsumer.setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                System.out.println("inside messaginggateway creating new messagelistener");
-                queueConsumer.getMessageListener().onMessage(message);
-            }
-        });
+        
     }
 
-    public static Destination getDestination(String destinationName) {
-        MessagingGateway.destinationName = destinationName;
+    public Destination getDestination(String destinationName) {
+        //this.destinationName = destinationName;
         Destination requestorDestination = null;
         //requestorDestination = (Destination) lookup(Queue.class, destinationName);
         requestorQueue = lookup(Queue.class, destinationName);
