@@ -1,6 +1,5 @@
 package com.yolosec.service;
 
-import com.yolosec.service.GameService;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class GameBroadcastService implements Runnable {
 
     private void log(long time) {
         tArr.add((int)time);
-        if (tArr.size() > 9) {
+        if (tArr.size() > 49) {
             sum = 0;
             for (i = 0; i < tArr.size(); i++) {
                 sum += tArr.get(i);

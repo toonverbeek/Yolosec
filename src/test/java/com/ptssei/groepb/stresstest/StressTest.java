@@ -20,7 +20,7 @@ import org.junit.Test;
 public class StressTest extends TestCase {
 
     private ExecutorService executor;
-    private final int amountOfClients = 5;
+    private final int amountOfClients = 100;
     private int amountLoggedIn = 0;
     private static final int USERIDBASE = 2000000000;
     private static final int WAITTIME = 5000;
