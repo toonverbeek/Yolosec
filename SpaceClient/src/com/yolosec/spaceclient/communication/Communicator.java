@@ -10,9 +10,15 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.GamePacket;
+import com.ptsesd.groepb.shared.socket.InventoryReply;
+import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.yolosec.spaceclient.game.player.Inventory;
+import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,9 +28,6 @@ import java.net.SocketException;
 import java.rmi.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import com.yolosec.spaceclient.game.world.Asteroid;
-import com.yolosec.spaceclient.game.player.Spaceship;
 
 /**
  *
@@ -38,7 +41,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.51.140";
+    public static final String IP_ADDRESS = "145.93.213.209";//"145.93.211.4";//;//"145.93.54.48";
     private static JsonReader jreader;
 
     public static void sendData(String json) {
@@ -50,12 +53,15 @@ public class Communicator {
     }
 
     /**
-     * Uses a jReader that is wrapped around a socket to listen for an incoming datastream.
-     * The incoming data is segregated per type and a corresponding "COMM"(communication) class is constructed using this data.
-     * The COMM class is finally added to a list and returned to the caller.
+     * Uses a jReader that is wrapped around a socket to listen for an incoming
+     * datastream. The incoming data is segregated per type and a corresponding
+     * "COMM"(communication) class is constructed using this data. The COMM
+     * class is finally added to a list and returned to the caller.
+     *
      * @param jreader which listens for a stream on the socket.
-     * @return the list of COMM objects which were constructed with data read from the socket.
-     * @throws Exception 
+     * @return the list of COMM objects which were constructed with data read
+     * from the socket.
+     * @throws Exception
      */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
         gameObjects = new ArrayList<>();
@@ -70,6 +76,9 @@ public class Communicator {
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
                         gameObjects.add(new Asteroid(ac));
+                    } else if (gp instanceof InventoryReply) {
+                        InventoryReply ir = (InventoryReply) gp;
+                        gameObjects.add(new Inventory(ir));
                     }
                 }
             } else {
@@ -87,6 +96,10 @@ public class Communicator {
                     AsteroidComm ac = (AsteroidComm) gp;
                     Asteroid a = new Asteroid(ac);
                     gameObjects.add(a);
+                } else if (gp instanceof InventoryReply) {
+                    InventoryReply ir = (InventoryReply) gp;
+                    gameObjects.add(new Inventory(ir));
+                    System.out.println("--Communicator inventory");
                 }
             }
         }
@@ -96,17 +109,18 @@ public class Communicator {
 
     /**
      * Sends a login request as json to the socket output stream.
+     *
      * @param json the json to be sent.
      */
     public static void sendLogin(String json) {
-        System.out.println("login: " + json);
         writer.println(json);
     }
 
     /**
      * Initiates the socket and thus the connection the server.
+     *
      * @return true if the connection was successful, false otherwise.
-     * @throws SocketException 
+     * @throws SocketException
      */
     public static boolean initiate() throws SocketException {
         try {
@@ -131,8 +145,10 @@ public class Communicator {
 
     /**
      * Listens for a response to a login request.
-     * @return the SpaceShipComm object that belongs to the login request, null if an exception occurred.
-     * @throws Exception 
+     *
+     * @return the SpaceShipComm object that belongs to the login request, null
+     * if an exception occurred.
+     * @throws Exception
      */
     public static SpaceshipComm receiveLogin() throws Exception {
         SpaceshipComm spacecomm = null;

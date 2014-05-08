@@ -83,10 +83,18 @@ public class Minimap extends GameObjectImpl {
         
         float ownSpaceshipxPosition = self.getPosition().x;
         float ownSpaceshipyPosition = self.getPosition().y;
-        g.setColor(Color.blue);
+        g.setColor(Color.cyan);
         float spacemapxPosition = ownSpaceshipxPosition / scaleNumber + mapPosition.x;
         float spacemapyPosition = ownSpaceshipyPosition / scaleNumber + mapPosition.y;
         Shape spaceship = new Rectangle(spacemapxPosition, spacemapyPosition, 1, 1);
         g.draw(spaceship);
+        
+        g.setColor(Color.cyan);
+        float ownviewportxPosition = Viewport.viewportPos.x / scaleNumber + mapPosition.x;
+        float ownviewportyPosition = Viewport.viewportPos.y / scaleNumber + mapPosition.y;
+        float vwidth = SpaceClient.screenWidth / scaleNumber;
+        float vheight = SpaceClient.screenHeight / scaleNumber;
+        Shape viewport = new Rectangle(ownviewportxPosition, ownviewportyPosition, vwidth, vheight);
+        g.draw(viewport);
     }
 }

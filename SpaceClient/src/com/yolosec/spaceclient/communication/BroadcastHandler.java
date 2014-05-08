@@ -11,17 +11,17 @@ import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.ptsesd.groepb.shared.socket.InventoryRequest;
+import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
+import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.world.Asteroid;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
+import com.yolosec.spaceclient.gui.SpaceClient;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
-import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import com.yolosec.spaceclient.game.world.Asteroid;
-import com.yolosec.spaceclient.game.player.Spaceship;
-import com.yolosec.spaceclient.game.world.Viewport;
-import com.yolosec.spaceclient.gui.SpaceClient;
-import java.io.InputStreamReader;
 
 /**
  *
@@ -59,18 +59,19 @@ public class BroadcastHandler implements Runnable {
 
     /**
      * Sends a login request to the server.
+     *
      * @param username
      * @param password
-     * @throws Exception 
+     * @throws Exception
      */
     public void login(String username, String password) throws Exception {
         LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, password);
         Communicator.sendLogin(Serializer.serializeLogin(lc));
     }
 
-    
     /**
      * Sends a GameObjectImpl to the GameServer serialized as Json..
+     *
      * @param gObject the GameObjectImpl to send.
      */
     public void sendData(GameObjectImpl gObject) {
@@ -87,10 +88,22 @@ public class BroadcastHandler implements Runnable {
         }
     }
 
+    public void sendInventoryRequest(InventoryRequest ir) {
+        String json = "";
+        if (ir != null) {
+            json = Serializer.serializeInventoryRequestAsGamePacktet(ir);
+        }
+        if (!json.equals("")) {
+            Communicator.sendData(json);
+        }
+    }
+
     /**
-     * Listens for incoming data and, when retrieved, passes it on to the CallBackOwner for processing.
+     * Listens for incoming data and, when retrieved, passes it on to the
+     * CallBackOwner for processing.
+     *
      * @param reader
-     * @throws Exception 
+     * @throws Exception
      */
     private void handleData(JsonReader reader) throws Exception {
         try {
@@ -102,7 +115,6 @@ public class BroadcastHandler implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 }

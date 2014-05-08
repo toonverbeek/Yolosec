@@ -5,23 +5,26 @@
  */
 package com.yolosec.spaceclient.game.world;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.tiled.TiledMap;
 import com.yolosec.spaceclient.dao.GameObjectDAOImpl;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.dao.interfaces.GameObject;
 import com.yolosec.spaceclient.dao.interfaces.GameWorld;
-import com.yolosec.spaceclient.gui.Camera;
+import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.gui.Camera;
+import com.yolosec.spaceclient.gui.GameState;
 import com.yolosec.spaceclient.gui.Minimap;
+import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
@@ -53,6 +56,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 
     private HashMap<String, AngelCodeFont> fontSet;
     private final Minimap minimap;
+    private Inventory playerInventory;
 
     /**
      * Creates a new instance of GameWorldImpl. The GameWorld handles the update
@@ -65,7 +69,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     public GameWorldImpl(Spaceship player) throws SlickException {
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
-        tileMap = new TiledMap("/newmap.tmx");
+        tileMap = new TiledMap("/map_space.tmx");
 
         this.playerViewport = new Viewport(player, tileMap);
         minimap = new Minimap(screenWidth - 200, 0, 200, 200);
@@ -74,20 +78,23 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     @Override
     public void update(GameContainer gc) {
         playerViewport.update(gc);
-        gameObjectDAO.sendData(playerViewport);
+        gameObjectDAO.sendData(playerViewport.getSpaceship());
         gameObjects.clear();
         gameObjects.addAll(gameObjectDAO.getGameObjects());
         for (GameObjectImpl gObject : gameObjects) {
             if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
                 ast.updateAsteroid(gc, playerViewport.getSpaceship());
-                if (ast.isIntersecting(playerViewport)) {
+                if (ast.isIntersecting(playerViewport.getSpaceship())) {
                     //if asteroid is being mined, start sending updates to server 
                     //gameObjectDAO.sendData(ast);
                 }
             } else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.update(gc);
+            }else if(gObject instanceof Inventory){
+                Inventory inventory = (Inventory) gObject;
+                SpaceClient.playerInventory = inventory;
             }
         }
     }

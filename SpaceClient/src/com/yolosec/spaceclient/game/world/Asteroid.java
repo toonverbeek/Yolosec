@@ -157,24 +157,10 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             int drawPositionX = (int) (xPosition - Viewport.viewportPos.x);
             int drawPositionY = (int) (yPosition - Viewport.viewportPos.y);
             Shape astroidCircleDraw = new Circle(drawPositionX, drawPositionY, resourceAmount);
-            Rectangle asteroidBoundingDraw =new Rectangle((int) astroidCircleDraw.getX(), (int) astroidCircleDraw.getY(), resourceAmount, resourceAmount);
-
+            Rectangle asteroidBoundingDraw = new Rectangle((int) astroidCircleDraw.getX(), (int) astroidCircleDraw.getY(), resourceAmount, resourceAmount);
+            
+            
             if (asteroidBoundingDraw.intersects(spaceship.getRectangle())) {
-                if (resourceAmount > 5) {
-                //callback
-                    //if player is mining (i.e. pressing spacebar)
-                    if (spaceship.mine(this.getType(), this)) {
-
-                    }
-                } else {
-                    spaceship.stopMining();
-
-                }
-            } else {
-                spaceship.stopMining();
-            }
-        } else {
-            if (this.asteroidBounding.intersects(spaceship.getRectangle())) {
                 if (resourceAmount > 5) {
                     //callback
                     //if player is mining (i.e. pressing spacebar)
@@ -187,6 +173,21 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
                 }
             } else {
                 spaceship.stopMining();
+//          } else {
+//            if (this.asteroidBounding.intersects(spaceship.getRectangle())) {
+//                if (resourceAmount > 5) {
+//                    //callback
+//                    //if player is mining (i.e. pressing spacebar)
+//                    if (spaceship.mine(this.getType(), this)) {
+//
+//                    }
+//                } else {
+//                    spaceship.stopMining();
+//
+//                }
+//            } else {
+//                spaceship.stopMining();
+//            }
             }
         }
         //asteroidBounding.width = resourceAmount * 2;

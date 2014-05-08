@@ -8,6 +8,7 @@ package com.yolosec.spaceclient.game.world;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.Minimap;
+import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.awt.Rectangle;
@@ -35,12 +36,28 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
 
     public Viewport(Spaceship player, TiledMap tileMap) {
         this.spaceship = player;
-        int drawPositionX = (int) (player.getPosition().x + (screenWidth / 2));
-        int drawPositionY = (int) (player.getPosition().y + (screenHeight / 2));
-        Viewport.viewportPos = new Vector2f(drawPositionX, drawPositionY);
         this.tileMap = tileMap;
         Viewport.tilemapHeight = tileMap.getHeight();
         Viewport.tilemapWidth = tileMap.getWidth();
+
+        Viewport.viewportPos = new Vector2f();
+        float drawPositionX = player.getPosition().x;
+        float drawPositionY = player.getPosition().y;
+        if (drawPositionX > (tilemapWidth * TILESIZE) - screenWidth) {
+            Viewport.viewportPos.x = (tilemapWidth * TILESIZE) - screenWidth;
+        } else if (drawPositionX < screenWidth) {
+            Viewport.viewportPos.x = drawPositionX;
+        } else {
+            Viewport.viewportPos.x = drawPositionX;
+        }
+        if (drawPositionY > (tilemapWidth * TILESIZE) - screenHeight) {
+            Viewport.viewportPos.y = (tilemapHeight * TILESIZE) - screenHeight;
+        } else if (drawPositionY < screenHeight) {
+            Viewport.viewportPos.y = drawPositionY;
+        } else {
+            Viewport.viewportPos.y = drawPositionY;
+        }
+
     }
 
     public Spaceship getSpaceship() {
@@ -50,7 +67,7 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
     @Override
     public Rectangle getRectangle() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        return new Rectangle((int)Viewport.viewportPos.x, (int)Viewport.viewportPos.y, screenWidth, screenHeight);
+        return new Rectangle((int) Viewport.viewportPos.x, (int) Viewport.viewportPos.y, screenWidth, screenHeight);
     }
 
     @Override
@@ -72,32 +89,57 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
     }
 
     private void updateViewportLocation() {
+        Vector2f spaceshipPosition = new Vector2f(spaceship.getPosition());
+        Vector2f viewportPosition = new Vector2f(viewportPos);
+        Vector2f spaceShipDrawPosition = spaceshipPosition.sub(viewportPosition);
 
-        int drawSpaceshipPositionX = (int) (this.spaceship.getPosition().x - Viewport.viewportPos.x);
-        int drawSpaceshipPositionY = (int) (this.spaceship.getPosition().y - Viewport.viewportPos.y);
-        //moving left
-        if (drawSpaceshipPositionX <= VIEWPORTSCROLL) {
-            viewportVelocity.x = -5f;
-        } else if (drawSpaceshipPositionX >= ((screenWidth - spaceship.getWidth()) - VIEWPORTSCROLL)) {
-            viewportVelocity.x = 5f;
+        boolean viewport_X_0 = false;
+        boolean viewport_X_1 = false;
+        boolean viewport_Y_0 = false;
+        boolean viewport_Y_1 = false;
+
+        if (viewportPos.x > 0) {
+            viewport_X_0 = true;
         } else {
-            viewportVelocity.x = 0;
+            viewport_X_0 = false;
         }
-        if (drawSpaceshipPositionY <= VIEWPORTSCROLL) {
-            viewportVelocity.y = -5f;
-        } else if (drawSpaceshipPositionY >= ((screenHeight - spaceship.getHeight()) - VIEWPORTSCROLL)) {
-            viewportVelocity.y = 5f;
+        if (viewportPos.y > 0) {
+            viewport_Y_0 = true;
         } else {
-            viewportVelocity.y = 0;
+            viewport_Y_0 = false;
         }
-        //apply speed to position
-        float newPosX = viewportPos.x + viewportVelocity.x;
-        if (newPosX >= 0 && newPosX <= (tilemapWidth * TILESIZE) - spaceship.getWidth()) {
+
+        if (viewportPos.x < (TILESIZE * tilemapWidth) - (3 * TILESIZE)) {
+            viewport_X_1 = true;
+        } else {
+            viewport_X_1 = false;
+        }
+
+        if (viewportPos.y < (TILESIZE * tilemapHeight) - (3 * TILESIZE)) {
+            viewport_Y_1 = true;
+        } else {
+            viewport_Y_1 = false;
+        }
+
+        if (viewport_X_0 && viewport_X_1) {
+            if (spaceShipDrawPosition.x > (SpaceClient.screenWidth - VIEWPORTSCROLL + (3 * TILESIZE)) - spaceship.getWidth()) {
+                this.viewportVelocity.x = 2f;
+            } else if (spaceShipDrawPosition.x < VIEWPORTSCROLL) {
+                this.viewportVelocity.x = -2f;
+            } else {
+                this.viewportVelocity.x = 0;
+            }
             viewportPos.x += viewportVelocity.x;
         }
+        if (viewport_Y_0 && viewport_Y_1) {
 
-        float newPosY = viewportPos.y + viewportVelocity.y;
-        if (newPosY >= 0 && newPosY <= (tilemapHeight * TILESIZE) - spaceship.getHeight()) {
+            if (spaceShipDrawPosition.y > (SpaceClient.screenHeight - VIEWPORTSCROLL + (3 * TILESIZE)) - spaceship.getHeight()) {
+                this.viewportVelocity.y = 2f;
+            } else if (spaceShipDrawPosition.y < VIEWPORTSCROLL) {
+                this.viewportVelocity.y = -2f;
+            } else {
+                this.viewportVelocity.y = 0;
+            }
             viewportPos.y += viewportVelocity.y;
         }
     }

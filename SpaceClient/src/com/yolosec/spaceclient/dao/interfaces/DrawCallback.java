@@ -7,9 +7,7 @@
 package com.yolosec.spaceclient.dao.interfaces;
 
 import java.util.List;
-import java.util.Map;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import com.yolosec.spaceclient.game.player.Spaceship;
 
 /**
  *

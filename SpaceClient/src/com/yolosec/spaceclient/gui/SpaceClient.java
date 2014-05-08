@@ -1,6 +1,7 @@
 package com.yolosec.spaceclient.gui;
 
 //import com.ptsesd.groepb.shared.jms.MessagingGateway;
+import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.User;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -16,6 +17,7 @@ public class SpaceClient extends StateBasedGame {
     private static final int FPS = 60;
     public static int screenHeight;
     public static int screenWidth;
+    public static Inventory playerInventory;
     public User user;
 
     /**
@@ -66,6 +68,6 @@ public class SpaceClient extends StateBasedGame {
     public void initStatesList(GameContainer container) throws SlickException {
         this.addState(new GameState(user));
         this.addState(new MainMenuState());
-        this.addState(new Planet());
+        this.addState(new Planet(user.getSpaceship().getId()));
     }
 }

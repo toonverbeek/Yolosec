@@ -6,10 +6,14 @@
 
 package com.yolosec.spaceclient.gui;
 
+import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
+import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.player.User;
+import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import java.util.HashMap;
+import java.util.List;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,7 +25,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author Tim
  */
-public class GameState extends BasicGameState {
+public class GameState extends BasicGameState{
     
     private static final int FPS = 60;
     public static int screenHeight;
@@ -30,6 +34,7 @@ public class GameState extends BasicGameState {
     private GameWorldImpl gameWorld;
     private AngelCodeFont font;
     private HashMap<String, AngelCodeFont> fontSet = new HashMap<String, AngelCodeFont>();
+    public static Inventory playerInventory;
 
     public GameState(User user){
         this.user = user;
@@ -68,5 +73,4 @@ public class GameState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         gameWorld.update(container);
     }
-    
 }

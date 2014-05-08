@@ -14,8 +14,6 @@ import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.Viewport;
 import com.yolosec.spaceclient.gui.SpaceClient;
-import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
-import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.awt.Rectangle;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -52,6 +50,7 @@ public class Spaceship extends GameObjectImpl {
     private Rectangle boundingRectangle;
     private Input input;
     private boolean mining = false;
+    private int sendAsteroid = 0;
 
     /**
      * Gets the amount of resources for this spaceship.
@@ -142,14 +141,12 @@ public class Spaceship extends GameObjectImpl {
         int drawSpaceshipPositionX = 0;
         int drawSpaceshipPositionY = 0;
         if (self) {
-            g.setColor(Color.blue);
-            drawSpaceshipPositionX = (int) (this.position.x - Viewport.viewportPos.x);
-            drawSpaceshipPositionY = (int) (this.position.y - Viewport.viewportPos.y);
+            g.setColor(Color.cyan);
         } else {
             g.setColor(Color.white);
-            drawSpaceshipPositionX = (int) this.position.x;
-            drawSpaceshipPositionY = (int) this.position.y;
         }
+        drawSpaceshipPositionX = (int) (this.position.x - Viewport.viewportPos.x);
+        drawSpaceshipPositionY = (int) (this.position.y - Viewport.viewportPos.y);
 
         polygon.setX(drawSpaceshipPositionX);
         polygon.setY(drawSpaceshipPositionY);
@@ -185,49 +182,67 @@ public class Spaceship extends GameObjectImpl {
      * Sets the location for the spaceship.
      */
     private void setLocation() {
-        //set x and y
-        //position.add(velocity);
+        Vector2f newPos = new Vector2f(position);
+        newPos.add(velocity);
+        boolean map_X_0 = false;
+        boolean map_Y_0 = false;
+        boolean map_X_1 = false;
+        boolean map_Y_1 = false;
 
-        Vector2f newTranslation = new Vector2f();
-        //for every direction check if the spaceship is colliding with a border
-        //if the player is colliding set its acceleration on the particular axis to 0
-        //if the player is not colliding update his position
+        boolean viewport_X_0 = false;
+        boolean viewport_X_1 = false;
+        boolean viewport_Y_0 = false;
+        boolean viewport_Y_1 = false;
+        //for all positions, check if the player is in the map bounds
+        if (newPos.x >= 0f) {
+            map_X_0 = true;
+        }
 
-        if (this.position.x > 0) {
-            newTranslation.x += this.velocity.x;
+        if (newPos.y >= 0f) {
+            map_Y_0 = true;
+        }
+
+        if (newPos.x <= (Viewport.TILESIZE * Viewport.tilemapWidth) - width) {
+            map_X_1 = true;
+        }
+
+        if (newPos.y <= (Viewport.TILESIZE * Viewport.tilemapHeight) - height) {
+            map_Y_1 = true;
+        }
+
+        //for all positions, check if the player is in the viewportbounds
+        if (newPos.x >= Viewport.viewportPos.x) {
+            viewport_X_0 = true;
+        }
+        if (newPos.x <= (Viewport.viewportPos.x + SpaceClient.screenWidth) - width) {
+            viewport_X_1 = true;
+        }
+        if (newPos.y >= Viewport.viewportPos.y) {
+            viewport_Y_0 = true;
+        }
+        if (newPos.y <= (Viewport.viewportPos.y + SpaceClient.screenHeight) - height) {
+            viewport_Y_1 = true;
+        }
+
+        if (map_X_0 && map_X_1) {
+            if (viewport_X_0 && viewport_X_1) {
+                this.position.x += velocity.x;
+            } else {
+                this.velocity.x = 0;
+            }
         } else {
-            this.position.x = 1;
             this.velocity.x = 0;
-            this.acceleration.x = 0;
         }
 
-        if (this.position.x < ((Viewport.tilemapWidth * Viewport.TILESIZE) - width)) {
-            newTranslation.x += this.velocity.x;
+        if (map_Y_0 && map_Y_1) {
+            if (viewport_Y_0 && viewport_Y_1) {
+                this.position.y += velocity.y;
+            } else {
+                this.velocity.y = 0;
+            }
         } else {
-            this.position.x = ((Viewport.tilemapWidth * Viewport.TILESIZE) - width);
-            this.velocity.x = 0;
-            this.acceleration.x = 0;
-        }
-
-        if (this.position.y > 0) {
-            newTranslation.y += this.velocity.y;
-        } else {
-            this.position.y = 1;
             this.velocity.y = 0;
-            this.acceleration.y = 0;
         }
-
-        if (this.position.y < ((Viewport.tilemapHeight * Viewport.TILESIZE) - height)) {
-            newTranslation.y += this.velocity.y;
-        } else {
-            this.position.y =((Viewport.tilemapHeight * Viewport.TILESIZE) - height);
-            this.velocity.y = 0;
-            this.acceleration.y = 0;
-        }
-
-        this.position.add(newTranslation);
-        //this.position.add(velocity);
-
     }
 
     /**
@@ -377,15 +392,26 @@ public class Spaceship extends GameObjectImpl {
             int drawSpaceshipPositionY = (int) (this.position.y - Viewport.viewportPos.y);
             miningLasers1 = new Vector2f(drawSpaceshipPositionX, drawSpaceshipPositionY);
             mininglasers2 = new Vector2f(drawAsteroidPositionX + (minedAsteroid.maxResourceAmount / 2), drawAsteroidPositionY + (minedAsteroid.maxResourceAmount / 2));
-            int oldCommonResources = this.commonResources;
+            //int oldCommonResources = this.commonResources;
             if (type == AsteroidType.common) {
                 this.commonResources += 1;
                 minedAsteroid.resourceAmount -= 1;
-                Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
+                sendAsteroid++;
+                //Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
             } else if (type == AsteroidType.magic) {
                 this.magicResources++;
+                minedAsteroid.resourceAmount -= 1;
+                sendAsteroid++;
+                //Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
             } else if (type == AsteroidType.rare) {
                 this.rareResources++;
+                minedAsteroid.resourceAmount -= 1;
+                sendAsteroid++;
+            }
+            
+            if(sendAsteroid >= 5){
+                Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
+                sendAsteroid = 0;
             }
             return mining;
         }
@@ -420,5 +446,9 @@ public class Spaceship extends GameObjectImpl {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public Vector2f getVelocity() {
+        return this.velocity;
     }
 }

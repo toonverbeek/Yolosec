@@ -228,6 +228,7 @@ public class LoginForm extends javax.swing.JFrame {
                     User user = new User(s, "Space_Invader1337");
                     SpaceClient client = new SpaceClient("Yolosec", user);
                     appgc = new AppGameContainer(client);
+                    
                     screenHeight = appgc.getScreenHeight();
                     screenWidth = appgc.getScreenWidth();
                     appgc.setDisplayMode(screenWidth, screenHeight, true);

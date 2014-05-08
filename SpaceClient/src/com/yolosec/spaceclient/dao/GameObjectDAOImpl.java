@@ -11,9 +11,11 @@ import java.util.List;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.communication.BroadcastHandler;
+import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.gui.SpaceClient;
 import com.yolosec.spaceclient.observing.NodeImpl;
 
 /**
@@ -26,11 +28,12 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
      * Holds the GameObjects that are currently relevant for the GameWorld.
      */
     private List<GameObjectImpl> gameObjects;
-    
+
     /**
      * Used for communication with the GameServer.
      */
     private BroadcastHandler broadcastHandler;
+    private Thread broadcastHandlerThread;
 
     /**
      * Creates a new instance of type GameObjectDAOImpl.s Keeps track of all the
@@ -39,10 +42,9 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
      */
     public GameObjectDAOImpl() {
         broadcastHandler = new BroadcastHandler(this);
-        Thread th = new Thread(broadcastHandler);
-        th.start();
+        broadcastHandlerThread = new Thread(broadcastHandler);
+        broadcastHandlerThread.start();
         this.gameObjects = new ArrayList<>();
-
     }
 
     /**
@@ -78,7 +80,9 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     //check of resource amount has changed
                     if (ast.getResourceAmount() != existing.getResourceAmount()) {
                         //System.out.println("got updated asteroid");
-                        existing.setResourceAmount(ast.getResourceAmount());
+                        if (ast.getResourceAmount() < existing.getResourceAmount()) {
+                            existing.setResourceAmount(ast.getResourceAmount());
+                        }
                     }
                 }
             }
@@ -91,6 +95,14 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     //update position from spaceship
                     existing.setPosition(spa.getPosition());
                     existing.setResources(spa.getResources());
+                }
+            }
+            if (goi instanceof Inventory) {
+                Inventory inv = (Inventory) goi;
+                Inventory existing = inventoryExists(inv);
+                if (existing == null) {
+                    SpaceClient.playerInventory = inv;
+                    gameObjects.add(goi);
                 }
             }
         }
@@ -133,6 +145,19 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 Asteroid compareAst = (Asteroid) goimpl;
                 if (compareAst.getXPosition() == astX && compareAst.getYPosition() == astY) {
                     return compareAst;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Inventory inventoryExists(Inventory in) {
+
+        for (GameObjectImpl goimpl : gameObjects) {
+            if (goimpl instanceof Inventory) {
+                Inventory inventory = (Inventory) goimpl;
+                if (inventory.getSpaceshipId() == in.getSpaceshipId()) {
+                    return inventory;
                 }
             }
         }
