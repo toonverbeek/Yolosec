@@ -12,6 +12,7 @@ import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.MessagingComm;
+import com.ptsesd.groepb.shared.PlanetComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.data.AsteroidDAOImpl;
@@ -19,6 +20,7 @@ import com.yolosec.data.DatabaseDAO;
 import com.yolosec.data.ItemDAO;
 import com.yolosec.data.ItemDAOImpl;
 import com.yolosec.data.MessageDAOImpl;
+import com.yolosec.data.PlanetDAOImpl;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class GameService implements Runnable {
 
     public static boolean debug = true;
     private ServerSocket server;
+    private static final int mapSizeX = 16000;
+    private static final int mapSizeY = 16000;
 
     private boolean isRunning = false;
 
@@ -44,6 +48,7 @@ public class GameService implements Runnable {
 
     private GameBroadcastService broadcastModule;
 
+    private PlanetDAOImpl planetDAO;
     private AsteroidDAOImpl asteroidDAO;
     private MessageDAOImpl messagingDAO;
     private ItemDAO itemDAO;
@@ -60,7 +65,8 @@ public class GameService implements Runnable {
             Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        asteroidDAO = new AsteroidDAOImpl();
+        planetDAO = new PlanetDAOImpl(mapSizeX, mapSizeY);
+        asteroidDAO = new AsteroidDAOImpl(mapSizeX, mapSizeY);
         messagingDAO = new MessageDAOImpl();
         itemDAO = new ItemDAOImpl();
 
@@ -175,6 +181,18 @@ public class GameService implements Runnable {
         asteroidDAO.sendAsteroidComms(clien);
     }
 
+    /* ----------------------------------------------------------------------------------------------------------------------------
+     *  ---------------------------------------------------- Asteroid Methods -----------------------------------------------------
+     *  --------------------------------------------------------------------------------------------------------------------------- */
+    public List<PlanetComm> getPlanets() {
+        return planetDAO.findAll();
+    }
+
+    public void broadcastPlanets() {
+        List<GameClient> clien = new ArrayList<>(this.clients.keySet());
+        planetDAO.sendPlanetComms(clien);
+    }
+    
     /* ----------------------------------------------------------------------------------------------------------------------------
      *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */

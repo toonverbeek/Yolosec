@@ -19,11 +19,6 @@ import java.io.PrintWriter;
  */
 public class AsteroidDAOImpl implements AsteroidDAO {
 
-    private final int mapSizeX = 16000;
-    private final int mapSizeY = 16000;
-    //private final int mapSizeX = 1300;
-    //private final int mapSizeY = 800;
-
     private final int unitSizeX;
     private final int unitSizeY;
 
@@ -34,7 +29,7 @@ public class AsteroidDAOImpl implements AsteroidDAO {
 
     private final int amountOfAsteroids = 50;
 
-    public AsteroidDAOImpl() {
+    public AsteroidDAOImpl(int mapSizeX, int mapSizeY) {
         unitSizeX = mapSizeX / 10;
         unitSizeY = mapSizeY / 10;
         map = new int[unitSizeX][unitSizeY];
@@ -104,7 +99,7 @@ public class AsteroidDAOImpl implements AsteroidDAO {
             int rMapUnitY = r.nextInt(rUnitSizeY);
             rMapUnitY += 10;
 
-            //#TODO: Determine asteroid type
+            //Determine asteroid type
             AsteroidType atype = AsteroidType.common; //default common, chances on making it rare or magic
             int chanceMagic = 10;
             int chanceRare = chanceMagic + 20;
@@ -115,8 +110,19 @@ public class AsteroidDAOImpl implements AsteroidDAO {
                 atype = AsteroidType.rare;
             }
 
-            //Create random resource amount 
-            int rResourceAmount = 100;
+            //Create random resource amount
+            int rResourceAmount = 0;
+            switch (atype) {
+                case common:
+                    rResourceAmount = 80 + r.nextInt(20);
+                    break;
+                case magic:
+                    rResourceAmount = 40 + r.nextInt(25);
+                    break;
+                case rare:
+                    rResourceAmount = 10 + r.nextInt(15);
+                    break;
+            }
 
             //Check if is colliding with current rendered asteroids
             if (!isColliding(rMapUnitX, rMapUnitY, rResourceAmount, _asteroids) || _asteroids.isEmpty()) {
