@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ptsesd.groepb.shared;
 
 /**
@@ -16,10 +11,12 @@ public class ItemComm {
     private final AuctionHouseRequestType requestType;
     private final int resourceAmount; 
     private final String resourceType;
+    private final String name;
 
-    public ItemComm(Long itemId, int sellerId, int resourceAmount, String resourceType, AuctionHouseRequestType requestType) {
+    public ItemComm(Long itemId, int sellerId, String name, int resourceAmount, String resourceType, AuctionHouseRequestType requestType) {
         this.itemId = itemId;
         this.sellerId = sellerId;
+        this.name = name;
         this.requestType = requestType;
         this.resourceAmount = resourceAmount;
         this.resourceType = resourceType;
@@ -45,4 +42,7 @@ public class ItemComm {
         return sellerId;
     }
 
+    public String getName() {
+        return this.name;
+    }
 }
