@@ -1,5 +1,7 @@
 package com.ptsesd.groepb.shared;
 
+import java.util.List;
+
 /**
  *
  * @author Tim
@@ -13,8 +15,20 @@ public class ItemComm {
     private final String resourceType;
     private final String name;
     private final String imageName;
+    private final List<Object> propertyList;
 
-    public ItemComm(Long itemId, int sellerId, String name, int resourceAmount, String resourceType, AuctionHouseRequestType requestType, String imageName) {
+    public ItemComm(Long itemId, int sellerId, String name, int resourceAmount, String resourceType, AuctionHouseRequestType requestType) {
+        this.itemId = itemId;
+        this.sellerId = sellerId;
+        this.name = name;
+        this.requestType = requestType;
+        this.resourceAmount = resourceAmount;
+        this.resourceType = resourceType;
+        this.imageName = "";
+        this.propertyList = null;
+    }
+
+    public ItemComm(Long itemId, int sellerId, String name, int resourceAmount, String resourceType, AuctionHouseRequestType requestType, String imageName, List<Object> propertyList) {
         this.itemId = itemId;
         this.sellerId = sellerId;
         this.name = name;
@@ -22,6 +36,7 @@ public class ItemComm {
         this.resourceAmount = resourceAmount;
         this.resourceType = resourceType;
         this.imageName = imageName;
+        this.propertyList = propertyList;
     }
 
     public AuctionHouseRequestType getRequestType() {
@@ -50,5 +65,9 @@ public class ItemComm {
 
     public String getImageName() {
         return this.imageName;
+    }
+
+    public List<Object> getPropertyList() {
+        return this.propertyList;
     }
 }
