@@ -87,6 +87,12 @@ public class Serializer {
                 List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
                 InventoryReply inventoryReply = new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items);
                 gameobject = inventoryReply;
+            } else if (header.equals(AuctionRequest.class.getSimpleName())){
+                Integer userID = ((Double) map.get("userId")).intValue();
+                Integer itemId = ((Double) map.get("itemId")).intValue();
+                AuctionHouseRequestType requestType = AuctionHouseRequestType.valueOf(map.get("type").toString());
+                AuctionRequest request = new AuctionRequest(header, userID, itemId, requestType);
+                gameobject = request;
             }
 
         }
