@@ -10,13 +10,12 @@ package com.ptsesd.groepb.shared;
  *
  * @author Tim
  */
-public class PlanetComm extends GamePacket {
+public class PlanetComm {
     private String planetName;
     private int size;
     private float x, y;
 
-    public PlanetComm(String header, String planetName, int size, float x, float y) {
-        super(header);
+    public PlanetComm(String planetName, int size, float x, float y) {
         this.planetName = planetName;
         this.size = size;
         this.x = x;

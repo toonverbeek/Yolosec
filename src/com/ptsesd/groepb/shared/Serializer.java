@@ -153,13 +153,6 @@ public class Serializer {
                     Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                     List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
                     gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items));
-                } else if (header.equals(PlanetComm.class.getSimpleName())) {
-                    int size = ((Double) map.get("size")).intValue();
-                    float x = ((Double) map.get("x")).floatValue();
-                    float y = ((Double) map.get("y")).floatValue();
-                    String planetname = (String) map.get("planetName");
-                    PlanetComm pcomm = new PlanetComm(header, planetname, size, x, y);
-                    gameobjects.add(pcomm);
                 }
 
             }
@@ -215,11 +208,6 @@ public class Serializer {
 
     public static String serializeAuctionRequestAsGamePacktet(AuctionRequest auctionRequest) {
         String json = gson.toJson(auctionRequest, AuctionRequest.class);
-        return json;
-    }
-    public static String serializePlanetAsGamePacket(String header, String planetname, int size, float x, float y) {
-        PlanetComm pcom = new PlanetComm(header, planetname, size, x, y);
-        String json = gson.toJson(pcom, PlanetComm.class);
         return json;
     }
 }
