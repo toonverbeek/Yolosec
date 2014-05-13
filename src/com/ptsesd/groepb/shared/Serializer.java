@@ -90,7 +90,7 @@ public class Serializer {
             } else if (header.equals(AuctionRequest.class.getSimpleName())){
                 Integer userID = ((Double) map.get("userId")).intValue();
                 Integer itemId = ((Double) map.get("itemId")).intValue();
-                AuctionHouseRequestType requestType = (AuctionHouseRequestType) map.get("type");
+                AuctionHouseRequestType requestType = AuctionHouseRequestType.valueOf(map.get("type").toString());
                 AuctionRequest request = new AuctionRequest(header, userID, itemId, requestType);
                 gameobject = request;
             }
