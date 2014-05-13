@@ -15,6 +15,7 @@ import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.world.Planet;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import com.yolosec.spaceclient.observing.NodeImpl;
 
@@ -104,6 +105,10 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                     SpaceClient.playerInventory = inv;
                     gameObjects.add(goi);
                 }
+            }
+            
+            if(goi instanceof Planet) {
+                gameObjects.add(goi);
             }
         }
     }

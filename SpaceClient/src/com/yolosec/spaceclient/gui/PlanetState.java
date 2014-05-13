@@ -28,7 +28,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author Toon
  */
-public class Planet extends BasicGameState implements DrawCallback {
+public class PlanetState extends BasicGameState implements DrawCallback {
 
     //---------------------------------------GUI LAYOUT ELEMENTS----------------------------------------------------
     private static final int borderMargin = 20;
@@ -53,7 +53,7 @@ public class Planet extends BasicGameState implements DrawCallback {
 
     //private static final Rec
     //---------------------------------------------------------------------------------------------------------------
-    public Planet(int spaceshipId) {
+    PlanetState(int spaceshipId) {
         this.spaceshipid = spaceshipId;
     }
 

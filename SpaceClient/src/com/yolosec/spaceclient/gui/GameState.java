@@ -35,6 +35,7 @@ public class GameState extends BasicGameState{
     private AngelCodeFont font;
     private HashMap<String, AngelCodeFont> fontSet = new HashMap<String, AngelCodeFont>();
     public static Inventory playerInventory;
+    private StateBasedGame game;
 
     public GameState(User user){
         this.user = user;
@@ -48,10 +49,11 @@ public class GameState extends BasicGameState{
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         try {
+            this.game = game;
             container.setTargetFrameRate(FPS);
             container.setFullscreen(true);
 //            user = new User(new Spaceship(10, 10), "Space_Invader1337");
-            gameWorld = new GameWorldImpl(user.getSpaceship());
+            gameWorld = new GameWorldImpl(this, user.getSpaceship());
             //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
             font = new AngelCodeFont("font.fnt", "font_0.png");
             AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
@@ -60,6 +62,10 @@ public class GameState extends BasicGameState{
                 ex.printStackTrace();
             //Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void toPlanetState() {
+        ((SpaceClient) game).toPlanetState();
     }
 
     @Override

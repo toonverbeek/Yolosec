@@ -13,12 +13,14 @@ import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import com.ptsesd.groepb.shared.LoginCommError;
+import com.ptsesd.groepb.shared.PlanetComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.Planet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,7 +43,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.213.209";//"145.93.211.4";//;//"145.93.54.48";
+    public static final String IP_ADDRESS = "145.93.253.199";//"145.93.211.4";//;//"145.93.54.48";
     private static JsonReader jreader;
 
     public static void sendData(String json) {

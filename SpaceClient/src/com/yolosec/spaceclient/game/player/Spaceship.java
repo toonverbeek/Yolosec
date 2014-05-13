@@ -372,7 +372,15 @@ public class Spaceship extends GameObjectImpl {
         boundingRectangle.y = drawPositionY;
         return this.boundingRectangle;
     }
-
+    
+    /*
+     Get rectangle with position on global map not just the viewport
+    */
+    public Rectangle getGlobalRectangle() {
+        Rectangle rect = new Rectangle((int)position.x, (int)position.y, getHeight(), getHeight());
+        return rect;
+    }
+    
     /**
      * Called when the spaceship is currently colliding with an asteroid. If the
      * spacebar key is pressed, the player will start collection resources and

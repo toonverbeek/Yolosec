@@ -13,7 +13,7 @@ public class SpaceClient extends StateBasedGame {
     public static final int STATE_GAME = 0;
     private static final int STATE_MAINMENU = 1;
     private static final int STATE_PLANET = 2;
-            
+
     private static final int FPS = 60;
     public static int screenHeight;
     public static int screenWidth;
@@ -21,18 +21,21 @@ public class SpaceClient extends StateBasedGame {
     public User user;
 
     /**
-     * Create a new isntance of SpaceClient. 
-     * The gameclient handles GUI logic for the game, as well as menu states.
-     * @param gamename the name of the game, i.e. "Yolosec" (needed for superclass)
-     * @param user The user which owns this game, i.e. the player. 
+     * Create a new isntance of SpaceClient. The gameclient handles GUI logic
+     * for the game, as well as menu states.
+     *
+     * @param gamename the name of the game, i.e. "Yolosec" (needed for
+     * superclass)
+     * @param user The user which owns this game, i.e. the player.
      */
     public SpaceClient(String gamename, User user) {
         super(gamename);
         this.user = user;
     }
-    
+
     /**
      * Listens for, and handles key input.
+     *
      * @param key the id of the key that was fired
      * @param c the character representing the key that was fired
      */
@@ -47,20 +50,26 @@ public class SpaceClient extends StateBasedGame {
                 //go to the game state
                 this.enterState(STATE_GAME);
             }
-        } else if (key == Input.KEY_A) {
-            //if not in planet state
-            if (this.getCurrentStateID() != STATE_PLANET) {
-                //go to planet state
-                this.enterState(STATE_PLANET);
-            } else {
-                //go to game state
+        } if(key == Input.KEY_A) {
+            if(this.getCurrentStateID() == STATE_PLANET) {
                 this.enterState(STATE_GAME);
+            } else {
+                this.enterState(STATE_PLANET);
             }
+        }
+    }
+
+    public void toPlanetState() {
+        if (this.getCurrentStateID() != STATE_PLANET) {
+            this.enterState(STATE_PLANET);
+        } else {
+            this.enterState(STATE_GAME);
         }
     }
 
     /**
      * Initializes a list of game states.
+     *
      * @param container the container in which the game is running
      * @throws SlickException
      */
@@ -68,6 +77,6 @@ public class SpaceClient extends StateBasedGame {
     public void initStatesList(GameContainer container) throws SlickException {
         this.addState(new GameState(user));
         this.addState(new MainMenuState());
-        this.addState(new Planet(user.getSpaceship().getId()));
+        this.addState(new PlanetState(user.getSpaceship().getId()));
     }
 }

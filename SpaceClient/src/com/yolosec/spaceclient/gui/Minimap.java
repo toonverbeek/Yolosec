@@ -10,6 +10,7 @@ import com.yolosec.spaceclient.dao.interfaces.GameObject;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
+import com.yolosec.spaceclient.game.world.Planet;
 import com.yolosec.spaceclient.game.world.Viewport;
 import java.util.List;
 import org.newdawn.slick.*;
@@ -78,6 +79,15 @@ public class Minimap extends GameObjectImpl {
                 float spacemapyPosition = spaceyPosition / scaleNumber + mapPosition.y;
                 Shape spaceship = new Rectangle(spacemapxPosition, spacemapyPosition, 1, 1);
                 g.draw(spaceship);
+            } else if(gObject instanceof Planet) {
+                Planet planet = (Planet) gObject;
+                float planetXPos = planet.getX();
+                float planetYPos = planet.getY();
+                g.setColor(Color.green);
+                float planetOnMapPosX = planetXPos / scaleNumber + mapPosition.x;
+                float planetOnMapPosY = planetYPos / scaleNumber + mapPosition.y;
+                float size = planet.getSize() / scaleNumber;
+                g.drawOval(planetOnMapPosX, planetOnMapPosY, size, size);
             }
         }
         

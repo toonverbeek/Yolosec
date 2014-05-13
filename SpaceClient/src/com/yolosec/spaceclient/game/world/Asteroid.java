@@ -218,6 +218,7 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             int locX = (int) drawPositionX + ((maxResourceAmount - resourceAmount) / 2);
             int locY = (int) drawPositionY + ((maxResourceAmount - resourceAmount) / 2);
 
+            
             g.drawOval(locX, locY, resourceAmount, resourceAmount);
             g.setColor(Color.white);
             g.drawRect(drawPositionX, drawPositionY, asteroidBounding.width, asteroidBounding.height);
