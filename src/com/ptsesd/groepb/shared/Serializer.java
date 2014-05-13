@@ -3,6 +3,7 @@ package com.ptsesd.groepb.shared;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.ptsesd.groepb.shared.socket.AuctionRequest;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import java.io.IOException;
@@ -212,6 +213,10 @@ public class Serializer {
         return json;
     }
 
+    public static String serializeAuctionRequestAsGamePacktet(AuctionRequest auctionRequest) {
+        String json = gson.toJson(auctionRequest, AuctionRequest.class);
+        return json;
+    }
     public static String serializePlanetAsGamePacket(String header, String planetname, int size, float x, float y) {
         PlanetComm pcom = new PlanetComm(header, planetname, size, x, y);
         String json = gson.toJson(pcom, PlanetComm.class);

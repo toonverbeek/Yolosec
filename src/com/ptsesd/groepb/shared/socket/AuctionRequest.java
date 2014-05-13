@@ -16,10 +16,10 @@ import com.ptsesd.groepb.shared.GamePacket;
 public class AuctionRequest extends GamePacket{
     
     private final int userId;
-    private final int itemId;
+    private final long itemId;
     private final AuctionHouseRequestType type;
     
-    public AuctionRequest(String header, int userId, int itemId, AuctionHouseRequestType type){
+    public AuctionRequest(String header, int userId, long itemId, AuctionHouseRequestType type){
         super(header);
         this.userId = userId;
         this.itemId = itemId;
@@ -30,7 +30,7 @@ public class AuctionRequest extends GamePacket{
         return userId;
     }
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
