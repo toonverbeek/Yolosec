@@ -16,8 +16,8 @@ import java.util.List;
 public class PlanetsComm {
     private List<PlanetComm> planets = new ArrayList<PlanetComm>();
     public List<PlanetComm> getPlanets() {
-        PlanetComm owheon = new PlanetComm("Owheon", 900, 50, 50);
-        PlanetComm xovis = new PlanetComm("Xovis", 1400, 300, 300);
+        PlanetComm owheon = new PlanetComm("Owheon", 900, 1150, 1200);
+        PlanetComm xovis = new PlanetComm("Xovis", 1400, 13000, 12000);
         planets.add(xovis);
         planets.add(owheon);
         return planets;
