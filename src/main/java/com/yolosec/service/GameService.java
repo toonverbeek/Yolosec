@@ -20,7 +20,6 @@ import com.yolosec.data.DatabaseDAO;
 import com.yolosec.data.ItemDAO;
 import com.yolosec.data.ItemDAOImpl;
 import com.yolosec.data.MessageDAOImpl;
-import com.yolosec.data.PlanetDAOImpl;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +47,6 @@ public class GameService implements Runnable {
 
     private GameBroadcastService broadcastModule;
 
-    private PlanetDAOImpl planetDAO;
     private AsteroidDAOImpl asteroidDAO;
     private MessageDAOImpl messagingDAO;
     private ItemDAO itemDAO;
@@ -65,7 +63,6 @@ public class GameService implements Runnable {
             Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        planetDAO = new PlanetDAOImpl(mapSizeX, mapSizeY);
         asteroidDAO = new AsteroidDAOImpl(mapSizeX, mapSizeY);
         messagingDAO = new MessageDAOImpl();
         itemDAO = new ItemDAOImpl();
@@ -180,18 +177,6 @@ public class GameService implements Runnable {
         List<GameClient> clien = new ArrayList<>(this.clients.keySet());
         asteroidDAO.sendAsteroidComms(clien);
     }
-
-    /* ----------------------------------------------------------------------------------------------------------------------------
-     *  ---------------------------------------------------- Asteroid Methods -----------------------------------------------------
-     *  --------------------------------------------------------------------------------------------------------------------------- */
-    public List<PlanetComm> getPlanets() {
-        return planetDAO.findAll();
-    }
-
-    public void broadcastPlanets() {
-        List<GameClient> clien = new ArrayList<>(this.clients.keySet());
-        planetDAO.sendPlanetComms(clien);
-    }
     
     /* ----------------------------------------------------------------------------------------------------------------------------
      *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
@@ -234,15 +219,15 @@ public class GameService implements Runnable {
         return itemDAO.getAuctionHouse();
     }
     
-    public void buyItem(int spaceshipId, int itemId){
+    public void buyItem(int spaceshipId, long itemId){
         itemDAO.buyItem(spaceshipId, itemId);
     }
     
-    public void sellItem(int spaceshipId, int itemId){
+    public void sellItem(int spaceshipId, long itemId){
         itemDAO.sellItem(spaceshipId, itemId);
     }
     
-    public void cancelAuction(int spaceshipId, int itemId){
+    public void cancelAuction(int spaceshipId, long itemId){
         itemDAO.cancelAuction(spaceshipId, itemId);
     }
 

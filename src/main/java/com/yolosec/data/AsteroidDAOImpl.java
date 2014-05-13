@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AsteroidType;
+import com.ptsesd.groepb.shared.PlanetComm;
+import com.ptsesd.groepb.shared.PlanetsComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.yolosec.service.GameService;
 import java.io.IOException;
@@ -154,7 +156,22 @@ public class AsteroidDAOImpl implements AsteroidDAO {
                 return isColliding;
             }
         }
+        PlanetsComm planets = new PlanetsComm();
+        for (PlanetComm planet : planets.getPlanets()) {
+            //get the position parameters
+            int astPosX = (int) planet.getX();
+            int astPosY = (int) planet.getY();
+            int size = planet.getSize();
+            //create the position from the exisitng asteroid
+            Position p = new Position(astPosX, astPosY, size);
 
+            //check if the positions are colliding
+            if (positionsColliding(newAsteroidPos, p)) {
+                //if they are colliding return
+                isColliding = true;
+                return isColliding;
+            }
+        }
         return isColliding;
     }
 

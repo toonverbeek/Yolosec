@@ -2,10 +2,6 @@ package com.yolosec.service;
 
 import com.yolosec.domain.GameClient;
 
-import com.google.gson.Gson;
-import com.ptsesd.groepb.shared.AsteroidComm;
-import com.ptsesd.groepb.shared.AsteroidType;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 

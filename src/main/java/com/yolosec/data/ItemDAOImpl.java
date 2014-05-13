@@ -18,7 +18,10 @@ public class ItemDAOImpl implements ItemDAO {
         //Return the list
         List<ItemComm> mockItems = new ArrayList<>();
         mockItems.add(new ItemComm(1L, 1, "name", 20, "common", AuctionHouseRequestType.CANCEL));
+        mockItems.add(new ItemComm(1L, 2, "name", 20, "common", AuctionHouseRequestType.CANCEL));
+        mockItems.add(new ItemComm(2L, 1, "name", 50, "magic", AuctionHouseRequestType.BUY));
         mockItems.add(new ItemComm(2L, 2, "name", 50, "magic", AuctionHouseRequestType.BUY));
+        mockItems.add(new ItemComm(3L, 1, "name", 5000, "common", AuctionHouseRequestType.SELL));
         mockItems.add(new ItemComm(3L, 2, "name", 5000, "common", AuctionHouseRequestType.SELL));
         return mockItems;
         
@@ -40,17 +43,17 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public void buyItem(int spaceshipId, int itemId) {
+    public void buyItem(int spaceshipId, long itemId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void sellItem(int spaceshipId, int itemId) {
+    public void sellItem(int spaceshipId, long itemId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void cancelAuction(int spaceshipId, int itemId) {
+    public void cancelAuction(int spaceshipId, long itemId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
