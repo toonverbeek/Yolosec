@@ -107,10 +107,14 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 //check planet collision && input key
             } else if (gObject instanceof Inventory) {
                 Inventory inventory = (Inventory) gObject;
-                SpaceClient.playerInventory = inventory;
+                if (inventory.getSpaceshipId() > 0) {
+                    SpaceClient.playerInventory = inventory;
+                } else {
+                    SpaceClient.auctionhouseInventory = inventory;
+                }
             } else if (gObject instanceof Planet) {
                 Planet planet = (Planet) gObject;
-                System.out.println("Planet Name: " +  planet.getName());
+                System.out.println("Planet Name: " + planet.getName());
                 if (gc.getInput().isKeyPressed(Input.KEY_A)) {
                     System.out.println("Planet Rectangle; X: " + planet.getRectangle().x + "|Y: " + planet.getRectangle().y + "| Size: " + planet.getRectangle().getHeight());
                     System.out.println("Spaceship Rectangle; X: " + playerViewport.getSpaceship().getGlobalRectangle().x + "|Y: " + playerViewport.getSpaceship().getGlobalRectangle().y + "| Size: " + playerViewport.getSpaceship().getGlobalRectangle().getHeight());

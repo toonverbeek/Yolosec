@@ -102,12 +102,16 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 Inventory inv = (Inventory) goi;
                 Inventory existing = inventoryExists(inv);
                 if (existing == null) {
-                    SpaceClient.playerInventory = inv;
+                    if (inv.getSpaceshipId() > 0) {
+                        SpaceClient.playerInventory = inv;
+                    } else {
+                        SpaceClient.auctionhouseInventory = inv;
+                    }
                     gameObjects.add(goi);
                 }
             }
-            
-            if(goi instanceof Planet) {
+
+            if (goi instanceof Planet) {
                 gameObjects.add(goi);
             }
         }

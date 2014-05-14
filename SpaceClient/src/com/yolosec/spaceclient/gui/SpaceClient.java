@@ -18,6 +18,7 @@ public class SpaceClient extends StateBasedGame {
     public static int screenHeight;
     public static int screenWidth;
     public static Inventory playerInventory;
+    public static Inventory auctionhouseInventory;
     public User user;
 
     /**

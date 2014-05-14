@@ -8,11 +8,14 @@ package com.yolosec.spaceclient.communication;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.ptsesd.groepb.shared.AsteroidComm;
+import com.ptsesd.groepb.shared.AuctionHouseRequestType;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.ptsesd.groepb.shared.socket.AuctionRequest;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
+import com.yolosec.spaceclient.game.player.Item;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
@@ -114,6 +117,17 @@ public class BroadcastHandler implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(SpaceClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sendItem(Item item) {
+        String json = "";
+        if (item != null) {
+            AuctionRequest request = new AuctionRequest(AuctionRequest.class.getSimpleName(), item.getSellerId(),item.getItemId(), item.getRequestType());
+            json = Serializer.serializeAuctionRequestAsGamePacktet(request);
+        }
+        if (!json.equals("")) {
+            Communicator.sendData(json);
         }
     }
 
