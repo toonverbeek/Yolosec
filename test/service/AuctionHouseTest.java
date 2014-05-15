@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import jms.EconomyServerGateway;
 import jms.GameserverGateway;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -134,26 +133,6 @@ public class AuctionHouseTest {
 
     @Test
     public void newItemForSaleRequest() {
-        ItemComm itemComm = new ItemComm(1L, 1, 100, "Common", AuctionHouseRequestType.SELL);
-        String json = ItemSerializer.itemToJson(itemComm);
-        MessagingGateway msg = new MessagingGateway("economyRequestorQueue");
-        
-        //oh dear
-        msg.sendItemComm(itemComm);
-        
-        //mock serverside
-        EconomyServerGateway esg = new EconomyServerGateway() {
-
-            @Override
-            public boolean processRequest(Message message) {
-                try {
-                    System.out.println("got message: " + message.getBody(String.class));
-                    return true;
-                } catch (JMSException ex) {
-                    Logger.getLogger(AuctionHouseTest.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                return true;
-            }
-        };
+       
     }
 }

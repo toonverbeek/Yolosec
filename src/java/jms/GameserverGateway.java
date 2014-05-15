@@ -21,7 +21,8 @@ public abstract class GameserverGateway {
 
     private final Gson gson = new Gson();
     private final MessagingGateway messagingGateway;
-    private static final String JNDI_QUEUE = "gameServerReplierQueue";
+    private static final String JNDI_QUEUE = "gameServerRequestorQueue";
+    private static final String JNDI_QUEUE_REPLY = "gameServerReplierQueue";
 
     public GameserverGateway() {
         this.messagingGateway = new MessagingGateway(JNDI_QUEUE);
@@ -32,7 +33,7 @@ public abstract class GameserverGateway {
                 try {
                     System.out.println("GOT MESSAGE OMG " + msg.getBody(String.class));
 
-                    messagingGateway.send(processRequest(msg), MessagingGateway.getDestination(JNDI_QUEUE));
+                    messagingGateway.send(processRequest(msg), messagingGateway.getDestination(JNDI_QUEUE_REPLY));
                 } catch (JMSException ex) {
                     Logger.getLogger(GameserverGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }

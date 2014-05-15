@@ -76,11 +76,16 @@ public class AuctionHouse {
     }
 
     /**
-     * 
+     *
      * @param incomingItem
-     * @return 
+     * @return
      */
     public boolean newBuyItemRequest(ItemComm incomingItem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    }
+
+    public boolean newItemForSaleRequest(ItemComm incomingItem) {
 
         //find the item corresponding to the item id 
         Item itemForSale = itemDAO.find(incomingItem.getItemId());
@@ -90,12 +95,9 @@ public class AuctionHouse {
         return this.putItemForSale(ahItemForSale);
     }
 
-    public boolean newItemForSaleRequest(ItemComm incomingItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public boolean cancelItemForSaleRequest(ItemComm incomingItem) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
 }

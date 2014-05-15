@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="0" hostname="Tonnu" name="service.AuctionHouseTest" skipped="0" tests="3" time="85.763" timestamp="2014-04-23T12:36:47">
+<testsuite errors="1" failures="0" hostname="Tonnu" name="service.AuctionHouseTest" skipped="0" tests="3" time="89.381" timestamp="2014-04-23T12:51:53">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
@@ -62,7 +62,7 @@
     <property name="libs.YAPT_RMI.classpath" value="C:\Users\Toon\Documents\NetBeansProjects\yapt\YAPT_RMI\dist\YAPT_RMI.jar" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner service.AuctionHouseTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\test\results\TEST-service.AuctionHouseTest.xml crashfile=C:\Users\Toon\AppData\Local\Temp\junitvmwatcher1194222216067501651.properties propsfile=C:\Users\Toon\AppData\Local\Temp\junit8141266506163794222.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner service.AuctionHouseTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Toon\Documents\NetBeansProjects\EnterpriseEconomy\build\test\results\TEST-service.AuctionHouseTest.xml crashfile=C:\Users\Toon\AppData\Local\Temp\junitvmwatcher1477232416638019915.properties propsfile=C:\Users\Toon\AppData\Local\Temp\junit2323201173340516406.properties" />
     <property name="build.classes.dir" value="build/jar" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -422,8 +422,7 @@
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
     <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Program Files\NetBeans 7.4\enterprise\docs\javaee-doc-api.jar" />
   </properties>
-  <testcase classname="service.AuctionHouseTest" name="boughtItemFromAuctionHouse" time="0.187" />
-  <testcase classname="service.AuctionHouseTest" name="newItemForSaleRequest" time="83.037">
+  <testcase classname="service.AuctionHouseTest" name="newItemForSaleRequest" time="86.878">
     <error message="failed to lookup instance of interface javax.jms.QueueConnectionFactory at queueConnectionFactory" type="java.lang.IllegalArgumentException">java.lang.IllegalArgumentException: failed to lookup instance of interface javax.jms.QueueConnectionFactory at queueConnectionFactory
 	at com.ptsesd.groepb.shared.jms.MessagingGateway.lookup(MessagingGateway.java:69)
 	at com.ptsesd.groepb.shared.jms.MessagingGateway.&lt;init&gt;(MessagingGateway.java:76)
@@ -462,11 +461,12 @@ Caused by: java.net.ConnectException: Connection refused: connect
 	at org.glassfish.enterprise.iiop.impl.IIOPSSLSocketFactory.createSocket(IIOPSSLSocketFactory.java:329)
 </error>
   </testcase>
-  <testcase classname="service.AuctionHouseTest" name="postItemToAuctionHouse" time="0.104" />
-  <system-out><![CDATA[[EL Info]: 2014-04-23 14:36:48.501--ServerSession(926814604)--EclipseLink, version: Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5
-[EL Info]: connection: 2014-04-23 14:36:48.825--ServerSession(926814604)--file:/C:/Users/Toon/Documents/NetBeansProjects/EnterpriseEconomy/build/jar/_EnterpriseEconomyPU login successful
+  <testcase classname="service.AuctionHouseTest" name="postItemToAuctionHouse" time="0.12" />
+  <testcase classname="service.AuctionHouseTest" name="boughtItemFromAuctionHouse" time="0.029" />
+  <system-out><![CDATA[[EL Info]: 2014-04-23 14:51:54.526--ServerSession(1010352683)--EclipseLink, version: Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5
+[EL Info]: connection: 2014-04-23 14:51:54.829--ServerSession(1010352683)--file:/C:/Users/Toon/Documents/NetBeansProjects/EnterpriseEconomy/build/jar/_EnterpriseEconomyPU login successful
 ]]></system-out>
-  <system-err><![CDATA[apr 23, 2014 2:36:47 PM org.hibernate.validator.internal.util.Version <clinit>
+  <system-err><![CDATA[apr 23, 2014 2:51:53 PM org.hibernate.validator.internal.util.Version <clinit>
 INFO: HV000001: Hibernate Validator 5.0.0.Final
 org.omg.CORBA.COMM_FAILURE: FINE: 00410001: Connection failure: socketType: IIOP_CLEAR_TEXT; hostname: localhost; port: 3700  vmcid: OMG  minor code: 1  completed: No
 	at com.sun.proxy.$Proxy28.connectFailure(Unknown Source)

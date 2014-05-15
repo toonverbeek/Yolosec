@@ -43,12 +43,12 @@ public class EconomyService implements Serializable {
                     //extract all data from incoming json
                     JsonObject jObject = new JsonParser().parse(json).getAsJsonObject();
 
-                    String requestType = jObject.get("request").getAsString();
+                    String requestType = jObject.get("requestType").getAsString();
                     ItemComm incomingItem = ItemSerializer.jsonToItem(json);
                     switch (requestType) {
                         case "BuyItemRequest":
                             return ah.newBuyItemRequest(incomingItem);
-                        case "SellItemRequest":
+                        case "SELL":
                             return ah.newItemForSaleRequest(incomingItem);
                         case "CancelItemForSale":
                             return ah.cancelItemForSaleRequest(incomingItem);
@@ -62,6 +62,7 @@ public class EconomyService implements Serializable {
                 return false;
             }
         };
+         
     }
 
     public void closeEntityManager() {
