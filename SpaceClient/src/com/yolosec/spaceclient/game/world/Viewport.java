@@ -7,7 +7,6 @@ package com.yolosec.spaceclient.game.world;
 
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import com.yolosec.spaceclient.gui.Minimap;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;

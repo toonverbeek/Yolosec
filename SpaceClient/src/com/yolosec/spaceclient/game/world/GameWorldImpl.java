@@ -13,10 +13,13 @@ import com.yolosec.spaceclient.dao.interfaces.GameObject;
 import com.yolosec.spaceclient.dao.interfaces.GameWorld;
 import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.Spaceship;
+import com.yolosec.spaceclient.game.player.User;
 import com.yolosec.spaceclient.gui.Camera;
+import com.yolosec.spaceclient.gui.Chat;
 import com.yolosec.spaceclient.gui.GameState;
 import com.yolosec.spaceclient.gui.Minimap;
 import com.yolosec.spaceclient.gui.SpaceClient;
+import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.ArrayList;
@@ -59,25 +62,31 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     private List<Planet> planets = new ArrayList<>();
     private HashMap<String, AngelCodeFont> fontSet;
     private final Minimap minimap;
+    private Chat chat;
     private Inventory playerInventory;
     private GameState state;
+    private Thread chatThread;
 
     /**
      * Creates a new instance of GameWorldImpl. The GameWorld handles the update
      * and draw methods for all GameObjects. The GameWorld also handles the
      * drawing of the Map.
      *
+     * @param state
      * @param player the player owning this instance.
      * @throws SlickException
      */
-    public GameWorldImpl(GameState state, Spaceship player) throws SlickException {
+    public GameWorldImpl(GameState state, User player) throws SlickException {
         this.state = state;
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
         tileMap = new TiledMap("/map_space.tmx");
 
-        this.playerViewport = new Viewport(player, tileMap);
-        minimap = new Minimap(screenWidth - 200, 0, 200, 200);
+        this.playerViewport = new Viewport(player.getSpaceship(), tileMap);
+        minimap = new Minimap(screenWidth - 200-1, 1, 200-1, 200);
+        chat = new Chat(1+(int)(screenWidth *0.25), (int)(screenHeight *0.75),  (int)(screenWidth *0.50)-1, (int)(screenHeight *0.25), player);
+        chatThread = new Thread(chat);
+        chatThread.start();
         generatePlanets();
         for (Planet p : planets) {
             gameObjects.add(p);
@@ -114,17 +123,17 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 }
             } else if (gObject instanceof Planet) {
                 Planet planet = (Planet) gObject;
-                System.out.println("Planet Name: " + planet.getName());
-                if (gc.getInput().isKeyPressed(Input.KEY_A)) {
-                    System.out.println("Planet Rectangle; X: " + planet.getRectangle().x + "|Y: " + planet.getRectangle().y + "| Size: " + planet.getRectangle().getHeight());
-                    System.out.println("Spaceship Rectangle; X: " + playerViewport.getSpaceship().getGlobalRectangle().x + "|Y: " + playerViewport.getSpaceship().getGlobalRectangle().y + "| Size: " + playerViewport.getSpaceship().getGlobalRectangle().getHeight());
+                //System.out.println("Planet Name: " + planet.getName());
+                if (gc.getInput().isKeyPressed(Input.KEY_F2)) {
+                    //System.out.println("Planet Rectangle; X: " + planet.getRectangle().x + "|Y: " + planet.getRectangle().y + "| Size: " + planet.getRectangle().getHeight());
+                    //System.out.println("Spaceship Rectangle; X: " + playerViewport.getSpaceship().getGlobalRectangle().x + "|Y: " + playerViewport.getSpaceship().getGlobalRectangle().y + "| Size: " + playerViewport.getSpaceship().getGlobalRectangle().getHeight());
                     if (planet.getRectangle().intersects(playerViewport.getSpaceship().getGlobalRectangle())) {
                         state.toPlanetState();
                     }
                 }
             }
         }
-
+        chat.update(gc);
     }
 
     @Override
@@ -135,7 +144,6 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
 //        camera.translate(g, player.getSpaceship());
 
         playerViewport.render(g, true);
-
         g.drawString("X : " + playerViewport.getSpaceship().getPosition().x + " Y: " + playerViewport.getSpaceship().getPosition().y, 50, 50);
         g.drawString("Accel: " + playerViewport.getSpaceship().getAcceleration(), 50, 70);
         g.drawString("Common Resources: " + playerViewport.getSpaceship().getResources()[0], 50, 90);
@@ -158,6 +166,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
             }
         }
         minimap.render(g, playerViewport.getSpaceship(), gameObjects);
+        chat.render(g, true);
     }
 
     public void setFontSet(HashMap<String, AngelCodeFont> fontSet) {
