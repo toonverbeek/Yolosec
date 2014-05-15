@@ -267,6 +267,15 @@ public class GameService implements Runnable {
         }
     }
 
+    public boolean clearMessages() {
+        try {
+            return messagingDAO.clearMessages();
+        } catch (Exception ex) {
+            System.err.println(String.format("@@@[ERROR] Exception in GameService.clearMessageDatabase() - %s", ex.getMessage()));
+            return false;
+        }
+    }
+
     /* ---------------------------------------------------------------------------------------------------------------------------
      *  ------------------------------------------------- Information Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */

@@ -72,12 +72,16 @@ public class MessageDAOImpl implements MessageDAO {
             System.out.println("-Exception occurred while adding message: " + e.getMessage());
         } finally {
             preparedStatementMessage.close();
-            connect.close();
+            try {
+                connect.close();
+            } catch (NullPointerException ex) {
+                ErrM = ex;
+            }
         }
         if (ErrM != null) {
             throw ErrM;
         }
-        return ErrM == null;
+        return (ErrM == null);
     }
 
     /**
@@ -116,6 +120,34 @@ public class MessageDAOImpl implements MessageDAO {
             System.out.println("-Exception occurred while retrieving messages: " + e.getMessage());
         } finally {
             preparedStatementMessage.close();
+            connect.close();
+        }
+        if (ErrM != null) {
+            throw ErrM;
+        }
+        return ErrM == null;
+    }
+
+    public boolean clearMessages() throws Exception {
+        Exception ErrM = null;
+        Connection connect = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            System.out.println(String.format("---[DATABASE] %s", ConnectionString.getConnectionString()));
+            System.out.println("---[DATABASE] Setting up connection...");
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(ConnectionString.getConnectionString());
+            System.out.println("---[DATABASE] Connection established");
+
+            preparedStatement = connect.prepareStatement("TRUNCATE TABLE messages;");
+            preparedStatement.executeUpdate();
+
+            System.out.println("---[DATABASE] GetMessages queried");
+        } catch (ClassNotFoundException | SQLException e) {
+            ErrM = e;
+            System.out.println("-Exception occurred while retrieving messages: " + e.getMessage());
+        } finally {
+            preparedStatement.close();
             connect.close();
         }
         if (ErrM != null) {

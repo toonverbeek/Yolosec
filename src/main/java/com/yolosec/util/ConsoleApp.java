@@ -58,8 +58,12 @@ public class ConsoleApp implements Runnable {
                     this.getMessages();
                     break;
                 case "tm":
-                    MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 1, "TEST", "ADMIN");
+                    MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 7, "testmessage", "admin");
                     connServer.receivedMessage(mcom);
+                    break;
+                case "cm":
+                case "clearMessages":
+                    this.clearMessages();
                     break;
                 case "u":
                 case "accountManagement":
@@ -82,9 +86,10 @@ public class ConsoleApp implements Runnable {
         System.out.println("---[CONSOLE] Available commands are:");
         System.out.println("---[CONSOLE] -getIp [-ip]");
         System.out.println("---[CONSOLE] -getMessages [-m]");
+        System.out.println("---[CONSOLE] -clearMessages [-cm]");
         System.out.println("---[CONSOLE] -getStatus [-g]");
         System.out.println("---[CONSOLE] -resetAsteroids [-a]");
-        System.out.println("---[CONSOLE] -accountManagement [u]");
+        System.out.println("---[CONSOLE] -accountManagement [-u]");
         System.out.println("---[CONSOLE] -logCpu [-c]");
         System.out.println("---[CONSOLE] -help [-h]");
         System.out.println("---[CONSOLE] -exit");
@@ -129,5 +134,10 @@ public class ConsoleApp implements Runnable {
             Date timestamp = item.getTimestamp();
             System.out.println(String.format("-[CHAT] %s (%s): %s", username, timestamp.toString(), message));
         }
+    }
+
+    private void clearMessages() {
+        boolean success = this.connServer.clearMessages();
+        System.out.println(String.format("---[CONSOLE] Messages cleared: %s", success));
     }
 }

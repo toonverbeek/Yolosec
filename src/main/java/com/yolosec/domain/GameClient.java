@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
 import com.ptsesd.groepb.shared.AsteroidComm;
-import com.ptsesd.groepb.shared.AuctionHouseRequestType;
 import com.ptsesd.groepb.shared.MessagingComm;
 import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
