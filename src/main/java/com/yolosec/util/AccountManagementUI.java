@@ -189,7 +189,7 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             for (User u : tbm.getUserList()) {
                 for (User ou : original) {
                     if (u.getId().equals(ou.getId())) {
-                        if (!u.getUsername().equals(ou.getUsername()) || !u.getPassword().equals(ou.getPassword()) || u.getMod() != ou.getMod()) {
+                        if (!u.getUsername().equals(ou.getUsername()) || !u.getPassword().equals(ou.getPassword()) || u.getMod() != ou.getMod() || u.getIsLoggedIn() != ou.getIsLoggedIn()) {
                             modified.add(u);
                         }
                     }
@@ -220,7 +220,7 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             jTbPassword.setText("password");
             jTbId.setText("-1");
             jCbIsModerator.setSelected(false);
-            tbm.addRow(new User(username, password, id, isModerator));
+            tbm.addRow(new User(username, password, id, isModerator, false));
         } else {
             javax.swing.JOptionPane.showMessageDialog(rootPane, String.format("Failed to create user (%s).", username));
         }
@@ -299,7 +299,7 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             System.out.println("---[DATABASE] Connection established");
 
             preparedStatementSpaceship = connect.prepareStatement("INSERT INTO spaceship (id, position_x, position_y, direction, resource_common, resource_rare, resource_magic) VALUES (?, ?, ?, ?, ?, ? ,?);");
-            preparedStatementUser = connect.prepareStatement("INSERT INTO account (username, password, spaceship_id, ismoderator) VALUES (?, ?, ?, ?);");
+            preparedStatementUser = connect.prepareStatement("INSERT INTO account (username, password, spaceship_id, ismoderator, loggedIn) VALUES (?, ?, ?, ?, 0);");
 
             preparedStatementSpaceship.setInt(1, spaceshipid);
             preparedStatementSpaceship.setInt(2, 0); //x
@@ -420,7 +420,8 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
                 String password = rs.getString("password");
                 Integer spaceshipid = rs.getInt("spaceship_id");
                 boolean moderator = rs.getBoolean("ismoderator");
-                userList.add(new User(username, password, spaceshipid, moderator));
+                boolean isLoggedIn = rs.getBoolean("loggedIn");
+                userList.add(new User(username, password, spaceshipid, moderator, isLoggedIn));
             }
 
             System.out.println("---[DATABASE] GetUsers queried, number of users: " + userList.size());
@@ -459,7 +460,7 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
             for (User u : users) {
 
                 //preparedStatementSpaceship = connect.prepareStatement("UPDATE spaceship SET position_x=?, position_y=?, direction=?, resource_common=?, resource_rare=?, resource_magic=? WHERE id=?;");
-                preparedStatementUser = connect.prepareStatement("UPDATE account SET username=?, password=?, ismoderator=? WHERE spaceship_id=?;");
+                preparedStatementUser = connect.prepareStatement("UPDATE account SET username=?, password=?, ismoderator=?, loggedIn=? WHERE spaceship_id=?;");
 
 //                preparedStatementSpaceship.setInt(1, spaceshipid);
 //                preparedStatementSpaceship.setInt(2, 0); //x
@@ -471,7 +472,8 @@ public class AccountManagementUI extends javax.swing.JFrame implements Runnable 
                 preparedStatementUser.setString(1, u.getUsername());
                 preparedStatementUser.setString(2, u.getPassword());
                 preparedStatementUser.setInt(3, u.getMod() ? 1 : 0);
-                preparedStatementUser.setInt(4, u.getId());
+                preparedStatementUser.setInt(4, u.getIsLoggedIn() ? 1 : 0);
+                preparedStatementUser.setInt(5, u.getId());
 
                 //preparedStatementSpaceship.executeUpdate();
                 preparedStatementUser.executeUpdate();

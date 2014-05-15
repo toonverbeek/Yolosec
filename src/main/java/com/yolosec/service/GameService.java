@@ -12,7 +12,6 @@ import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.LoginCommError;
 import com.ptsesd.groepb.shared.MessagingComm;
-import com.ptsesd.groepb.shared.PlanetComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.data.AsteroidDAOImpl;
@@ -24,8 +23,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -58,9 +55,9 @@ public class GameService implements Runnable {
         try {
             spaceshipDAO = new SpaceshipServiceImpl(this);
         } catch (SQLException ex) {
-            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(String.format("---[SERVER] SQL Exception in GameService: %s", ex.getMessage()));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(String.format("---[SERVER] ClassNotFoundException in GameService: %s", ex.getMessage()));
         }
 
         asteroidDAO = new AsteroidDAOImpl(mapSizeX, mapSizeY);
@@ -106,7 +103,11 @@ public class GameService implements Runnable {
         //Remove spaceship information
         int spaceshipId = clients.get(connection);
         spaceshipDAO.removeOnlineSpaceship(spaceshipId);
-
+        try {
+            DatabaseDAO.logoutUser(spaceshipId);
+        } catch (Exception ex) {
+            System.err.println(String.format("---[LOGOUT] Exception while logging out user: %s: %s", spaceshipId, ex.getMessage()));
+        }
         //Remove GameClient
         clients.remove(connection);
     }
@@ -117,13 +118,16 @@ public class GameService implements Runnable {
             String checkPassword = DatabaseDAO.identifyUser(lcomm.getUsername());
 
             if (checkPassword != null && checkPassword.equals((lcomm.getPassword()))) {
+                //check if the user isn't allready logged on, if he isn't, log him on
+                boolean wasLoggedOn = DatabaseDAO.identifyUserStatus(lcomm.getUsername());
+                if (!wasLoggedOn) {
+                    //Get Spaceship from user
+                    spaceship = spaceshipDAO.getDatabaseSpaceship(lcomm.getUsername());
 
-                //Get Spaceship from user
-                spaceship = spaceshipDAO.getDatabaseSpaceship(lcomm.getUsername());
-
-                //Add the spaceship to the location module
-                this.clients.put(connection, spaceship.getId());
-                this.spaceshipDAO.addOnlineSpaceship(spaceship);
+                    //Add the spaceship to the location module
+                    this.clients.put(connection, spaceship.getId());
+                    this.spaceshipDAO.addOnlineSpaceship(spaceship);
+                }
             }
 
             System.out.println(String.format("---[LOGIN] Returned logged user = %s || connected = %s", lcomm.getUsername(), spaceship != null));
@@ -177,7 +181,7 @@ public class GameService implements Runnable {
         List<GameClient> clien = new ArrayList<>(this.clients.keySet());
         asteroidDAO.sendAsteroidComms(clien);
     }
-    
+
     /* ----------------------------------------------------------------------------------------------------------------------------
      *  --------------------------------------------------- Spaceship Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */
@@ -206,28 +210,27 @@ public class GameService implements Runnable {
     public void broadcastPositions() {
         spaceshipDAO.sendSpaceshipComms(clients);
     }
-    
+
     /* ----------------------------------------------------------------------------------------------------------------------------
      *  ------------------------------------------------- Item Methods ------------------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */
-    
-    public List<ItemComm> getInventory(int spaceshipId){
+    public List<ItemComm> getInventory(int spaceshipId) {
         return itemDAO.getInventory(spaceshipId);
     }
-    
-    public List<ItemComm> getAuctionHouse(){
+
+    public List<ItemComm> getAuctionHouse() {
         return itemDAO.getAuctionHouse();
     }
-    
-    public void buyItem(int spaceshipId, long itemId){
+
+    public void buyItem(int spaceshipId, long itemId) {
         itemDAO.buyItem(spaceshipId, itemId);
     }
-    
-    public void sellItem(int spaceshipId, long itemId){
+
+    public void sellItem(int spaceshipId, long itemId) {
         itemDAO.sellItem(spaceshipId, itemId);
     }
-    
-    public void cancelAuction(int spaceshipId, long itemId){
+
+    public void cancelAuction(int spaceshipId, long itemId) {
         itemDAO.cancelAuction(spaceshipId, itemId);
     }
 
@@ -251,11 +254,11 @@ public class GameService implements Runnable {
     public List<MessagingComm> getMessages() {
         return messagingDAO.findAll();
     }
-    
+
     public void resetMessages() {
         messagingDAO.resetMessages();
     }
-    
+
     public void getMessagesFromServer() {
         try {
             messagingDAO.getMessages();
@@ -263,7 +266,7 @@ public class GameService implements Runnable {
             System.err.println(String.format("@@@[ERROR] Exception in GameService.getMessageDatabase() - %s", ex.getMessage()));
         }
     }
-    
+
     /* ---------------------------------------------------------------------------------------------------------------------------
      *  ------------------------------------------------- Information Methods -----------------------------------------------------
      *  --------------------------------------------------------------------------------------------------------------------------- */

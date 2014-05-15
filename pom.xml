@@ -63,6 +63,10 @@
             <artifactId>InSpaceLibraries</artifactId>
             <version>1.0</version>
         </dependency>
-        
+        <dependency>
+            <groupId>JMS</groupId>
+            <artifactId>jms.economy</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

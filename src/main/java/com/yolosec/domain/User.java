@@ -12,6 +12,7 @@ public class User {
     private String password;
     private Integer id;
     private boolean moderator;
+    private boolean isLoggedIn;
     private Spaceship spaceship;
 
     private List<Item> inventory;
@@ -21,11 +22,12 @@ public class User {
         //spaceship = new Spaceship();
     }
 
-    public User(String username, String password, Integer id, boolean mod) {
+    public User(String username, String password, Integer id, boolean mod, boolean isLoggedIn) {
         this.username = username;
         this.password = password;
         this.id = id;
         this.moderator = mod;
+        this.isLoggedIn = isLoggedIn;
         //spaceship = new Spaceship();
     }
 
@@ -68,4 +70,11 @@ public class User {
     public void setMod(boolean mod) {
         this.moderator = mod;
     }
-}
+    
+    public boolean getIsLoggedIn() {
+        return this.isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }}

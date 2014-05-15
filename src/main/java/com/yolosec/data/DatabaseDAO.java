@@ -1,13 +1,11 @@
 package com.yolosec.data;
 
-import com.yolosec.domain.User;
-import com.ptsesd.groepb.shared.AsteroidType;
 import java.sql.*;
-import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.util.ConnectionString;
 
 /**
- * Used for util methods 
+ * Used for util methods
+ *
  * @author Administrator
  */
 public class DatabaseDAO {
@@ -45,6 +43,64 @@ public class DatabaseDAO {
         }
         //returns null if doesnt exist, else return password;
         return result;
+    }
+
+    /**
+     * Checks if a username exists, if so returns the password. Else returns
+     * null value.
+     *
+     * @param username String username
+     * @return If user is already logged on, true
+     * @throws java.lang.Exception
+     */
+    public static boolean identifyUserStatus(String username) throws Exception {
+        boolean isLoggedOn = false;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(ConnectionString.getConnectionString());
+
+            preparedStatement = connect.prepareStatement("SELECT loggedIn FROM account WHERE username = ?;");
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                isLoggedOn = resultSet.getBoolean("loggedIn");
+            }
+
+            if (!isLoggedOn) {
+                //log him in if he wasn't allready
+                preparedStatement = connect.prepareStatement("UPDATE account SET loggedIn=1 WHERE username = ?;");
+                preparedStatement.setString(1, username);
+                preparedStatement.executeUpdate();
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            close();
+        }
+        return isLoggedOn;
+    }
+
+    /**
+     * Checks if a username exists, if so returns the password. Else returns
+     * null value.
+     *
+     * @param spaceshipId integer spaceshipId
+     * @throws java.lang.Exception
+     */
+    public static void logoutUser(int spaceshipId) throws Exception {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connect = DriverManager.getConnection(ConnectionString.getConnectionString());
+
+            preparedStatement = connect.prepareStatement("UPDATE account SET loggedIn=0 WHERE spaceship_id = ?;");
+            preparedStatement.setInt(1, spaceshipId);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            close();
+        }
     }
 
     /**

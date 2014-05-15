@@ -59,7 +59,6 @@ public class ConsoleApp implements Runnable {
                     break;
                 case "tm":
                     MessagingComm mcom = new MessagingComm(MessagingComm.class.getSimpleName(), 1, "TEST", "ADMIN");
-                    mcom.setTimestamp();
                     connServer.receivedMessage(mcom);
                     break;
                 case "u":

@@ -11,7 +11,7 @@ import javax.swing.table.AbstractTableModel;
 public class UserTableModel extends AbstractTableModel {
 
     private final List<User> userList;
-    private final String[] columnNames = {"ID", "Username", "Password", "isModerator"};
+    private final String[] columnNames = {"ID", "Username", "Password", "isModerator", "isLoggedIn"};
 
     public UserTableModel(List<User> userList) {
         this.userList = userList;
@@ -44,6 +44,8 @@ public class UserTableModel extends AbstractTableModel {
                 return user.getPassword();
             case 3:
                 return user.getMod();
+            case 4:
+                return user.getIsLoggedIn();
         }
         return null;
     }
@@ -58,6 +60,8 @@ public class UserTableModel extends AbstractTableModel {
             case 2:
                 return String.class;
             case 3:
+                return Boolean.class;
+            case 4:
                 return Boolean.class;
         }
         return super.getColumnClass(columnIndex);
@@ -80,6 +84,8 @@ public class UserTableModel extends AbstractTableModel {
                 break;
             case 3:
                 user.setMod((boolean) aValue);
+            case 4:
+                user.setIsLoggedIn((boolean) aValue);
         }
         fireTableCellUpdated(rowIndex, columnIndex);
     }
