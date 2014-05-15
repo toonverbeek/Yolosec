@@ -225,7 +225,7 @@ public class LoginForm extends javax.swing.JFrame {
                 if (spaceshipComm != null && spaceshipComm.getId() != -1) {
                     AppGameContainer appgc;
                     Spaceship s = new Spaceship(spaceshipComm);
-                    User user = new User(s, "Space_Invader1337");
+                    User user = new User(s, jtf_username.getText());
                     SpaceClient client = new SpaceClient("Yolosec", user);
                     appgc = new AppGameContainer(client);
                     

@@ -47,15 +47,20 @@ public class SpaceClient extends StateBasedGame {
             if (this.getCurrentStateID() != STATE_MAINMENU) {
                 //got the main menu state
                 this.enterState(STATE_MAINMENU);
+                Chat.showChat = false;
             } else {
                 //go to the game state
                 this.enterState(STATE_GAME);
+                Chat.showChat = false;
             }
-        } if(key == Input.KEY_A) {
-            if(this.getCurrentStateID() == STATE_PLANET) {
+        }
+        if (key == Input.KEY_F2) {
+            if (this.getCurrentStateID() == STATE_PLANET) {
                 this.enterState(STATE_GAME);
+                Chat.showChat = false;
             } else {
                 this.enterState(STATE_PLANET);
+                Chat.showChat = false;
             }
         }
     }

@@ -17,6 +17,7 @@ import java.util.List;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -53,7 +54,7 @@ public class GameState extends BasicGameState{
             container.setTargetFrameRate(FPS);
             container.setFullscreen(true);
 //            user = new User(new Spaceship(10, 10), "Space_Invader1337");
-            gameWorld = new GameWorldImpl(this, user.getSpaceship());
+            gameWorld = new GameWorldImpl(this, user);
             //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
             font = new AngelCodeFont("font.fnt", "font_0.png");
             AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
