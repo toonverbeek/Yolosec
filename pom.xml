@@ -59,14 +59,20 @@
             <version>5.1.29</version>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.main.appclient</groupId>
+            <artifactId>gf-client-module</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.mq</groupId>
+            <artifactId>imqjmsra</artifactId>
+            <version>5.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.yolosec.libraries</groupId>
             <artifactId>InSpaceLibraries</artifactId>
             <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>JMS</groupId>
-            <artifactId>jms.economy</artifactId>
-            <version>1.0</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
 </project>
