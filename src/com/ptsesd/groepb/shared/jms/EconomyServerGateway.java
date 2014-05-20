@@ -16,11 +16,12 @@ import javax.jms.MessageListener;
 public abstract class EconomyServerGateway {
 
     private MessagingGateway messagingGateway;
-    private String JNDI_QUEUE = "gameServerReplierQueue";
+    private String JNDI_QUEUE_REQUEST = "gameServerRequestQueue";
+    private String JNDI_QUEUE_REPLY = "gameServerReplierQueue";
 
     public EconomyServerGateway() {
-        messagingGateway = new MessagingGateway(JNDI_QUEUE);
-        messagingGateway.setListener(new MessageListener() {
+        messagingGateway = new MessagingGateway(JNDI_QUEUE_REPLY,JNDI_QUEUE_REQUEST );
+        messagingGateway.setMessageListener(new MessageListener() {
 
             @Override
             public void onMessage(Message msg) {
