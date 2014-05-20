@@ -34,7 +34,7 @@ public class Main {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 String input = br.readLine();
                 if (input.equals("s")) {
-                    System.out.println("started!");
+                    System.out.println("STARTING APPLICATION!");
                     EconomyService eService = new EconomyService();
                 }
             } catch (IOException ex) {

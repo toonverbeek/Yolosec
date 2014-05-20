@@ -21,24 +21,27 @@ public abstract class GameserverGateway {
 
     private final Gson gson = new Gson();
     private final MessagingGateway messagingGateway;
-    private static final String JNDI_QUEUE = "gameServerRequestorQueue";
+    private static final String JNDI_QUEUE_REQUEST = "gameServerRequestorQueue";
     private static final String JNDI_QUEUE_REPLY = "gameServerReplierQueue";
 
     public GameserverGateway() {
-        this.messagingGateway = new MessagingGateway(JNDI_QUEUE);
-        this.messagingGateway.setListener(new MessageListener() {
+        this.messagingGateway = new MessagingGateway(JNDI_QUEUE_REQUEST,JNDI_QUEUE_REPLY);
+        this.messagingGateway.setMessageListener(new MessageListener() {
 
             @Override
             public void onMessage(Message msg) {
                 try {
                     System.out.println("GOT MESSAGE OMG " + msg.getBody(String.class));
 
-                    messagingGateway.send(processRequest(msg), messagingGateway.getDestination(JNDI_QUEUE_REPLY));
+                    //messagingGateway.sendMessage(processRequest(msg));
+                    Message msg2 = messagingGateway.createMessage("RESPONSE");
+                    messagingGateway.sendMessage(msg2);
                 } catch (JMSException ex) {
                     Logger.getLogger(GameserverGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+        messagingGateway.openConnection();
     }
 
     public abstract boolean processRequest(Message message);
