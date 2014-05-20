@@ -769,12 +769,8 @@ exists or setup the property manually. For example like this:
             </condition>
         </fail>
     </target>
-    <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps">
-        <ant antfile="${project.SpaceLibraries}/build.xml" inheritall="false" target="jar"/>
-    </target>
-    <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
-        <ant antfile="${project.SpaceLibraries}/build.xml" inheritall="false" target="jar"/>
-    </target>
+    <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps"/>
+    <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps"/>
     <target depends="init, -check-main-class, -deps-module-jar, -deps-ear-jar" name="deps-jar"/>
     <target depends="init,deps-jar" name="-pre-pre-compile">
         <mkdir dir="${classes.dir}"/>
@@ -785,39 +781,42 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile" if="is.server.weblogic" name="library-inclusion-in-archive">
         <basename file="${libs.junit_4.classpath}" property="manifest.libs.junit_4.classpath"/>
-        <basename file="${libs.eclipselink.classpath}" property="manifest.libs.eclipselink.classpath"/>
-        <basename file="${libs.jpa20-persistence.classpath}" property="manifest.libs.jpa20-persistence.classpath"/>
-        <basename file="${libs.MySQLDriver.classpath}" property="manifest.libs.MySQLDriver.classpath"/>
         <basename file="${file.reference.gson-2.2.4.jar}" property="manifest.file.reference.gson-2.2.4.jar"/>
-        <basename file="${reference.SpaceLibraries.jar}" property="manifest.reference.SpaceLibraries.jar"/>
         <basename file="${file.reference.gf-client.jar}" property="manifest.file.reference.gf-client.jar"/>
         <basename file="${file.reference.imq.jar}" property="manifest.file.reference.imq.jar"/>
         <basename file="${file.reference.jms.jar}" property="manifest.file.reference.jms.jar"/>
+        <basename file="${libs.eclipselink.classpath}" property="manifest.libs.eclipselink.classpath"/>
+        <basename file="${libs.MySQLDriver.classpath}" property="manifest.libs.MySQLDriver.classpath"/>
+        <basename file="${libs.jpa20-persistence.classpath}" property="manifest.libs.jpa20-persistence.classpath"/>
+        <basename file="${libs.jpa2-persistence.classpath}" property="manifest.libs.jpa2-persistence.classpath"/>
+        <basename file="${file.reference.SpaceLibraries.jar}" property="manifest.file.reference.SpaceLibraries.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 jar-6 jar-7 jar-8 jar-9 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 jar-6 jar-7 jar-8 jar-9 jar-10 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.libs.junit_4.classpath}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.libs.eclipselink.classpath}"/>
-            <attribute name="jar-3-Extension-Name" value="${manifest.libs.jpa20-persistence.classpath}"/>
-            <attribute name="jar-4-Extension-Name" value="${manifest.libs.MySQLDriver.classpath}"/>
-            <attribute name="jar-5-Extension-Name" value="${manifest.file.reference.gson-2.2.4.jar}"/>
-            <attribute name="jar-6-Extension-Name" value="${manifest.reference.SpaceLibraries.jar}"/>
-            <attribute name="jar-7-Extension-Name" value="${manifest.file.reference.gf-client.jar}"/>
-            <attribute name="jar-8-Extension-Name" value="${manifest.file.reference.imq.jar}"/>
-            <attribute name="jar-9-Extension-Name" value="${manifest.file.reference.jms.jar}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.gson-2.2.4.jar}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.gf-client.jar}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.imq.jar}"/>
+            <attribute name="jar-5-Extension-Name" value="${manifest.file.reference.jms.jar}"/>
+            <attribute name="jar-6-Extension-Name" value="${manifest.libs.eclipselink.classpath}"/>
+            <attribute name="jar-7-Extension-Name" value="${manifest.libs.MySQLDriver.classpath}"/>
+            <attribute name="jar-8-Extension-Name" value="${manifest.libs.jpa20-persistence.classpath}"/>
+            <attribute name="jar-9-Extension-Name" value="${manifest.libs.jpa2-persistence.classpath}"/>
+            <attribute name="jar-10-Extension-Name" value="${manifest.file.reference.SpaceLibraries.jar}"/>
         </manifest>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.junit_4.classpath}" manifestproperty="manifest.libs.junit_4.classpath" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${libs.eclipselink.classpath}" manifestproperty="manifest.libs.eclipselink.classpath" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${libs.jpa20-persistence.classpath}" manifestproperty="manifest.libs.jpa20-persistence.classpath" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${libs.MySQLDriver.classpath}" manifestproperty="manifest.libs.MySQLDriver.classpath" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.gson-2.2.4.jar}" manifestproperty="manifest.file.reference.gson-2.2.4.jar" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${reference.SpaceLibraries.jar}" manifestproperty="manifest.reference.SpaceLibraries.jar" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.gf-client.jar}" manifestproperty="manifest.file.reference.gf-client.jar" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.imq.jar}" manifestproperty="manifest.file.reference.imq.jar" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.jms.jar}" manifestproperty="manifest.file.reference.jms.jar" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.eclipselink.classpath}" manifestproperty="manifest.libs.eclipselink.classpath" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.MySQLDriver.classpath}" manifestproperty="manifest.libs.MySQLDriver.classpath" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.jpa20-persistence.classpath}" manifestproperty="manifest.libs.jpa20-persistence.classpath" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.jpa2-persistence.classpath}" manifestproperty="manifest.libs.jpa2-persistence.classpath" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.SpaceLibraries.jar}" manifestproperty="manifest.file.reference.SpaceLibraries.jar" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.libs.junit_4.classpath} lib/${manifest.libs.junit_4.classpath} ${manifest.libs.eclipselink.classpath} lib/${manifest.libs.eclipselink.classpath} ${manifest.libs.jpa20-persistence.classpath} lib/${manifest.libs.jpa20-persistence.classpath} ${manifest.libs.MySQLDriver.classpath} lib/${manifest.libs.MySQLDriver.classpath} ${manifest.file.reference.gson-2.2.4.jar} lib/${manifest.file.reference.gson-2.2.4.jar} ${manifest.reference.SpaceLibraries.jar} lib/${manifest.reference.SpaceLibraries.jar} ${manifest.file.reference.gf-client.jar} lib/${manifest.file.reference.gf-client.jar} ${manifest.file.reference.imq.jar} lib/${manifest.file.reference.imq.jar} ${manifest.file.reference.jms.jar} lib/${manifest.file.reference.jms.jar} "/>
+            <attribute name="Class-Path" value="${manifest.libs.junit_4.classpath} lib/${manifest.libs.junit_4.classpath} ${manifest.file.reference.gson-2.2.4.jar} lib/${manifest.file.reference.gson-2.2.4.jar} ${manifest.file.reference.gf-client.jar} lib/${manifest.file.reference.gf-client.jar} ${manifest.file.reference.imq.jar} lib/${manifest.file.reference.imq.jar} ${manifest.file.reference.jms.jar} lib/${manifest.file.reference.jms.jar} ${manifest.libs.eclipselink.classpath} lib/${manifest.libs.eclipselink.classpath} ${manifest.libs.MySQLDriver.classpath} lib/${manifest.libs.MySQLDriver.classpath} ${manifest.libs.jpa20-persistence.classpath} lib/${manifest.libs.jpa20-persistence.classpath} ${manifest.libs.jpa2-persistence.classpath} lib/${manifest.libs.jpa2-persistence.classpath} ${manifest.file.reference.SpaceLibraries.jar} lib/${manifest.file.reference.SpaceLibraries.jar} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
@@ -1237,7 +1236,7 @@ exists or setup the property manually. For example like this:
         <mkdir dir="${build.test.results.dir}"/>
     </target>
     <target depends="init,compile-test,-pre-test-run" if="have.tests" name="-do-test-run">
-        <carproject:test testincludes="**/*Test.java"/>
+        <carproject:test includes="${includes}" testincludes="**/*Test.java"/>
     </target>
     <target depends="init,compile-test,-pre-test-run,-do-test-run" if="have.tests" name="-post-test-run">
         <fail if="tests.failed" unless="ignore.failing.tests">Some tests failed; see details above.</fail>
@@ -1320,9 +1319,7 @@ exists or setup the property manually. For example like this:
                 CLEANUP SECTION
                 ===============
             -->
-    <target depends="init" name="deps-clean" unless="no.deps">
-        <ant antfile="${project.SpaceLibraries}/build.xml" inheritall="false" target="clean"/>
-    </target>
+    <target depends="init" name="deps-clean" unless="no.deps"/>
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
