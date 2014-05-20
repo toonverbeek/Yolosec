@@ -6,6 +6,7 @@
 package com.yolosec.spaceclient.game.world;
 
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
+import com.yolosec.spaceclient.game.player.Direction;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
@@ -13,6 +14,7 @@ import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.awt.Rectangle;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -27,6 +29,7 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
 
     //vectors
     private final Vector2f viewportVelocity = new Vector2f(0, 0);
+    private final Vector2f viewportAcceleration = new Vector2f(0, 0);
 
     public static long VIEWPORTSCROLL = 100;
     private final TiledMap tileMap;
@@ -36,27 +39,10 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
     public Viewport(Spaceship player, TiledMap tileMap) {
         this.spaceship = player;
         this.tileMap = tileMap;
-        Viewport.tilemapHeight = tileMap.getHeight();
-        Viewport.tilemapWidth = tileMap.getWidth();
-
-        Viewport.viewportPos = new Vector2f();
-        float drawPositionX = player.getPosition().x;
-        float drawPositionY = player.getPosition().y;
-        if (drawPositionX > (tilemapWidth * TILESIZE) - screenWidth) {
-            Viewport.viewportPos.x = (tilemapWidth * TILESIZE) - screenWidth;
-        } else if (drawPositionX < screenWidth) {
-            Viewport.viewportPos.x = drawPositionX;
-        } else {
-            Viewport.viewportPos.x = drawPositionX;
-        }
-        if (drawPositionY > (tilemapWidth * TILESIZE) - screenHeight) {
-            Viewport.viewportPos.y = (tilemapHeight * TILESIZE) - screenHeight;
-        } else if (drawPositionY < screenHeight) {
-            Viewport.viewportPos.y = drawPositionY;
-        } else {
-            Viewport.viewportPos.y = drawPositionY;
-        }
-
+        Viewport.tilemapHeight = tileMap.getHeight() * TILESIZE;
+        Viewport.tilemapWidth = tileMap.getWidth() * TILESIZE;
+        Viewport.viewportPos = new Vector2f(1, 1);
+        spaceship.setPosition(new Vector2f(1, 1));
     }
 
     public Spaceship getSpaceship() {
@@ -71,7 +57,7 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
 
     @Override
     public void update(GameContainer gc) {
-        updateViewportLocation();
+        updateViewportLocation(gc);
         spaceship.update(gc);
     }
 
@@ -87,59 +73,113 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
         spaceship.render(g, self);
     }
 
-    private void updateViewportLocation() {
-        Vector2f spaceshipPosition = new Vector2f(spaceship.getPosition());
-        Vector2f viewportPosition = new Vector2f(viewportPos);
-        Vector2f spaceShipDrawPosition = spaceshipPosition.sub(viewportPosition);
+    private void updateViewportLocation(GameContainer gc) {
+        calculateMovement(gc.getInput());
+        Vector2f newPos = new Vector2f(viewportPos);
+        newPos.add(viewportVelocity);
 
-        boolean viewport_X_0 = false;
-        boolean viewport_X_1 = false;
-        boolean viewport_Y_0 = false;
-        boolean viewport_Y_1 = false;
+        Vector2f newPlayerPosition = new Vector2f(spaceship.getPosition());
+        float playerX = newPlayerPosition.x;
+        float playerY = newPlayerPosition.y;
 
-        if (viewportPos.x > 0) {
-            viewport_X_0 = true;
-        } else {
-            viewport_X_0 = false;
-        }
-        if (viewportPos.y > 0) {
-            viewport_Y_0 = true;
-        } else {
-            viewport_Y_0 = false;
-        }
-
-        if (viewportPos.x < (TILESIZE * tilemapWidth) - (3 * TILESIZE)) {
-            viewport_X_1 = true;
-        } else {
-            viewport_X_1 = false;
-        }
-
-        if (viewportPos.y < (TILESIZE * tilemapHeight) - (3 * TILESIZE)) {
-            viewport_Y_1 = true;
-        } else {
-            viewport_Y_1 = false;
-        }
-
-        if (viewport_X_0 && viewport_X_1) {
-            if (spaceShipDrawPosition.x > (SpaceClient.screenWidth - VIEWPORTSCROLL + (3 * TILESIZE)) - spaceship.getWidth()) {
-                this.viewportVelocity.x = 2f;
-            } else if (spaceShipDrawPosition.x < VIEWPORTSCROLL) {
-                this.viewportVelocity.x = -2f;
-            } else {
-                this.viewportVelocity.x = 0;
-            }
+        //update the position of the player
+        //update the position only when the position is NOT in the top left corner
+        if (newPos.x > 0 && newPos.x <= (tilemapWidth - screenWidth)) {
             viewportPos.x += viewportVelocity.x;
-        }
-        if (viewport_Y_0 && viewport_Y_1) {
-
-            if (spaceShipDrawPosition.y > (SpaceClient.screenHeight - VIEWPORTSCROLL + (3 * TILESIZE)) - spaceship.getHeight()) {
-                this.viewportVelocity.y = 2f;
-            } else if (spaceShipDrawPosition.y < VIEWPORTSCROLL) {
-                this.viewportVelocity.y = -2f;
+            playerX = viewportPos.x + (screenWidth / 2) - (spaceship.getWidth() / 2);
+            spaceship.setPosition(new Vector2f(playerX, playerY));
+        } else {
+            if (newPos.x < screenWidth) {
+                viewportPos.x = 1;
+                viewportVelocity.x = 0;
             } else {
-                this.viewportVelocity.y = 0;
+                viewportPos.x = (tilemapWidth - screenWidth);
+                viewportVelocity.x = 0;
             }
+        }
+        if (newPos.y > 0 && newPos.y < (tilemapHeight - screenHeight)) {
             viewportPos.y += viewportVelocity.y;
+            playerY = viewportPos.y + (screenHeight / 2) - (spaceship.getHeight() / 2);
+            spaceship.setPosition(new Vector2f(playerX, playerY));
+            //spaceship.setPosition(new Vector2f(playerX, playerY));
+            if (playerY > 0 && playerY <= (screenHeight / 2)) {
+            }
+        } else {
+            if (newPos.y < screenHeight) {
+                viewportPos.y = 1;
+                viewportVelocity.y = 0;
+            } else {
+                viewportPos.y = (tilemapHeight - screenHeight);
+                viewportVelocity.y = 0;
+            }
+        }
+    }
+
+    /**
+     * Handles gamelogic when the left arrow key is pressed.
+     */
+    private void leftKey() {
+        viewportAcceleration.y = 0;
+        viewportAcceleration.x -= .0015;
+        if (viewportAcceleration.x < -.01) {
+            viewportAcceleration.x = -.01f;
+        }
+        viewportVelocity.x += viewportAcceleration.x;
+    }
+
+    /**
+     * Handles gamelogic when the right arrow key is pressed.
+     */
+    private void rightKey() {
+        viewportAcceleration.y = 0;
+        viewportAcceleration.x += .0015;
+        if (viewportAcceleration.x > .01) {
+            viewportAcceleration.x = .01f;
+        }
+
+        viewportVelocity.x += viewportAcceleration.x;
+    }
+
+    /**
+     * Handles gamelogic when the up arrow key is pressed.
+     */
+    private void upKey() {
+        viewportAcceleration.y -= .0015;
+        if (viewportAcceleration.y < -.02) {
+            viewportAcceleration.y = -.02f;
+        }
+        viewportVelocity.y += viewportAcceleration.y;
+    }
+
+    /**
+     * Handles gamelogic when the down arrow key is pressed.
+     */
+    private void downKey() {
+        viewportAcceleration.y += .0015;
+        if (viewportAcceleration.y > .02) {
+            viewportAcceleration.y = .02f;
+        }
+        viewportVelocity.y += viewportAcceleration.y;
+    }
+
+    /**
+     * Handles key input and transforms that input into movement on screen.
+     *
+     * @param input the input source to use.
+     */
+    private void calculateMovement(Input input) {
+        if (input.isKeyDown(Input.KEY_LEFT)) {
+            if (!spaceship.isAllowedToUpdateX()) {
+                leftKey();
+            }
+        } else if (input.isKeyDown(Input.KEY_UP)) {
+            upKey();
+        } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+            if (!spaceship.isAllowedToUpdateX()) {
+                rightKey();
+            }
+        } else if (input.isKeyDown(Input.KEY_DOWN)) {
+            downKey();
         }
     }
 }

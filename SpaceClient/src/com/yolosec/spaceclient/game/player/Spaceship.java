@@ -51,6 +51,9 @@ public class Spaceship extends GameObjectImpl {
     private Input input;
     private boolean mining = false;
     private int sendAsteroid = 0;
+    private boolean isAllowedToUpdateX = false;
+    private boolean isAllowedToUpdateY = false;
+    private boolean isAllowedToUpdateUp = false;
 
     /**
      * Gets the amount of resources for this spaceship.
@@ -130,6 +133,22 @@ public class Spaceship extends GameObjectImpl {
         boundingRectangle.y = (int) position.y;
     }
 
+    public boolean isAllowedToUpdateX() {
+        return isAllowedToUpdateX;
+    }
+
+    public void setAllowedToUpdateX(boolean isAllowedToUpdate) {
+        this.isAllowedToUpdateX = isAllowedToUpdate;
+    }
+
+    public boolean isIsAllowedToUpdateY() {
+        return isAllowedToUpdateY;
+    }
+
+    public void setAllowedToUpdateY(boolean isAllowedToUpdateY) {
+        this.isAllowedToUpdateY = isAllowedToUpdateY;
+    }
+
     //@Override
     public void render(Graphics g, boolean self) {
 //        if (self) {
@@ -164,85 +183,34 @@ public class Spaceship extends GameObjectImpl {
      * @param input the input source to use.
      */
     private void calculateMovement(Input input) {
-        if (input.isKeyDown(Input.KEY_LEFT)) {
-            leftKey();
-        } else if (input.isKeyDown(Input.KEY_UP)) {
-            upKey();
-        } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-            rightKey();
-        } else if (input.isKeyDown(Input.KEY_DOWN)) {
-            downKey();
-        }
+        if (isAllowedToUpdateX) {
+            if (input.isKeyDown(Input.KEY_LEFT)) {
+                leftKey();
+                System.out.println("UPDATE LEFT KEY!");
+            } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+                rightKey();
+            }
 
-        //addResistance();
-        setLocation();
+            //addResistance();
+            setLocation();
+            isAllowedToUpdateX = false;
+        }
+        if (isAllowedToUpdateY) {
+            if (input.isKeyDown(Input.KEY_DOWN)) {
+                downKey();
+            } else if (input.isKeyDown(Input.KEY_UP)) {
+                upKey();
+            }
+            setLocation();
+            isAllowedToUpdateY = false;
+        }
     }
 
     /**
      * Sets the location for the spaceship.
      */
     private void setLocation() {
-        Vector2f newPos = new Vector2f(position);
-        newPos.add(velocity);
-        boolean map_X_0 = false;
-        boolean map_Y_0 = false;
-        boolean map_X_1 = false;
-        boolean map_Y_1 = false;
-
-        boolean viewport_X_0 = false;
-        boolean viewport_X_1 = false;
-        boolean viewport_Y_0 = false;
-        boolean viewport_Y_1 = false;
-        //for all positions, check if the player is in the map bounds
-        if (newPos.x >= 0f) {
-            map_X_0 = true;
-        }
-
-        if (newPos.y >= 0f) {
-            map_Y_0 = true;
-        }
-
-        if (newPos.x <= (Viewport.TILESIZE * Viewport.tilemapWidth) - width) {
-            map_X_1 = true;
-        }
-
-        if (newPos.y <= (Viewport.TILESIZE * Viewport.tilemapHeight) - height) {
-            map_Y_1 = true;
-        }
-
-        //for all positions, check if the player is in the viewportbounds
-        if (newPos.x >= Viewport.viewportPos.x) {
-            viewport_X_0 = true;
-        }
-        if (newPos.x <= (Viewport.viewportPos.x + SpaceClient.screenWidth) - width) {
-            viewport_X_1 = true;
-        }
-        if (newPos.y >= Viewport.viewportPos.y) {
-            viewport_Y_0 = true;
-        }
-        if (newPos.y <= (Viewport.viewportPos.y + SpaceClient.screenHeight) - height) {
-            viewport_Y_1 = true;
-        }
-
-        if (map_X_0 && map_X_1) {
-            if (viewport_X_0 && viewport_X_1) {
-                this.position.x += velocity.x;
-            } else {
-                this.velocity.x = 0;
-            }
-        } else {
-            this.velocity.x = 0;
-        }
-
-        if (map_Y_0 && map_Y_1) {
-            if (viewport_Y_0 && viewport_Y_1) {
-                this.position.y += velocity.y;
-            } else {
-                this.velocity.y = 0;
-            }
-        } else {
-            this.velocity.y = 0;
-        }
+        position.add(velocity);
     }
 
     /**
@@ -252,6 +220,23 @@ public class Spaceship extends GameObjectImpl {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     *
+     * @return the current Vector2f position of the spaceship.
+     */
+    public Vector2f getPosition() {
+        return position;
+    }
+
+    /**
+     * Sets the spaceship position.
+     *
+     * @param position the new position.
+     */
+    public void setPosition(Vector2f position) {
+        this.position = position;
     }
 
     /**
@@ -277,23 +262,6 @@ public class Spaceship extends GameObjectImpl {
         }
 
         velocity.x += acceleration.x;
-    }
-
-    /**
-     *
-     * @return the current Vector2f position of the spaceship.
-     */
-    public Vector2f getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets the spaceship position.
-     *
-     * @param position the new position.
-     */
-    public void setPosition(Vector2f position) {
-        this.position = position;
     }
 
     /**
@@ -372,15 +340,15 @@ public class Spaceship extends GameObjectImpl {
         boundingRectangle.y = drawPositionY;
         return this.boundingRectangle;
     }
-    
+
     /*
      Get rectangle with position on global map not just the viewport
-    */
+     */
     public Rectangle getGlobalRectangle() {
-        Rectangle rect = new Rectangle((int)position.x, (int)position.y, getHeight(), getHeight());
+        Rectangle rect = new Rectangle((int) position.x, (int) position.y, getHeight(), getHeight());
         return rect;
     }
-    
+
     /**
      * Called when the spaceship is currently colliding with an asteroid. If the
      * spacebar key is pressed, the player will start collection resources and
@@ -416,8 +384,8 @@ public class Spaceship extends GameObjectImpl {
                 minedAsteroid.resourceAmount -= 1;
                 sendAsteroid++;
             }
-            
-            if(sendAsteroid >= 5){
+
+            if (sendAsteroid >= 5) {
                 Communicator.sendData(Serializer.serializeAsteroidAsGamePacket(AsteroidComm.class.getSimpleName(), type, minedAsteroid.resourceAmount, (int) minedAsteroid.getXPosition(), (int) minedAsteroid.getYPosition()));
                 sendAsteroid = 0;
             }

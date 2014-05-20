@@ -34,7 +34,7 @@ public class Minimap extends GameObjectImpl {
         map = new Rectangle(x, y, width, height);
         this.width = width;
         this.height = height;
-        scaleNumber = (Viewport.TILESIZE * Viewport.tilemapWidth) / width;
+        scaleNumber = (Viewport.tilemapWidth) / width;
     }
 
     @Override

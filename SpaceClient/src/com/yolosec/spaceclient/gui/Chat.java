@@ -144,11 +144,9 @@ public class Chat extends GameObjectImpl implements Runnable {
             if (writeMessage) {
                 if (message.length() <= maxCharactersPerMessage) {
                     message += getInputKeys(input);
-                    System.out.println("LENGTH: " + message.length());
                 }
                 if (input.isKeyPressed(Input.KEY_BACK)) {
                     if (message.length() > 0) {
-                        System.out.println("LENGTH 2: " + message.length());
                         message = message.substring(0, message.length() - 1);
                     }
                 }
