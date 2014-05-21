@@ -17,15 +17,15 @@ import java.util.List;
 public class InventoryReply extends GamePacket{
     
     private final List<ItemComm> items;
-    private final int spaceshipId;
+    private final long spaceshipId;
     
-    public InventoryReply(String header, int spaceshipId, List<ItemComm> items){
+    public InventoryReply(String header, long spaceshipId, List<ItemComm> items){
         super(header);
         this.spaceshipId = spaceshipId;
         this.items = items;
     }
 
-    public int getSpaceshipId() {
+    public long getSpaceshipId() {
         return spaceshipId;
     }
 

@@ -3,6 +3,7 @@ package com.ptsesd.groepb.shared;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.ptsesd.groepb.shared.socket.AuctionReply;
 import com.ptsesd.groepb.shared.socket.AuctionRequest;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
@@ -214,6 +215,11 @@ public class Serializer {
 
     public static String serializeAuctionRequestAsGamePacktet(AuctionRequest auctionRequest) {
         String json = gson.toJson(auctionRequest, AuctionRequest.class);
+        return json;
+    }
+    
+    public static String serializeAuctionReplyAsGamePacktet(AuctionReply auctionReply) {
+        String json = gson.toJson(auctionReply, AuctionReply.class);
         return json;
     }
 }
