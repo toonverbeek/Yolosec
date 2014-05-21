@@ -1,28 +1,29 @@
 package service;
 
-import annotations.ItemJPAImpl;
 import annotations.AccountJPAImpl;
+import annotations.ItemJPAImpl;
 import dao.ItemDAO;
 import dao.UserDAO;
+import domain.Account;
 import domain.Item;
 import domain.Resource;
-import domain.Spaceship;
-import domain.Stat;
-import domain.Account;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.xml.ws.WebServiceRef;
+import webservice.WebserviceService;
 
 @Stateless
 public class StoreService implements Serializable {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_44823/economysystemweb/WebserviceService.wsdl")
+    private WebserviceService service;
 
     @Inject
     @AccountJPAImpl
@@ -32,39 +33,18 @@ public class StoreService implements Serializable {
     @ItemJPAImpl
     private ItemDAO itemDAO;
 
-    private Account loggedInAccount;
+    private webservice.Account loggedInAccount;
+    private String loggedInUsername;
     Map<String, String> map = new HashMap<String, String>();
 
     public StoreService() {
     }
 
-    @PostConstruct
-    private void initItems() {
-
-        List<Resource> item1Resources = new ArrayList<>();
-        item1Resources.add(new Resource("Common", 100));
-        item1Resources.add(new Resource("Magic", 50));
-        List<Stat> item1Stats = new ArrayList<>();
-        item1Stats.add(new Stat("Stamina", 10));
-
-        String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis hendrerit velit sit amet ligula faucibus, a aliquam dui consequat. Sed egestas mauris gravida sem commodo tristique. Maecenas sed mauris metus. Vestibulum nunc nunc, pretium et interdum eget, tincidunt ut eros. Suspendisse in urna nec enim cursus fermentum. Quisque ultricies eros laoreet, molestie odio vitae, congue nisl. Praesent eget eleifend lectus.";
-
-        Item item1 = new Item("Item 1", lorem, item1Resources, item1Stats, false, "");
-        Item item2 = new Item("Item 2", lorem, item1Resources, item1Stats, false, "");
-        Item item3 = new Item("Item 3", lorem, item1Resources, item1Stats, false, "");
-        Item item4 = new Item("Item 4", lorem, item1Resources, item1Stats, false, "");
-
-//        this.itemDAO.create(item1);
-//        this.itemDAO.create(item2);
-//        this.itemDAO.create(item3);
-//        this.itemDAO.create(item4);
-    }
-    
-    public void addPayment(String guid, String paymentID){
+    public void addPayment(String guid, String paymentID) {
         this.map.put(guid, paymentID);
     }
-    
-    public String getPayment(String guid){
+
+    public String getPayment(String guid) {
         return this.map.get(guid);
     }
 
@@ -84,22 +64,6 @@ public class StoreService implements Serializable {
      */
     public Collection<Account> getUsers() {
         return this.userDAO.findAll();
-    }
-
-    /**
-     * Create a user
-     *
-     * @param user the user to create
-     * @return
-     */
-    public boolean createUser(Account user) {
-        for (Account u : getUsers()) {
-            if (u.getUsername().equals(user.getUsername())) {
-                return false;
-            }
-        }
-        userDAO.create(user);
-        return true;
     }
 
     /**
@@ -175,81 +139,93 @@ public class StoreService implements Serializable {
     }
 
     public boolean registerUser(String username, String password1, String password2) {
-        List<Resource> item1Resources = new ArrayList<>();
-        item1Resources.add(new Resource("Common", 100));
-        item1Resources.add(new Resource("Magic", 100));
-        item1Resources.add(new Resource("Rare", 100));
-        item1Resources.add(new Resource("SpaceCoins", 100));
-        Account user = new Account(username, password1, new Spaceship(new ArrayList<Item>()), item1Resources);
-        return createUser(user);
+        boolean result = false;
+
+        try { // Call Web Service Operation
+            webservice.Webservice port = service.getWebservicePort();
+            // TODO initialize WS operation arguments here
+            // TODO process result here
+            result = port.registerAccount(username, password1);
+            System.out.println("Result = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+
+        return result;
+
     }
 
     public boolean login(String username, String password) {
-        List<Account> users = userDAO.findAll();
-        for (Account u : users) {
-            if (u.getUsername().equals(username)) {
-                this.loggedInAccount = u;
-                return u.getPassword().equals(password);
-            }
+
+        try { // Call Web Service Operation
+            webservice.Webservice port = service.getWebservicePort();
+            // TODO initialize WS operation arguments here
+            // TODO process result here
+            this.loggedInUsername = port.login(username, password);
+            System.out.println("Result = " + loggedInUsername);
+            return true;
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
         }
         return false;
     }
 
-    public Account getLoggedInAccount() {
-        return loggedInAccount;
+    public List<webservice.Item> getMyItems() {
+
+        try { // Call Web Service Operation
+            webservice.Webservice port = service.getWebservicePort();
+            // TODO initialize WS operation arguments here
+            webservice.Account arg0 = new webservice.Account();
+            // TODO process result here
+            return port.getResourcesForUser(arg0);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+        return null;
     }
 
-    public List<Item> getMyItems() {
-        return this.userDAO.find(loggedInAccount.getUsername()).getSpaceShipItems();
-    }
+//    public List<Item> getAllItems() {
+//        return itemDAO.findAll();
+//    }
 
-    public List<Item> getAllItems() {
-        return itemDAO.findAll();
+    public boolean addResourceToLoggedInUser(Resource resource) {
+        try { // Call Web Service Operation
+            webservice.Webservice port = service.getWebservicePort();
+            // TODO initialize WS operation arguments here
+            webservice.Resource _resource = new webservice.Resource();
+            _resource.setAmount(resource.getAmount());
+            _resource.setType(resource.getType());
+            _resource.setId(resource.getId());
+            port.addResourceToUser(_resource, this.loggedInAccount);
+            return true;
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            return false;
+        }
+
     }
 
     public void buyItem(Item selectedItem) {
-        loggedInAccount = userDAO.find(loggedInAccount.getUsername());
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+
         FacesContext context = FacesContext.getCurrentInstance();
 
-        Boolean hasEnoughResources = true;
+        try { // Call Web Service Operation
+            webservice.Webservice port = service.getWebservicePort();
+            java.lang.Boolean result = port.buyItem(selectedItem.getId(), loggedInAccount.getId());
 
-        for (Resource ritem : selectedItem.getResources()) {
-            for (Resource raccount : loggedInAccount.getResources()) {
-                //if the type of the resources match ...
-                if (ritem.getType().equals(raccount.getType())) {
-                    if (raccount.getAmount() < ritem.getAmount()) {
-                        //if ammount is not enough. make boolean false
-                        hasEnoughResources = false;
-                    }
-                }
+            if (result) {
+                context.addMessage(null, new FacesMessage(selectedItem.getName() + " succesvol gekocht."));
+            } else {
+                context.addMessage(null, new FacesMessage("Onvoldoende resources."));
             }
+            System.out.println("Result buyitem = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
         }
-
-        if (hasEnoughResources) {
-            for (Resource ritem : selectedItem.getResources()) {
-                for (Resource raccount : loggedInAccount.getResources()) {
-                    //if the type of the resources match ...
-                    if (ritem.getType().equals(raccount.getType())) {
-                        if (raccount.getAmount() >= ritem.getAmount()) {
-                            //reduce the resource of the player by the amount of resources of the item
-                            raccount.setAmount(raccount.getAmount() - ritem.getAmount());
-                        }
-                    }
-                }
-            }
-            
-            //add the item to the inventory of the currently loggedin user
-            loggedInAccount.addItemToSpaceShipInventory(selectedItem);
-            userDAO.edit(loggedInAccount);
-                
-            context.addMessage(null, new FacesMessage(selectedItem.getName() + " succesvol gekocht."));
-        } else {
-            context.addMessage(null, new FacesMessage("Onvoldoende resources."));
-        }
-
-    }
-    public void addResourceToLoggedInUser(Resource resource) {
-        this.loggedInAccount.editResource("SpaceCoins", resource.getAmount());
-        userDAO.edit(loggedInAccount);
     }
 }

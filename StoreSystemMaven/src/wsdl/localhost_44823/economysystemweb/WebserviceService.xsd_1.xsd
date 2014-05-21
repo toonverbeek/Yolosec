@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.3 (tags/2.3-7528; 2013-04-29T19:34:10+0000) JAXWS-RI/2.2.8 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://webservice/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webservice/">
+
+<xs:element name="addResourceToUser" type="tns:addResourceToUser"/>
+
+<xs:element name="addResourceToUserResponse" type="tns:addResourceToUserResponse"/>
+
+<xs:element name="buyItem" type="tns:buyItem"/>
+
+<xs:element name="buyItemResponse" type="tns:buyItemResponse"/>
+
+<xs:element name="getResourcesForUser" type="tns:getResourcesForUser"/>
+
+<xs:element name="getResourcesForUserResponse" type="tns:getResourcesForUserResponse"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="hellohello" type="tns:hellohello"/>
+
+<xs:element name="hellohelloResponse" type="tns:hellohelloResponse"/>
+
+<xs:element name="login" type="tns:login"/>
+
+<xs:element name="loginResponse" type="tns:loginResponse"/>
+
+<xs:element name="registerAccount" type="tns:registerAccount"/>
+
+<xs:element name="registerAccountResponse" type="tns:registerAccountResponse"/>
+
+<xs:complexType name="login">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="loginResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hellohello">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hellohelloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buyItem">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+<xs:element name="arg1" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buyItemResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getResourcesForUser">
+<xs:sequence>
+<xs:element name="arg0" type="tns:account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="account">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="resources" type="tns:resource" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="spaceship" type="tns:spaceship" minOccurs="0"/>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="resource">
+<xs:sequence>
+<xs:element name="amount" type="xs:long"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="type" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="spaceship">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getResourcesForUserResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:item" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="item">
+<xs:sequence>
+<xs:element name="description" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="image" type="xs:string" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="resources" type="tns:resource" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="stats" type="tns:stat" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="stat">
+<xs:sequence>
+<xs:element name="amount" type="xs:long"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="type" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registerAccount">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="registerAccountResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addResourceToUser">
+<xs:sequence>
+<xs:element name="arg0" type="tns:resource" minOccurs="0"/>
+<xs:element name="arg1" type="tns:account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addResourceToUserResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
