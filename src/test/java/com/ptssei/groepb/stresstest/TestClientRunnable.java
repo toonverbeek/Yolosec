@@ -1,92 +1,93 @@
 package com.ptssei.groepb.stresstest;
 
 import com.google.gson.stream.JsonReader;
+import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
-import java.io.BufferedReader;
+import com.ptsesd.groepb.shared.SpaceshipComm;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.concurrent.Callable;
 
 /**
  *
  * @author user
  */
-public class TestClientRunnable implements Runnable {
+public class TestClientRunnable implements Callable {
 
-    private static Socket socket;
-    private static PrintWriter writer;
-    private static BufferedReader reader;
-    private static JsonReader jreader;
+    private Socket socket;
+    private PrintWriter writer;
+    private JsonReader jreader;
 
     private final String username;
     private final String IP_ADDRESS;
+    private final int id;
+    private int timeout;
 
-    public TestClientRunnable(String username, String ip) {
+    public boolean loggedIn = false;
+
+    public TestClientRunnable(String username, int id, String ip) {
         this.username = username;
         this.IP_ADDRESS = ip;
-        //System.out.println(username);
+        this.id = id;
     }
 
-    public boolean initiate() throws SocketException {
-        try {
-            //System.out.println("-----Initializing Comm Link to Server");
-            socket = new Socket(IP_ADDRESS, 1337);
-            //System.out.println("Connection successful");
-            writer = new PrintWriter(socket.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            return true;
-        } catch (Exception e) {
-            System.out.println(String.format("Exception in TestClientRunnable.initiate() - %s", e.getMessage()));
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    @Override
+    public Boolean call() throws Exception {
+        if (this.initiate()) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, username);
+                    String json = Serializer.serializeLogin(lc);
+                    writer.println(json);
+                    try {
+                        jreader = new JsonReader(new InputStreamReader(socket.getInputStream()));
+                        jreader.setLenient(true);
+
+                        GamePacket gp = Serializer.getSingleGamePacket(jreader);
+                        if (gp instanceof SpaceshipComm && ((SpaceshipComm) gp).getId() == id) {
+                            loggedIn = true;
+                            System.out.println(String.format("Login succesfull: %s", id));
+                        } else {
+                            System.err.println(String.format("Login failed, package header: %s id: %s", gp.getHeader(), id));
+                        }
+                        closeSocket();
+                    } catch (IOException e) {
+                        System.err.println(String.format("---[RUNNABLE] Exception in client %s - %s", id, e.getMessage()));
+                    }
+                }
+            });
+            t.start();
+            Thread.sleep(timeout);
+            return loggedIn;
         }
         return false;
     }
 
-    @Override
-    public void run() {
-        //do work
-        System.out.println("Trying to login user: " + username);
-        //login first
-        LoginComm lc = new LoginComm(LoginComm.class.getSimpleName(), username, username);
-        String json = Serializer.serializeLogin(lc);
-        writer.println(json);
-//        try {
-//            jreader = new JsonReader(new InputStreamReader(socket.getInputStream()));
-//            jreader.setLenient(true);
-//            boolean b = receiveLogin();
-//            if (!b) {
-//                System.out.println("Error while logging in user: " + username);
-//            }
-//        } catch (Exception e) {
-//            System.out.println(String.format("Exception in TestClientRunnable.run() - %s", e.getMessage()));
-//        }
+    private boolean initiate() {
+        try {
+            socket = new Socket(IP_ADDRESS, 1337);
+            writer = new PrintWriter(socket.getOutputStream(), true);
+            return true;
+        } catch (IOException e) {
+            System.err.println(String.format("Exception in TestClientRunnable.initiate() - %s", e.getMessage()));
+        }
+        return false;
     }
 
-//    /**
-//     * Listens for a response to a login request.
-//     *
-//     * @return the SpaceShipComm object that belongs to the login request, null
-//     * if an exception occurred.
-//     * @throws Exception
-//     */
-//    private boolean receiveLogin() throws Exception {
-//        SpaceshipComm spacecomm = null;
-//        while (spacecomm == null) {
-//            try {
-//                GamePacket gp = Serializer.getSingleGamePacket(jreader);
-//                if (gp instanceof SpaceshipComm) {
-//                    spacecomm = (SpaceshipComm) gp;
-//                } else if (gp instanceof LoginCommError) {
-//                    spacecomm = null;
-//                    break;
-//                }
-//            } catch (Exception ex) {
-//                spacecomm = null;
-//                //ex.printStackTrace();
-//            }
-//        }
-//        System.out.println("RETURN");
-//        return (spacecomm != null);
-//    }
+    public boolean closeSocket() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
 }

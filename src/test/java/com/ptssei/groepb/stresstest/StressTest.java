@@ -1,15 +1,23 @@
 package com.ptssei.groepb.stresstest;
 
 import com.yolosec.util.ConnectionString;
-import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -20,31 +28,31 @@ import org.junit.Test;
 public class StressTest extends TestCase {
 
     private ExecutorService executor;
-    private final int amountOfClients = 50;
-    private int amountLoggedIn = 0;
+    private static final int amountOfClients = 100;
+    private List<TestClientRunnable> clientList = new ArrayList<>(amountOfClients);
+    private int amountInitiated = 0;
+
     private static final int USERIDBASE = 2000000000;
-    private static final int WAITTIME = 5000;
-    private static final String IP_ADDRESS = "127.0.0.1";
-//    private static final String IP_ADDRESS = "192.168.24.78‏";
-//    private static final String IP_ADDRESS = "145.93.57.150";
+    private static final int WAITTIME = 30000;
+    private static final int LOGINTIMEOUT = 300;
+//    private static final String IP_ADDRESS = "127.0.0.1";
+    private static final String IP_ADDRESS = "192.168.24.11";
     private static HashMap<Integer, String> userList;
     private static boolean hasData = false;
     private static int testsCompleted = 0;
-    private static final int numberOfTests = 1;
-
-    private boolean running = true;
+    private static final int numberOfTests = 2;
 
     public StressTest(String testName) {
         super(testName);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="SETUP AND TEARDOWN METHODS">
+    //setUp() and tearDown() are made to run only once!
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         //Instantiate variables
         if (!hasData) {
-            executor = Executors.newFixedThreadPool(amountOfClients);
-
             //Add users to the database
             userList = new HashMap<>();
             Exception ErrM = null;
@@ -139,11 +147,10 @@ public class StressTest extends TestCase {
                 connect.close();
             }
             //check if an error was thrown while removing the users
-            assertNull(ErrM);
             assertTrue(userList.isEmpty());
-            assertEquals(amountOfClients, amountLoggedIn);
-
             System.out.println("---Users removed---");
+            assertNull(ErrM);
+
             if (ErrM != null) {
                 System.out.println("Errors occurred: " + ErrM.getMessage());
             }
@@ -151,33 +158,27 @@ public class StressTest extends TestCase {
     }
 
     /**
-     * Test how many of the TestClient are initialised. Also start the clients
-     * for the next test
+     * Initiates the clients and puts them in List<Callable> clientList
      *
      * @return Returns thrown errors.
      */
     public Exception initializeTestClient() {
+        System.out.println("---[STRESSTEST] Initiating clients started.");
+        executor = Executors.newFixedThreadPool(amountOfClients);
+
         Exception ErrM = null;
         for (int i = 0; i < amountOfClients; i++) {
-            boolean initiate = false;
             try {
-                TestClientRunnable r = new TestClientRunnable(userList.get(USERIDBASE + i), IP_ADDRESS);
-                initiate = r.initiate();
-                executor.execute(r);
-            } catch (SocketException ex) {
-                System.out.println(String.format("---[STRESSTEST] SocketException %s", ex.getMessage()));
-                ErrM = ex;
+                TestClientRunnable r = new TestClientRunnable(userList.get(USERIDBASE + i), USERIDBASE + i, IP_ADDRESS);
+                clientList.add(r);
+                amountInitiated++;
             } catch (Exception ex) {
-                System.out.println(String.format("---[STRESSTEST] Exception %s", ex.getMessage()));
+                System.err.println(String.format("---[STRESSTEST] Initiation Exception %s", ex.getMessage()));
                 ErrM = ex;
-            }
-            if (initiate) {
-                amountLoggedIn++;
-            }
-            if (ErrM != null) {
-                ErrM = new Exception("Initiation failed.");
             }
         }
+
+        System.out.println("---[STRESSTEST] Initiating clients completed.");
         return ErrM;
     }
 
@@ -187,45 +188,89 @@ public class StressTest extends TestCase {
      * @return Returns thrown errors.
      */
     public Exception shutDownTestClient() {
-        System.out.println("---[STRESSTEST] Shutting down");
+        System.out.println("---[STRESSTEST] Shutting down clients.");
         Exception ErrM = null;
         try {
-            executor.shutdown();
-
+            executor.shutdownNow();
             while (!executor.isTerminated()) {
                 //wait
-                //System.out.println("Waiting...");
             }
+            clientList.clear();
         } catch (Exception ex) {
             ErrM = ex;
         }
-        System.out.println("---[STRESSTEST] Shutted Down");
+        System.out.println("---[STRESSTEST] Shuting down clients complete.");
         return ErrM;
     }
+//</editor-fold>
 
-    /**
-     *
-     */
     @Test
-    public synchronized void testClient() {
-        System.out.println("---[STRESSTEST] Start testClient");
+    public void testLoginClient() {
+        System.out.println("---[STRESSTEST] Start testLoginClient");
+        System.out.println(String.format("---[STRESSTEST] Number of users: %s", amountOfClients));
+        System.out.println(String.format("---[STRESSTEST] User timeout: %s", LOGINTIMEOUT));
+        Exception ErrM;
+        int amountLoggedIn = 0;
+
+        ErrM = initializeTestClient();
+        assertNull(ErrM);
+        assertEquals(amountOfClients, amountInitiated);
+
+        for (TestClientRunnable r : clientList) {
+            try {
+                r.setTimeout(LOGINTIMEOUT);
+                FutureTask<Boolean> future = new FutureTask<>(r);
+                executor.execute(future);
+                amountLoggedIn += future.get() ? 1 : 0;
+                if (!future.isDone()) {
+                    r.closeSocket();
+                    future.cancel(true);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                System.err.println(String.format("---[STRESSTEST] Exception %s", ex.getMessage()));
+                ErrM = ex;
+            }
+        }
+        System.out.println(String.format("---[STRESSTEST] Clients logged in:  %s/%s", amountLoggedIn, amountOfClients));
+        assertNull(ErrM);
+        assertEquals(amountOfClients, amountLoggedIn);
+
+        ErrM = shutDownTestClient();
+        System.out.println("---[STRESSTEST] Stop testLoginClient");
+        assertNull(ErrM);
+    }
+
+    @Test
+    public void testBroadcastClient() {
+        System.out.println("---[STRESSTEST] Start testBroadcastClient");
+        System.out.println(String.format("---[STRESSTEST] Number of users: %s", amountOfClients));
+        System.out.println(String.format("---[STRESSTEST] Broadcast timeout: %s", WAITTIME));
         Exception ErrM;
 
         ErrM = initializeTestClient();
         assertNull(ErrM);
+        assertEquals(amountOfClients, amountInitiated);
 
-        try {
-            wait(WAITTIME);
-        } catch (Exception e) {
-            ErrM = e;
-        }
-        assertNull(ErrM);
-
+//        for (TestClientRunnable r : clientList) {
+//            try {
+//                r.setTimeout(LOGINTIMEOUT);
+//                FutureTask<Boolean> future = new FutureTask<>(r);
+//                executor.execute(future);
+//                amountLoggedIn += future.get() ? 1 : 0;
+//                if (!future.isDone()) {
+//                    r.closeSocket();
+//                    future.cancel(true);
+//                }
+//            } catch (InterruptedException | ExecutionException ex) {
+//                System.err.println(String.format("---[STRESSTEST] Exception %s", ex.getMessage()));
+//                ErrM = ex;
+//            }
+//        }
+//        System.out.println(String.format("---[STRESSTEST] Clients logged in:  %s/%s", amountLoggedIn, amountOfClients));
+//        assertNull(ErrM);
+//        assertEquals(amountOfClients, amountLoggedIn);
         ErrM = shutDownTestClient();
+        System.out.println("---[STRESSTEST] Stop testBroadcastClient");
         assertNull(ErrM);
-        System.out.println("---[STRESSTEST] Stop testClient");
     }
-
-    // TODO add test methods here. The name must begin with 'test'. For example:
-    // public void testHello() {}
 }
