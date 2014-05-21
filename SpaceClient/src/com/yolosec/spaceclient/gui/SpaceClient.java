@@ -12,7 +12,7 @@ public class SpaceClient extends StateBasedGame {
 
     public static final int STATE_GAME = 0;
     private static final int STATE_MAINMENU = 1;
-    private static final int STATE_PLANET = 2;
+    public static final int STATE_PLANET = 2;
 
     private static final int FPS = 60;
     public static int screenHeight;
@@ -53,24 +53,21 @@ public class SpaceClient extends StateBasedGame {
                 this.enterState(STATE_GAME);
                 Chat.showChat = false;
             }
-        }
-        if (key == Input.KEY_F2) {
-            if (this.getCurrentStateID() == STATE_PLANET) {
-                this.enterState(STATE_GAME);
-                Chat.showChat = false;
-            } else {
-                this.enterState(STATE_PLANET);
-                Chat.showChat = false;
-            }
-        }
+        } 
     }
 
     public void toPlanetState() {
-        if (this.getCurrentStateID() != STATE_PLANET) {
-            this.enterState(STATE_PLANET);
-        } else {
-            this.enterState(STATE_GAME);
-        }
+        System.out.println("To Planet State");
+      this.enterState(STATE_PLANET);
+    }
+    
+    public void toGameState() {
+        System.out.println("To Game State");
+        this.enterState(STATE_GAME);
+    }
+    
+    public int getCurrentStateId() {
+        return this.getCurrentStateID();
     }
 
     /**

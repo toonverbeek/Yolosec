@@ -64,7 +64,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
     private final Minimap minimap;
     private Chat chat;
     private Inventory playerInventory;
-    private GameState state;
+    private SpaceClient client;
     private Thread chatThread;
 
     /**
@@ -76,15 +76,15 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
      * @param player the player owning this instance.
      * @throws SlickException
      */
-    public GameWorldImpl(GameState state, User player) throws SlickException {
-        this.state = state;
+    public GameWorldImpl(SpaceClient client, User player) throws SlickException {
+        this.client = client;
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
         tileMap = new TiledMap("/map_space.tmx");
 
         this.playerViewport = new Viewport(player.getSpaceship(), tileMap);
-        minimap = new Minimap(screenWidth - 200-1, 1, 200-1, 200);
-        chat = new Chat(1+(int)(screenWidth *0.25), (int)(screenHeight *0.75),  (int)(screenWidth *0.50)-1, (int)(screenHeight *0.25), player);
+        minimap = new Minimap(screenWidth - 200 - 1, 1, 200 - 1, 200);
+        chat = new Chat(1 + (int) (screenWidth * 0.25), (int) (screenHeight * 0.75), (int) (screenWidth * 0.50) - 1, (int) (screenHeight * 0.25), player);
         chatThread = new Thread(chat);
         chatThread.start();
         generatePlanets();
@@ -125,10 +125,11 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 Planet planet = (Planet) gObject;
                 //System.out.println("Planet Name: " + planet.getName());
                 if (gc.getInput().isKeyPressed(Input.KEY_F2)) {
-                    //System.out.println("Planet Rectangle; X: " + planet.getRectangle().x + "|Y: " + planet.getRectangle().y + "| Size: " + planet.getRectangle().getHeight());
-                    //System.out.println("Spaceship Rectangle; X: " + playerViewport.getSpaceship().getGlobalRectangle().x + "|Y: " + playerViewport.getSpaceship().getGlobalRectangle().y + "| Size: " + playerViewport.getSpaceship().getGlobalRectangle().getHeight());
-                    if (planet.getRectangle().intersects(playerViewport.getSpaceship().getGlobalRectangle())) {
-                        state.toPlanetState();
+                    System.out.println("Current state: " + this.client.getCurrentStateId());
+                    if (client.getCurrentStateId() != SpaceClient.STATE_PLANET) {
+                        if (planet.getRectangle().intersects(playerViewport.getSpaceship().getGlobalRectangle())) {
+                            client.toPlanetState();
+                        }
                     }
                 }
             }

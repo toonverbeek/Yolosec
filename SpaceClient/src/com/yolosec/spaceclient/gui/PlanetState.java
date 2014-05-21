@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -74,6 +75,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
     private ArrayList<Shape> sellButtons;
     private ArrayList<Shape> buyButtons;
     private BroadcastHandler handler;
+    private boolean newState = true;
 
     //private static final Rec
     //---------------------------------------------------------------------------------------------------------------
@@ -415,6 +417,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
         updateAuctionView();
         Input input = container.getInput();
         checkMouseInput(input, game);
+        checkKeyInput(input, game);
     }
 
     /**
@@ -574,6 +577,24 @@ public class PlanetState extends BasicGameState implements DrawCallback {
             updateBuyButtons(mousePosition);
             updateSellButtons(mousePosition);
             updatePageButtons(mousePosition);
+        }
+    }
+
+    private void checkKeyInput(Input input, StateBasedGame game) {
+        if (!newState) {
+            if (Keyboard.getEventKey() == Keyboard.KEY_F3) {
+                if (Keyboard.getEventKeyState()) {
+                    if (game.getCurrentStateID() == SpaceClient.STATE_PLANET) {
+                        System.out.println("To game state");
+                        game.enterState(SpaceClient.STATE_GAME);
+                        buyView = false;
+                        this.sellView = false;
+                        currentPage = 0;
+                    }
+                }
+            }
+        } else {
+            newState = false;
         }
     }
 

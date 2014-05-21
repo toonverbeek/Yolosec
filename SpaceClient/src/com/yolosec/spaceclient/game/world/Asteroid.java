@@ -16,13 +16,14 @@ import org.newdawn.slick.geom.Shape;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.gui.SpaceClient;
+import java.util.Comparator;
 import org.newdawn.slick.AngelCodeFont;
 
 /**
  *
  * @author Toon
  */
-public class Asteroid extends GameObjectImpl implements DrawableComponent {
+public class Asteroid extends GameObjectImpl implements DrawableComponent, Comparable<Asteroid> {
 
     private float xPosition, yPosition;
     public int resourceAmount;
@@ -223,6 +224,15 @@ public class Asteroid extends GameObjectImpl implements DrawableComponent {
             g.setColor(Color.white);
             g.drawRect(drawPositionX, drawPositionY, asteroidBounding.width, asteroidBounding.height);
             resourceFont.drawString(drawPositionX, drawPositionY, String.valueOf(resourceAmount));
+        }
+    }
+
+    @Override
+    public int compareTo(Asteroid o) {
+        if(this.xPosition == o.xPosition && this.yPosition == o.yPosition) {
+            return 0;
+        } else {
+            return 1;
         }
     }
 }

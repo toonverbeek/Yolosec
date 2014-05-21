@@ -18,6 +18,7 @@ import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Planet;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import com.yolosec.spaceclient.observing.NodeImpl;
+import java.util.Iterator;
 
 /**
  *
@@ -69,6 +70,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
+        filterGameObjects(objects);
         for (GameObjectImpl goi : objects) {
             if (goi instanceof Asteroid) {
                 Asteroid ast = (Asteroid) goi;
@@ -113,6 +115,19 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
             if (goi instanceof Planet) {
                 gameObjects.add(goi);
+            }
+        }
+    }
+
+    private void filterGameObjects(List<GameObjectImpl> objects) {
+        //new object
+        Iterator it = gameObjects.iterator();
+        System.out.println("Size game objects while filtering: " + gameObjects.size());
+        while (it.hasNext()) {
+            GameObjectImpl object = (GameObjectImpl) it.next();
+            if (object instanceof Asteroid) {
+                it.remove();
+                System.out.println("Removed asteroid");
             }
         }
     }

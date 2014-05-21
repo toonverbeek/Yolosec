@@ -54,7 +54,7 @@ public class GameState extends BasicGameState{
             container.setTargetFrameRate(FPS);
             container.setFullscreen(true);
 //            user = new User(new Spaceship(10, 10), "Space_Invader1337");
-            gameWorld = new GameWorldImpl(this, user);
+            gameWorld = new GameWorldImpl(((SpaceClient) game), user);
             //Communicator.login(Serializer.serializeLogin(new LoginComm(LoginComm.class.getSimpleName(), "username", "password")));
             font = new AngelCodeFont("font.fnt", "font_0.png");
             AngelCodeFont resourceFont = new AngelCodeFont("font_resource.fnt", "font_resource_0.png");
@@ -65,9 +65,7 @@ public class GameState extends BasicGameState{
         }
     }
     
-    public void toPlanetState() {
-        ((SpaceClient) game).toPlanetState();
-    }
+  
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {

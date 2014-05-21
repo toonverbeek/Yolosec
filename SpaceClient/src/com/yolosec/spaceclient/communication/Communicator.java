@@ -29,6 +29,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.rmi.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class Communicator {
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
-    public static final String IP_ADDRESS = "145.93.253.199";//"145.93.211.4";//;//"145.93.54.48";
+    public static final String IP_ADDRESS = "192.168.24.11";
     private static JsonReader jreader;
 
     public static void sendData(String json) {
@@ -66,14 +67,15 @@ public class Communicator {
      * @throws Exception
      */
     public static List<GameObjectImpl> retrieveData(JsonReader jreader) throws Exception {
-        gameObjects = new ArrayList<>();
+        //gameObjects = new ArrayList<>();
         if (jreader.hasNext()) {
             if (jreader.peek() == JsonToken.BEGIN_ARRAY) {
+                System.out.println("Begin Array");
                 List<GamePacket> packets = Serializer.deserializePackets(jreader);
+                System.out.println("Packet size: " + packets.size());
                 for (GamePacket gp : packets) {
                     if (gp instanceof SpaceshipComm) {
                         SpaceshipComm sc = (SpaceshipComm) gp;
-
                         gameObjects.add(new Spaceship(sc));
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
@@ -105,8 +107,9 @@ public class Communicator {
                 }
             }
         }
+        
+        System.out.println("After retrieve data : "  + gameObjects.size());
         return gameObjects;
-
     }
 
     /**
