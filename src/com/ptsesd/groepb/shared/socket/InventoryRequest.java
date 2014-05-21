@@ -14,14 +14,14 @@ import com.ptsesd.groepb.shared.GamePacket;
  */
 public class InventoryRequest extends GamePacket {
     
-    private final int spaceshipId;
+    private final long spaceshipId;
     
-    public InventoryRequest(String header, int spaceshipId){
+    public InventoryRequest(String header, long spaceshipId){
         super(header);
         this.spaceshipId = spaceshipId;
     }
 
-    public int getSpaceshipId() {
+    public long getSpaceshipId() {
         return spaceshipId;
     }
 }

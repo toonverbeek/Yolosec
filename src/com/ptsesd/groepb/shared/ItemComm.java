@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @author Tim
  */
-public class ItemComm {
+public class ItemComm extends GamePacket {
 
     private final Item item;
     private final long requestorId;

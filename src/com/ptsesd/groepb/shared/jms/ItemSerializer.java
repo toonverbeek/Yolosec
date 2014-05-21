@@ -8,6 +8,8 @@ package com.ptsesd.groepb.shared.jms;
 
 import com.google.gson.Gson;
 import com.ptsesd.groepb.shared.ItemComm;
+import com.ptsesd.groepb.shared.socket.InventoryReply;
+import com.ptsesd.groepb.shared.socket.InventoryRequest;
 
 /**
  *
@@ -27,4 +29,23 @@ public class ItemSerializer {
         return item;
     }
     
+    public static String inventoryRequestToJson(InventoryRequest invRequest){
+        String json = gson.toJson(invRequest);
+        return json;
+    }
+    
+    public static InventoryRequest jsonToInventoryRequest(String json){
+        InventoryRequest invRequest = (InventoryRequest) gson.fromJson(json, InventoryRequest.class);
+        return invRequest;
+    }
+    
+    public static String inventoryReplyToJson(InventoryReply invReply){
+        String json = gson.toJson(invReply);
+        return json;
+    }
+    
+    public static InventoryReply jsonToInventoryReply(String json){
+        InventoryReply invReply = (InventoryReply) gson.fromJson(json, InventoryReply.class);
+        return invReply;
+    }
 }
