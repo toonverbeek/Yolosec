@@ -84,32 +84,29 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
 
         //update the position of the player
         //update the position only when the position is NOT in the top left corner
-        if (newPos.x > 0 && newPos.x <= (tilemapWidth - screenWidth)) {
+        if (newPos.x > - (screenWidth/2) && newPos.x <= (tilemapWidth - (screenWidth/2))) {
             viewportPos.x += viewportVelocity.x;
             playerX = viewportPos.x + (screenWidth / 2) - (spaceship.getWidth() / 2);
             spaceship.setPosition(new Vector2f(playerX, playerY));
         } else {
             if (newPos.x < screenWidth) {
-                viewportPos.x = 1;
+                viewportPos.x = -(screenWidth/2);
                 viewportVelocity.x = 0;
             } else {
-                viewportPos.x = (tilemapWidth - screenWidth);
+                viewportPos.x = (tilemapWidth - (screenWidth/2));
                 viewportVelocity.x = 0;
             }
         }
-        if (newPos.y > 0 && newPos.y < (tilemapHeight - screenHeight)) {
+        if (newPos.y > - (screenHeight/2) && newPos.y < (tilemapHeight - (screenHeight/2))) {
             viewportPos.y += viewportVelocity.y;
             playerY = viewportPos.y + (screenHeight / 2) - (spaceship.getHeight() / 2);
             spaceship.setPosition(new Vector2f(playerX, playerY));
-            //spaceship.setPosition(new Vector2f(playerX, playerY));
-            if (playerY > 0 && playerY <= (screenHeight / 2)) {
-            }
         } else {
             if (newPos.y < screenHeight) {
-                viewportPos.y = 1;
+                viewportPos.y = -(screenHeight/2);
                 viewportVelocity.y = 0;
             } else {
-                viewportPos.y = (tilemapHeight - screenHeight);
+                viewportPos.y = (tilemapHeight - (screenHeight/2));
                 viewportVelocity.y = 0;
             }
         }
