@@ -175,4 +175,12 @@ public class Account implements Serializable {
         return new ArrayList<>(this.spaceship.getAllItems());
     }
 
+    public void editResource(String spaceCoins, long amount) {
+        for(Resource r : resources){
+            if(r.getType().equals(spaceCoins)){
+                r.setAmount(r.getAmount() + amount);
+            }
+        }
+    }
+
 }

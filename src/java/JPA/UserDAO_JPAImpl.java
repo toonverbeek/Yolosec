@@ -34,13 +34,23 @@ public class UserDAO_JPAImpl implements UserDAO {
     }
 
     @Override
-    public void create(Account user) {
-        em.persist(user);
+    public boolean create(Account user) {
+        try {
+            em.persist(user);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     @Override
-    public void edit(Account user) {
-        em.merge(user);
+    public boolean edit(Account user) {
+        try {
+            em.merge(user);
+            return true;
+        } catch (Exception x) {
+            return false;
+        }
     }
 
     @Override

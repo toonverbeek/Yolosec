@@ -16,9 +16,9 @@ public interface UserDAO {
 
     int count();
 
-    void create(Account user);
+    boolean create(Account user);
 
-    void edit(Account user);
+    boolean edit(Account user);
 
     List<Account> findAll();
 

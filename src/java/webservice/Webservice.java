@@ -15,7 +15,9 @@ import domain.Resource;
 import domain.Spaceship;
 import domain.Stat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -34,13 +36,18 @@ public class Webservice {
     @ItemJPAImpl
     @Inject
     ItemDAO itemDAO;
+    private Account loggedInAccount;
 
     public String hello() {
         return "hello";
     }
 
-    private void initItems() {
+    public String hellohello() {
+        return "hello";
+    }
 
+    @PostConstruct
+    private void initItems() {
         List<Resource> item1Resources = new ArrayList<>();
         item1Resources.add(new Resource("Mineral", 100));
         item1Resources.add(new Resource("Iron", 50));
@@ -65,8 +72,6 @@ public class Webservice {
 
     @WebMethod
     public Boolean buyItem(long itemId, long userId) {
-        initItems();
-
         System.out.println("AccountID: " + userId + " - ItemID: " + itemId);
         Account account = userDAO.find(userId);
         Item itemToBuy = itemDAO.find(itemId);
@@ -109,5 +114,44 @@ public class Webservice {
 
         return isSuccesful;
 
+    }
+
+    public boolean registerAccount(String username, String password) {
+        //test purposes
+        List<Resource> item1Resources = new ArrayList<>();
+        item1Resources.add(new Resource("Common", 100));
+        item1Resources.add(new Resource("Magic", 100));
+        item1Resources.add(new Resource("Rare", 100));
+        item1Resources.add(new Resource("SpaceCoins", 100));
+
+        for (Account u : userDAO.findAll()) {
+            if (u.getUsername().equals(username)) {
+                return false;
+            }
+        }
+
+        return this.userDAO.create(new Account(username, password, new Spaceship(new ArrayList<Item>()), item1Resources));
+    }
+
+    @WebMethod
+    public String login(String username, String password) {
+        List<Account> users = userDAO.findAll();
+        for (Account u : users) {
+            if (u.getUsername().equals(username)) {
+                if (u.getPassword().equals(password)) {
+                    return u.getUsername();
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean addResourceToUser(Resource resource, Account account) {
+        account.editResource("SpaceCoins", resource.getAmount());
+        return userDAO.edit(loggedInAccount);
+    }
+    
+    public List<Item> getResourcesForUser(Account account){
+        return account.getSpaceShipItems();
     }
 }
