@@ -300,4 +300,12 @@ public class GameService implements Runnable {
     public Boolean logCpuTime() {
         return this.broadcastModule.logCpuTime();
     }
+    
+    public void addSpaceShipObject(SpaceshipComm ship) {
+        this.spaceshipDAO.addOnlineSpaceship(ship);
+    }
+    
+    public void removeSpaceshipObject(int id) {
+        this.spaceshipDAO.removeOnlineSpaceship(id);
+    }
 }

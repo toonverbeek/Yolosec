@@ -1,12 +1,15 @@
 package com.yolosec.util;
 
 import com.ptsesd.groepb.shared.MessagingComm;
+import com.ptsesd.groepb.shared.SpaceshipComm;
 import com.yolosec.service.GameService;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -70,6 +73,10 @@ public class ConsoleApp implements Runnable {
                     Thread AccManagementThread = new Thread(new AccountManagementUI());
                     AccManagementThread.start();
                     break;
+                case "st":
+                case "stresstest":
+                    this.stressTestClients();
+                    break;
                 case "exit":
                     System.out.println("---[CONSOLE] Exit runtime...");
                     //Runtime.getRuntime().exit(0);
@@ -91,6 +98,7 @@ public class ConsoleApp implements Runnable {
         System.out.println("---[CONSOLE] -resetAsteroids [-a]");
         System.out.println("---[CONSOLE] -accountManagement [-u]");
         System.out.println("---[CONSOLE] -logCpu [-c]");
+        System.out.println("---[CONSOLE] -stresstest [-st]");
         System.out.println("---[CONSOLE] -help [-h]");
         System.out.println("---[CONSOLE] -exit");
         System.out.println("------------------------------------");
@@ -139,5 +147,33 @@ public class ConsoleApp implements Runnable {
     private void clearMessages() {
         boolean success = this.connServer.clearMessages();
         System.out.println(String.format("---[CONSOLE] Messages cleared: %s", success));
+    }
+
+    private void stressTestClients() {
+        final int USERIDBASE = 2000000000;
+        final int CLIENTS = 100;
+        //SaceshipServiceImpl - Map<Integer, SpaceshipComm> clientSpaceships
+        ArrayList<SpaceshipComm> usedShips = new ArrayList<>();
+        Random r = new Random();
+        int nn[] = {0, 0, 0};
+
+        //create a list with temporary users
+        for (int i = 0; i < CLIENTS; i++) {
+            usedShips.add(new SpaceshipComm("testuser" + i, USERIDBASE + i, r.nextInt(65535), r.nextInt(65535), 1, nn, false));
+        }
+        //add the users to the active list
+        for (SpaceshipComm ship : usedShips) {
+            connServer.addSpaceShipObject(ship);
+        }
+
+        try {
+            Thread.sleep(60000); //sleep for 1 minute
+        } catch (InterruptedException ex) {
+            System.out.println("---[STRESSTEST] Sleep InterruptedException");
+        }
+        //remove the users from the active list
+        for (SpaceshipComm ship : usedShips) {
+            connServer.removeSpaceshipObject(ship.getId());
+        }
     }
 }

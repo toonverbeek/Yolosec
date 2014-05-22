@@ -7,17 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -250,6 +245,11 @@ public class StressTest extends TestCase {
         ErrM = initializeTestClient();
         assertNull(ErrM);
         assertEquals(amountOfClients, amountInitiated);
+        
+        //have amountOfClients of TestClientRunnable in clientList
+        //add that information to the list of clients so the server can broadcast them
+        //SaceshipServiceImpl - Map<Integer, SpaceshipComm> clientSpaceships
+        
 
 //        for (TestClientRunnable r : clientList) {
 //            try {
