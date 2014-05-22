@@ -33,6 +33,16 @@ public class Item implements Serializable {
     public Item(){
         
     }
+
+    public Item(long ownerId, String name, String description, String image, float value, String resource_type, boolean forSale) {
+        this.ownerId = ownerId;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.value = value;
+        this.resource_type = resource_type;
+        this.forSale = forSale;
+    }
     
     public Item(long id, long ownerId, String name, String description, String image, float value, String resource_type, boolean forSale) {
         this.id = id;

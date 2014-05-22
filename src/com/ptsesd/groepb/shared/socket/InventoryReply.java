@@ -18,11 +18,13 @@ public class InventoryReply extends GamePacket{
     
     private final List<ItemComm> items;
     private final long spaceshipId;
+    private final boolean isAuctionHouse;
     
-    public InventoryReply(String header, long spaceshipId, List<ItemComm> items){
+    public InventoryReply(String header, long spaceshipId, List<ItemComm> items, boolean isAuctionHouse){
         super(header);
         this.spaceshipId = spaceshipId;
         this.items = items;
+        this.isAuctionHouse = isAuctionHouse;
     }
 
     public long getSpaceshipId() {
@@ -31,5 +33,9 @@ public class InventoryReply extends GamePacket{
 
     public List<ItemComm> getItems() {
         return items;
+    }
+
+    public boolean isIsAuctionHouse() {
+        return isAuctionHouse;
     }
 }

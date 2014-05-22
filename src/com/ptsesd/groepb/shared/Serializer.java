@@ -38,66 +38,69 @@ public class Serializer {
 
     public static GamePacket getSingleGamePacket(JsonReader reader) throws IOException {
         GamePacket gameobject = null;
-        if (reader.hasNext()) {
+        
+            if (reader.hasNext()) {
 
-            Map map = gson.fromJson(reader, Map.class);
+                Map map = gson.fromJson(reader, Map.class);
 
-            String header = (String) map.get("header");
+                String header = (String) map.get("header");
 
-            if (header.equals(SpaceshipComm.class.getSimpleName())) {
-                //desirialize spaceshipcomm
-                int id = ((Double) map.get("id")).intValue();
-                double x = (Double) map.get("x");
-                double y = (Double) map.get("y");
-                float xx = (float) x;
-                float yy = (float) y;
-                int d = ((Double) map.get("d")).intValue();
-                List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
-                int[] resources = convertIntegers(resourcesList);
+                if (header.equals(SpaceshipComm.class.getSimpleName())) {
+                    //desirialize spaceshipcomm
+                    int id = ((Double) map.get("id")).intValue();
+                    double x = (Double) map.get("x");
+                    double y = (Double) map.get("y");
+                    float xx = (float) x;
+                    float yy = (float) y;
+                    int d = ((Double) map.get("d")).intValue();
+                    List<Double> resourcesList = (ArrayList<Double>) map.get("resources");
+                    int[] resources = convertIntegers(resourcesList);
 
-                boolean mining = (boolean) map.get("mining");
-                SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources, mining);
-                gameobject = scomm;
-            } else if (header.equals(AsteroidComm.class.getSimpleName())) {
-                //deserialize asteroidcomm
-                int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
-                float x = ((Double) map.get("x")).floatValue();
-                float y = ((Double) map.get("y")).floatValue();
-                AsteroidType atype = AsteroidType.common;
-                String type = (String) map.get("type");
-                if (type.equals(AsteroidType.magic.toString())) {
-                    atype = AsteroidType.magic;
-                } else if (type.equals(AsteroidType.rare.toString())) {
-                    atype = AsteroidType.rare;
+                    boolean mining = (boolean) map.get("mining");
+                    SpaceshipComm scomm = new SpaceshipComm((String) map.get("header"), id, xx, yy, d, resources, mining);
+                    gameobject = scomm;
+                } else if (header.equals(AsteroidComm.class.getSimpleName())) {
+                    //deserialize asteroidcomm
+                    int resourceAmount = ((Double) map.get("resourceAmount")).intValue();
+                    float x = ((Double) map.get("x")).floatValue();
+                    float y = ((Double) map.get("y")).floatValue();
+                    AsteroidType atype = AsteroidType.common;
+                    String type = (String) map.get("type");
+                    if (type.equals(AsteroidType.magic.toString())) {
+                        atype = AsteroidType.magic;
+                    } else if (type.equals(AsteroidType.rare.toString())) {
+                        atype = AsteroidType.rare;
+                    }
+                    AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resourceAmount, x, y);
+                    gameobject = ac;
+                } else if (header.equals(LoginComm.class.getSimpleName())) {
+                    String username = (String) map.get("username");
+                    String password = (String) map.get("password");
+                    LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
+                    gameobject = lcomm;
+                } else if (header.equals(LoginCommError.class.getSimpleName())) {
+                    gameobject = new LoginCommError(LoginCommError.class.getSimpleName());
+                } else if (header.equals(InventoryRequest.class.getSimpleName())) {
+                    Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
+                    InventoryRequest inventoryRequest = new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipId);
+                    gameobject = inventoryRequest;
+                } else if (header.equals(InventoryReply.class.getSimpleName())) {
+                    Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
+                    List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
+                    Boolean isAuctionhouse = (Boolean) map.get("isAuctionHouse");
+                    InventoryReply inventoryReply = new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items,isAuctionhouse);
+                    gameobject = inventoryReply;
+                } else if (header.equals(AuctionRequest.class.getSimpleName())) {
+                    Integer userID = ((Double) map.get("userId")).intValue();
+                    Integer itemId = ((Double) map.get("itemId")).intValue();
+                    AuctionHouseRequestType requestType = AuctionHouseRequestType.valueOf(map.get("type").toString());
+                    AuctionRequest request = new AuctionRequest(header, userID, itemId, requestType);
+                    gameobject = request;
                 }
-                AsteroidComm ac = new AsteroidComm(AsteroidComm.class.getSimpleName(), atype, resourceAmount, x, y);
-                gameobject = ac;
-            } else if (header.equals(LoginComm.class.getSimpleName())) {
-                String username = (String) map.get("username");
-                String password = (String) map.get("password");
-                LoginComm lcomm = new LoginComm(LoginComm.class.getSimpleName(), username, password);
-                gameobject = lcomm;
-            } else if (header.equals(LoginCommError.class.getSimpleName())) {
-                gameobject = new LoginCommError(LoginCommError.class.getSimpleName());
-            } else if (header.equals(InventoryRequest.class.getSimpleName())) {
-                Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
-                InventoryRequest inventoryRequest = new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipId);
-                gameobject = inventoryRequest;
-            } else if (header.equals(InventoryReply.class.getSimpleName())) {
-                Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
-                List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
-                InventoryReply inventoryReply = new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items);
-                gameobject = inventoryReply;
-            } else if (header.equals(AuctionRequest.class.getSimpleName())){
-                Integer userID = ((Double) map.get("userId")).intValue();
-                Integer itemId = ((Double) map.get("itemId")).intValue();
-                AuctionHouseRequestType requestType = AuctionHouseRequestType.valueOf(map.get("type").toString());
-                AuctionRequest request = new AuctionRequest(header, userID, itemId, requestType);
-                gameobject = request;
-            }
 
-        }
-        return gameobject;
+            }
+            return gameobject;
+        
     }
 
     public static int[] convertIntegers(List<Double> integers) {
@@ -159,7 +162,8 @@ public class Serializer {
                 } else if (header.equals(InventoryReply.class.getSimpleName())) {
                     Integer spaceshipId = ((Double) map.get("spaceshipId")).intValue();
                     List<ItemComm> items = new ArrayList<>((List<ItemComm>) map.get("items"));
-                    gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items));
+                    Boolean isAuctionhouse = (Boolean) map.get("isAuctionHouse");
+                    gameobjects.add(new InventoryReply(InventoryReply.class.getSimpleName(), spaceshipId, items, isAuctionhouse));
                 }
 
             }
@@ -217,7 +221,7 @@ public class Serializer {
         String json = gson.toJson(auctionRequest, AuctionRequest.class);
         return json;
     }
-    
+
     public static String serializeAuctionReplyAsGamePacktet(AuctionReply auctionReply) {
         String json = gson.toJson(auctionReply, AuctionReply.class);
         return json;
