@@ -15,13 +15,19 @@ import com.ptsesd.groepb.shared.GamePacket;
 public class InventoryRequest extends GamePacket {
     
     private final long spaceshipId;
+    private final boolean isAuctionHouse;
     
-    public InventoryRequest(String header, long spaceshipId){
+    public InventoryRequest(String header, long spaceshipId, boolean isAuctionHouse){
         super(header);
         this.spaceshipId = spaceshipId;
+        this.isAuctionHouse = isAuctionHouse;
     }
 
     public long getSpaceshipId() {
         return spaceshipId;
+    }
+
+    public boolean isAuctionHouse() {
+        return isAuctionHouse;
     }
 }

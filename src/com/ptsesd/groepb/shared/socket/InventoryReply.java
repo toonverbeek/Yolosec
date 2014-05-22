@@ -35,7 +35,7 @@ public class InventoryReply extends GamePacket{
         return items;
     }
 
-    public boolean isIsAuctionHouse() {
+    public boolean isAuctionHouse() {
         return isAuctionHouse;
     }
 }
