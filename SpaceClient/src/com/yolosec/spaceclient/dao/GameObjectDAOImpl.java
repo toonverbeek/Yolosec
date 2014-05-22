@@ -17,14 +17,13 @@ import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Planet;
 import com.yolosec.spaceclient.gui.SpaceClient;
-import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.Iterator;
 
 /**
  *
  * @author Toon
  */
-public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameObjectDAO, DrawCallback {
+public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     /**
      * Holds the GameObjects that are currently relevant for the GameWorld.

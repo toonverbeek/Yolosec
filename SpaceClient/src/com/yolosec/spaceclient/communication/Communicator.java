@@ -39,13 +39,13 @@ import java.util.List;
 public class Communicator {
 
     private static Socket socket;
-    private static PrintWriter writer;
+    public static PrintWriter writer;
     private static BufferedReader reader;
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "192.168.24.11";
-    private static JsonReader jreader;
+    public static JsonReader jreader;
 
     public static void sendData(String json) {
         writer.println(json);
