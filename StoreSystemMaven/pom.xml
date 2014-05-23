@@ -134,13 +134,13 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_44823/economysystemweb/WebserviceService.wsdl</wsdlFile>
+                                <wsdlFile>192.168.24.11/StoreWebservice.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName></packageName>
-                            <wsdlLocation>http://localhost:44823/economysystemweb/WebserviceService?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/WebserviceService.stale</staleFile>
+                            <wsdlLocation>http://192.168.24.11/StoreWebservice?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/StoreWebservice.stale</staleFile>
                         </configuration>
-                        <id>wsimport-generate-WebserviceService</id>
+                        <id>wsimport-generate-StoreWebservice</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>

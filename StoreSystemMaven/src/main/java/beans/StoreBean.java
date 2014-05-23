@@ -42,7 +42,8 @@ public class StoreBean {
     }
 
     public List<Item> getAllItems() {
-        return storeService.getAllItems();
+//        return storeService.getAllItems();
+        return null;
     }
 
     public void setAllItems(List<Item> allItems) {
@@ -52,11 +53,12 @@ public class StoreBean {
     public void buyItem() {
         System.out.println("BUY");
         storeService.buyItem(selectedItem);
-        
+
     }
 
     public Collection<Resource> getCurrentUserResources() {
-        return this.storeService.getLoggedInAccount().getResources();
+//        return this.storeService.getLoggedInAccount().getResources();
+        return null;
     }
 
 }

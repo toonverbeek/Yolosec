@@ -4,4 +4,6 @@
     <system systemId="http://localhost:44823/economysystemweb/NewWebService?xsd=1" uri="wsdl/localhost_44823/economysystemweb/NewWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:44823/economysystemweb/WebserviceService?wsdl" uri="wsdl/localhost_44823/economysystemweb/WebserviceService.wsdl"/>
     <system systemId="http://localhost:44823/economysystemweb/WebserviceService?xsd=1" uri="wsdl/localhost_44823/economysystemweb/WebserviceService.xsd_1.xsd"/>
+    <system systemId="http://192.168.24.11/StoreWebservice?wsdl" uri="wsdl/192.168.24.11/StoreWebservice.wsdl"/>
+    <system systemId="http://192.168.24.11/StoreWebservice?xsd=1" uri="wsdl/192.168.24.11/StoreWebservice.xsd_1.xsd"/>
 </catalog>
