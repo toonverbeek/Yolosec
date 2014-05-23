@@ -1,5 +1,6 @@
 package com.ptsesd.groepb.shared;
 
+import com.google.gson.annotations.Expose;
 import java.util.List;
 
 /**
@@ -8,10 +9,10 @@ import java.util.List;
  */
 public class ItemComm extends GamePacket {
 
-    private Item item;
-    private final long requestorId;
-    private final AuctionHouseRequestType requestType;
-    private int itemId;
+    @Expose private Item item;
+    @Expose private final long requestorId;
+    @Expose private final AuctionHouseRequestType requestType;
+    @Expose private int itemId;
 
     public ItemComm(Item item, long requestorId, AuctionHouseRequestType requestType) {
         this.item = item;

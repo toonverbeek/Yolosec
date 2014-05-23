@@ -6,6 +6,7 @@
 
 package com.ptsesd.groepb.shared.socket;
 
+import com.google.gson.annotations.Expose;
 import com.ptsesd.groepb.shared.GamePacket;
 import com.ptsesd.groepb.shared.ItemComm;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
  */
 public class InventoryReply extends GamePacket{
     
-    private final List<ItemComm> items;
-    private final long spaceshipId;
-    private final boolean isAuctionHouse;
+    @Expose private final List<ItemComm> items;
+    @Expose private final long spaceshipId;
+    @Expose private final boolean isAuctionHouse;
     
     public InventoryReply(String header, long spaceshipId, List<ItemComm> items, boolean isAuctionHouse){
         super(header);

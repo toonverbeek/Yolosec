@@ -216,7 +216,8 @@ public class Serializer {
     }
 
     public static String serializeInventoryReplyAsGamePacktet(InventoryReply rep) {
-        String json = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(rep);
+        Gson gsonTemp = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gsonTemp.toJson(rep, InventoryReply.class);
         return json;
     }
 
