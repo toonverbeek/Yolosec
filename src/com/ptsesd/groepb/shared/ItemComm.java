@@ -8,9 +8,10 @@ import java.util.List;
  */
 public class ItemComm extends GamePacket {
 
-    private final Item item;
+    private Item item;
     private final long requestorId;
     private final AuctionHouseRequestType requestType;
+    private int itemId;
 
     public ItemComm(Item item, long requestorId, AuctionHouseRequestType requestType) {
         this.item = item;
@@ -18,8 +19,18 @@ public class ItemComm extends GamePacket {
         this.requestType = requestType;
     }
 
+    public ItemComm(int itemid, long requestorId, AuctionHouseRequestType requestType) {
+        this.itemId = itemid;
+        this.requestorId = requestorId;
+        this.requestType = requestType;
+    }
+
     public Item getItem() {
         return item;
+    }
+    
+    public int getItemId(){
+        return itemId;
     }
 
     public long getRequestorId() {

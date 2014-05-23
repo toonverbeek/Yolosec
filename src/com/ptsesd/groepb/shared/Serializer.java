@@ -1,6 +1,7 @@
 package com.ptsesd.groepb.shared;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.ptsesd.groepb.shared.socket.AuctionReply;
@@ -215,7 +216,7 @@ public class Serializer {
     }
 
     public static String serializeInventoryReplyAsGamePacktet(InventoryReply rep) {
-        String json = gson.toJson(rep, InventoryReply.class);
+        String json = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(rep);
         return json;
     }
 
