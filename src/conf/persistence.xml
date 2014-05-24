@@ -2,16 +2,15 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="EnterpriseEconomyPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>domain.AuctionHouseItem</class>
-    <class>domain.Item</class>
-    <class>domain.Resource</class>
-    <class>domain.Stat</class>
+    <class>com.ptsesd.groepb.shared.Item</class>
+    <class>com.ptsesd.groepb.shared.UserItem</class>
+    <class>com.ptsesd.groepb.shared.User</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.24.78:3306/localeconomy?zeroDateTimeBehavior=convertToNull"/>
-      <property name="javax.persistence.jdbc.password" value="toor"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="inspaceserver"/>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="toor"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -5,18 +5,17 @@
  */
 package enterpriseeconomy;
 
-import com.ptsesd.groepb.shared.AuctionHouseRequestType;
-import com.ptsesd.groepb.shared.ItemComm;
-import com.ptsesd.groepb.shared.jms.ItemSerializer;
-import com.ptsesd.groepb.shared.jms.MessagingGateway;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.jms.JMSException;
-import javax.jms.Message;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.xml.ws.Endpoint;
 import service.EconomyService;
+import webservice.StoreWebservice;
 
 /**
  *
@@ -24,18 +23,32 @@ import service.EconomyService;
  */
 public class Main {
 
+    private static final String url = "http://192.168.24.11/StoreWebservice";
+    private static final String PERSISTENCE_UNIT_NAME = "EnterpriseEconomyPU";
+    private static EntityManagerFactory factory;
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        EntityManager em;
+
+        factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        em = factory.createEntityManager();
         while (true) {
             try {
                 System.out.println("Enter command: ");
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 String input = br.readLine();
                 if (input.equals("s")) {
-                    System.out.println("STARTING APPLICATION!");
-                    EconomyService eService = new EconomyService();
+                    System.out.println("---[MAIN] STARTING APPLICATION");
+                    EconomyService eService = new EconomyService(em);
+                    eService.startEconomyServervice();
+                } else if (input.equals("w")) {
+                    System.out.println("---[MAIN] STARTING WEBSERVICE");
+                    System.out.println(String.format("---[MAIN] WEBSERVICE URL %s", url));
+                    Endpoint.publish(url, new StoreWebservice(em));
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,5 +5,10 @@
         <group name="Proftaak-Space">
             <file>file:/C:/Users/Toon/Documents/NetBeansProjects/EnterpriseEconomy/src/java/jms/GameserverGateway.java</file>
         </group>
+        <group>
+            <file>file:/C:/Users/Administrator/Desktop/PTS-ESD/economy/yolosec/src/java/webservice/StoreWebservice.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/PTS-ESD/economy/yolosec/src/java/jms/InventoryGateway.java</file>
+            <file>file:/C:/Users/Administrator/Desktop/PTS-ESD/economy/yolosec/src/java/service/EconomyService.java</file>
+        </group>
     </open-files>
 </project-private>

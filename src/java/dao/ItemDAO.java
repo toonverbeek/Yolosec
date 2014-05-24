@@ -5,8 +5,10 @@
  */
 package dao;
 
+import com.ptsesd.groepb.shared.Item;
 import com.ptsesd.groepb.shared.ItemComm;
-import domain.Item;
+import com.ptsesd.groepb.shared.User;
+import com.ptsesd.groepb.shared.UserItem;
 import java.util.List;
 
 /**
@@ -20,15 +22,26 @@ public interface ItemDAO {
     void create(Item item);
 
     void edit(Item item);
+    
+    void edit(UserItem item);
+    
+    List<UserItem> findAllUserItem(); 
+    
+    List<UserItem> findAllUserItem(User user); 
 
     List<Item> findAll();
 
     Item find(String itemname);
 
     Item find(Long id);
+    
+    UserItem find(Item item);
 
     void remove(Item item);
     
     void closeEntityManager();
     
+    List<ItemComm> getInventory(User user);
+
+    public boolean buyItem(User user, Item item);
 }

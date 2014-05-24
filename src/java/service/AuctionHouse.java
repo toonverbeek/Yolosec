@@ -5,99 +5,134 @@
  */
 package service;
 
-import com.google.gson.JsonObject;
+import com.ptsesd.groepb.shared.AuctionHouseRequestType;
+import com.ptsesd.groepb.shared.Item;
 import com.ptsesd.groepb.shared.ItemComm;
-import dao.AuctionHouseItemDAO;
-import dao.AuctionHouseItem_JPAImpl;
+import com.ptsesd.groepb.shared.User;
+import com.ptsesd.groepb.shared.UserItem;
 import dao.ItemDAO;
 import dao.ItemDAO_JPAImpl;
-import domain.AuctionHouseItem;
-import domain.Item;
+import dao.UserDAO;
+import dao.UserDAO_Impl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
- * @author Jamy
+ * @author Administrator
  */
 public class AuctionHouse {
 
-    private final AuctionHouseItemDAO ahItemDao;
-    private final ItemDAO itemDAO;
+    private ItemDAO itemDAO;
+    private UserDAO userDAO;
 
-    /**
-     * Creates a new instance of type AuctionHouse. The AuctionHouse provides an
-     * interface that enables a user to buy from and sell to other users.
-     */
-    public AuctionHouse() {
-        ahItemDao = new AuctionHouseItem_JPAImpl();
-        itemDAO = new ItemDAO_JPAImpl();
+    public AuctionHouse(EntityManager em) {
+        itemDAO = new ItemDAO_JPAImpl(em);
+        userDAO = new UserDAO_Impl(em);
     }
 
-    /**
-     * Gets an AuctionHouseItem from the database using the DAO.
-     *
-     * @param ahItemId the AuctionHouseItem Id for the AuctionHouseItem that is
-     * going to be retrieved from the database.
-     * @return the AuctionHouseItem.
-     */
-    AuctionHouseItem getAuctionHouseItem(long ahItemId) {
-        return ahItemDao.find(ahItemId);
-    }
-
-    /**
-     * *
-     * Finds an item for sale, removes it from the database and returns an
-     * AucitonHouseItem to the caller.
-     *
-     * @param ahItemId the AuctionHouseItem Id for the AuctionHouseItem that we
-     * are about to buy.
-     * @return the AuctionHouseItem that has been bought.
-     */
-    AuctionHouseItem buyItem(long ahItemID) {
-        //TODO JMS
-        AuctionHouseItem _item = ahItemDao.find(ahItemID);
-
-        ahItemDao.remove(_item);
-        return _item;
-    }
-
-    /**
-     * Puts an item for sale on the AuctionHouse.
-     *
-     * @param ahItem the AuctionHouseItem that will be posted to the
-     * AuctionHouse.
-     * @return true if successfully posted to the AuctionHouse, false otherwise.
-     */
-    boolean putItemForSale(AuctionHouseItem ahItem) {
-        if (ahItem.getResourceAmount() > 0) {
-            return ahItemDao.create(ahItem);
+    boolean buyItem(ItemComm incomingItem) {
+        Item item = itemDAO.find((long) incomingItem.getItemId());
+        UserItem uItem = itemDAO.find(item);
+        Item dbItem = itemDAO.find(uItem.getItem().getId());
+        if (dbItem != null) {
+            uItem.setForSale(false);
+            User newUser = userDAO.find((long) incomingItem.getRequestorId());
+            if (newUser != null) {
+                uItem.setUser(newUser);
+                itemDAO.edit(uItem);
+                return true;
+            }
+            return false;
         } else {
             return false;
         }
     }
 
-    /**
-     *
-     * @param incomingItem
-     * @return
-     */
-    public boolean newBuyItemRequest(ItemComm incomingItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-
+    boolean sellItem(ItemComm incomingItem) {
+        Item item = itemDAO.find((long) incomingItem.getItemId());
+        UserItem uItem = itemDAO.find(item);
+        if (uItem != null) {
+            uItem.setForSale(true);
+            itemDAO.edit(uItem);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean newItemForSaleRequest(ItemComm incomingItem) {
-
-        //find the item corresponding to the item id 
-        Item itemForSale = itemDAO.find(incomingItem.getItemId());
-
-        //create  an ah item from the item and put it on the auctionhouse
-        AuctionHouseItem ahItemForSale = new AuctionHouseItem(itemForSale, incomingItem.getSellerId(), incomingItem.getResourceAmount(), incomingItem.getResourceType());
-        return this.putItemForSale(ahItemForSale);
+    boolean cancelItem(ItemComm incomingItem) {
+        Item item = itemDAO.find((long) incomingItem.getItemId());
+        UserItem uItem = itemDAO.find(item);
+        if (uItem != null) {
+            uItem.setForSale(false);
+            itemDAO.edit(uItem);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean cancelItemForSaleRequest(ItemComm incomingItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    int[] getResources(long userId) {
+        User user = userDAO.find(userId);
+        int[] resources = new int[3];
+        if (user != null) {
+            resources[1] = user.getResource_magic();
+            resources[0] = user.getResource_normal();
+            resources[2] = user.getResource_rare();
+        } else {
+            resources[1] = 1;
+            resources[0] = 1;
+            resources[2] = 1;
+        }
+        return resources;
+    }
 
+    boolean saveResources(long userId, int resource_normal, int resource_magic, int resource_rare) {
+        User find = userDAO.find(userId);
+        if (find != null) {
+            find.setResource_normal(resource_normal);
+            find.setResource_magic(resource_magic);
+            find.setResource_rare(resource_rare);
+            userDAO.edit(find);
+            return true;
+        }
+        return false;
+    }
+
+    List<ItemComm> getInventory(long userId) {
+        User user = userDAO.find(userId);
+        return itemDAO.getInventory(user);
+    }
+
+    List<ItemComm> getAuctionHouse(long userId) {
+        List<UserItem> allUserItems = itemDAO.findAllUserItem();
+        List<ItemComm> auctionHouseItems = new ArrayList<>();
+
+        for (UserItem uItem : allUserItems) {
+            ItemComm ic = null;
+            Item item = itemDAO.find(uItem.getItem().getId());
+            //when i am te owner
+            if (uItem.getUser() != null) {
+                if (uItem.getUser().getUserId() == userId) {
+                    if (uItem.isForSale()) {
+                        ic = new ItemComm(item, userId, AuctionHouseRequestType.CANCEL);
+                    } else {
+                        ic = new ItemComm(item, userId, AuctionHouseRequestType.SELL);
+                    }
+                } else {
+                    if (uItem.isForSale()) {
+                        ic = new ItemComm(item, userId, AuctionHouseRequestType.BUY);
+                    }
+                }
+            }
+            if (ic != null) {
+                auctionHouseItems.add(ic);
+            }
+        }
+
+        return auctionHouseItems;
     }
 
 }
