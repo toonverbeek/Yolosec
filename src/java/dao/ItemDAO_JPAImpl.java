@@ -155,11 +155,48 @@ public class ItemDAO_JPAImpl implements ItemDAO {
     @Override
     public boolean buyItem(User user, Item item) {
         try {
+            String resourceType = item.getResource_type();
+            float value = item.getValue();
             UserItem userItem = find(item);
-            userItem.setUser(user);
-            edit(userItem);
-            return true;
-        }catch(Exception ex){
+            if (null != resourceType) {
+                switch (resourceType) {
+                    case "normal":
+                        int resource_normal = user.getResource_normal();
+                        if ((resource_normal - value) > 0) {
+                            resource_normal += value;
+                            userItem.setUser(user);
+                            edit(userItem);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    case "magic":
+                        int resource_magic = user.getResource_magic();
+                        if ((resource_magic - value) > 0) {
+                            resource_magic += value;
+                            userItem.setUser(user);
+                            edit(userItem);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    case "rare":
+                        int resource_rare = user.getResource_rare();
+                        if ((resource_rare - value) > 0) {
+                            resource_rare += value;
+                            userItem.setUser(user);
+                            edit(userItem);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    default:
+                        return false;
+                }
+            }
+            return false;
+
+        } catch (Exception ex) {
             return false;
         }
     }

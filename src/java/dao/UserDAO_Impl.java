@@ -6,8 +6,10 @@
 package dao;
 
 import com.ptsesd.groepb.shared.User;
+import com.ptsesd.groepb.shared.jms.InsertUserMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import jms.RegisterUserGateway;
 
 /**
  *
@@ -16,9 +18,8 @@ import javax.persistence.TypedQuery;
 public class UserDAO_Impl implements UserDAO {
 
     EntityManager em;
-
+    
     public UserDAO_Impl(EntityManager em) {
-
         this.em = em;
     }
     

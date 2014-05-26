@@ -8,6 +8,7 @@ package webservice;
 import com.ptsesd.groepb.shared.Item;
 import com.ptsesd.groepb.shared.User;
 import com.ptsesd.groepb.shared.UserItem;
+import com.ptsesd.groepb.shared.jms.InsertUserMessage;
 import dao.ItemDAO;
 import dao.ItemDAO_JPAImpl;
 import dao.UserDAO;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
+import jms.RegisterUserGateway;
 
 /**
  *
@@ -26,10 +28,12 @@ public class StoreWebservice {
 
     UserDAO userDAO;
     ItemDAO itemDAO;
+    RegisterUserGateway rug;
 
     public StoreWebservice(EntityManager em) {
         userDAO = new UserDAO_Impl(em);
         itemDAO = new ItemDAO_JPAImpl(em);
+        this.rug = new RegisterUserGateway();
     }
 
     public boolean registerUser(String username, String password) {
@@ -37,9 +41,13 @@ public class StoreWebservice {
         ArrayList<UserItem> inventory = new ArrayList<>();
 
         User user = new User(inventory, username, password);
-        userDAO.registerUser(user);
+        boolean registerUser = userDAO.registerUser(user);
+        if (registerUser) {
+            InsertUserMessage ium = new InsertUserMessage(user.getUserId(), user.getUsername(), user.getPassword());
+            this.rug.sendRegisterRequest(ium);
+        }
         System.out.println("---[STOREWEBSERVICE] Registerd user");
-        return true;
+        return registerUser;
     }
 
     public boolean login(String username, String password) {
@@ -86,28 +94,28 @@ public class StoreWebservice {
             switch (resourceType) {
                 case "normal":
                     int resource_normal = find.getResource_normal();
-                    if ((resource_normal - value) > 0) {
-                        resource_normal += value;
-                        return true;
-                    } else {
-                        return false;
-                    }
+
+                    resource_normal += value;
+                    find.setResource_normal(resource_normal);
+                    userDAO.edit(find);
+                    return true;
+
                 case "magic":
                     int resource_magic = find.getResource_magic();
-                    if ((resource_magic - value) > 0) {
-                        resource_magic += value;
-                        return true;
-                    } else {
-                        return false;
-                    }
+
+                    resource_magic += value;
+                    find.setResource_magic(resource_magic);
+                    userDAO.edit(find);
+                    return true;
+
                 case "rare":
                     int resource_rare = find.getResource_rare();
-                    if ((resource_rare - value) > 0) {
-                        resource_rare += value;
-                        return true;
-                    } else {
-                        return false;
-                    }
+
+                    resource_rare += value;
+                    find.setResource_rare(resource_rare);
+                    userDAO.edit(find);
+                    return true;
+
                 default:
                     return false;
             }
