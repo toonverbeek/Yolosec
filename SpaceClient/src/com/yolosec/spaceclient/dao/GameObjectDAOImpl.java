@@ -80,7 +80,7 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
-        //filterGameObjects(objects);
+        filterGameObjects(objects);
         //System.out.println("---[GameObjectDAOImpl] drawAfterDataReadFromSocketFromServer");
         //spaceShipObjects.clear();
         //inventoryObjects.clear();
