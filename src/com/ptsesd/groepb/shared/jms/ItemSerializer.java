@@ -48,4 +48,14 @@ public class ItemSerializer {
         InventoryReply invReply = (InventoryReply) gson.fromJson(json, InventoryReply.class);
         return invReply;
     }
+    
+    public static String resourceMessageToJson(ResourceMessage message){
+        String json = gson.toJson(message);
+        return json;
+    }
+    
+    public static ResourceMessage jsonToResourceMessage(String json){
+        ResourceMessage resMessage = (ResourceMessage) gson.fromJson(json, ResourceMessage.class);
+        return resMessage;
+    }
 }

@@ -15,6 +15,7 @@ public class SpaceshipComm extends GamePacket {
     private int d, id;
     private int[] resources;
     private boolean mining;
+    
     public int[] getResources() {
         return resources;
     }

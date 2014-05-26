@@ -6,6 +6,7 @@
 
 package com.ptsesd.groepb.shared;
 
+import com.google.gson.annotations.Expose;
 import java.util.Objects;
 
 ;
@@ -15,7 +16,7 @@ import java.util.Objects;
  * @author Toon
  */
 public abstract class GamePacket {
-    private String header;
+    @Expose private String header;
 
     public GamePacket(String header) {
         this.header = header;

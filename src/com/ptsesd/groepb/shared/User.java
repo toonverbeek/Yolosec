@@ -34,6 +34,10 @@ public class User implements Serializable {
     private String username;
     private String password;
     
+    private int resource_normal;
+    private int resource_magic;
+    private int resource_rare;
+    
     public User(){
         
     }
@@ -42,6 +46,30 @@ public class User implements Serializable {
         this.inventory = inventory;
         this.username = username;
         this.password = password;
+    }
+
+    public void setResource_normal(int resource_normal) {
+        this.resource_normal = resource_normal;
+    }
+
+    public void setResource_magic(int resource_magic) {
+        this.resource_magic = resource_magic;
+    }
+
+    public void setResource_rare(int resource_rare) {
+        this.resource_rare = resource_rare;
+    }
+
+    public int getResource_normal() {
+        return resource_normal;
+    }
+
+    public int getResource_magic() {
+        return resource_magic;
+    }
+
+    public int getResource_rare() {
+        return resource_rare;
     }
 
     public String getUsername() {

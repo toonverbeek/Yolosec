@@ -225,6 +225,10 @@ public class Serializer {
         String json = gson.toJson(auctionRequest, AuctionRequest.class);
         return json;
     }
+    public static String serializeLogoutSpaceshipCommAsGamePacket(SpaceshipComm spaceshipComm){
+        String json = gson.toJson(spaceshipComm, SpaceshipComm.class);
+        return json;
+    }
 
     public static String serializeAuctionReplyAsGamePacktet(AuctionReply auctionReply) {
         String json = gson.toJson(auctionReply, AuctionReply.class);
