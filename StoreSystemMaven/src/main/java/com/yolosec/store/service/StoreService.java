@@ -1,4 +1,4 @@
-package service;
+package com.yolosec.store.service;
 
 import annotations.AccountJPAImpl;
 import annotations.ItemJPAImpl;
@@ -37,6 +37,7 @@ public class StoreService implements Serializable {
     private Account loggedInAccount;
 
     Map<String, String> map = new HashMap<String, String>();
+    private String loggedInUsername;
 
     public StoreService() {
     }
@@ -105,8 +106,7 @@ public class StoreService implements Serializable {
     public void addItemToSpaceship(Account user, Item item) {
 //        user.addItemToSpaceShipInventory(item);
 //        userDAO.edit(user);
-        
-        
+
     }
 
     /**
@@ -171,18 +171,16 @@ public class StoreService implements Serializable {
     }
 
     public boolean login(String username, String password) {
-//
-//        try { // Call Web Service Operation
-//            webservice.Webservice port = service.getWebservicePort();
-//            // TODO initialize WS operation arguments here
-//            // TODO process result here
-//            this.loggedInUsername = port.login(username, password);
-//            System.out.println("Result = " + loggedInUsername);
-//            return true;
-//        } catch (Exception ex) {
-//            // TODO handle custom exceptions here
-//            ex.printStackTrace();
-//        }
+        this.loggedInUsername = username;
+
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            boolean result = port.login(username, password);
+            System.out.println("Result login = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+        }
+
         return false;
     }
 
@@ -202,24 +200,34 @@ public class StoreService implements Serializable {
         return null;
     }
 
-//    public List<Item> getAllItems() {
-//        return itemDAO.findAll();
-//    }
+    public List<webservice.Item> getAllItems() {
+
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO process result here
+            java.util.List<webservice.Item> result = port.getAllItems();
+            System.out.println("Result = " + result);
+            return result;
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean addResourceToLoggedInUser(Resource resource) {
         boolean result = false;
-//        try { // Call Web Service Operation
-//            webservice.Webservice port = service.getWebservicePort();
-//            // TODO initialize WS operation arguments here
-//            webservice.Resource _resource = new webservice.Resource();
-//            _resource.setAmount(resource.getAmount());
-//            _resource.setType(resource.getType());
-//            _resource.setId(resource.getId());
-//            port.addResourceToUser(_resource, this.loggedInAccount);
-//            return true;
-//        } catch (Exception ex) {
-//            // TODO handle custom exceptions here
-//            return false;
-//        }
+
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO initialize WS operation arguments here
+            result = port.addResources(this.loggedInUsername, resource.getAmount(), resource.getType());
+            System.out.println("Result = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+
         if (result) {
             //not convenient to have resources in a collection. better split resources?
             for (Resource r : this.loggedInAccount.getResources()) {
@@ -242,7 +250,15 @@ public class StoreService implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         boolean result = false;
 
-        //do webservice stuff
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO initialize WS operation arguments here
+            result = port.buyItem(this.loggedInUsername, selectedItem.getId());
+            System.out.println("Result = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+        }
+
         if (result) {
             //substract money from user
             Collection<Resource> totalcost = selectedItem.getResources();
@@ -266,18 +282,5 @@ public class StoreService implements Serializable {
                 }
             }
         }
-//        try { // Call Web Service Operation
-//            webservice.Webservice port = service.getWebservicePort();
-//            java.lang.Boolean result = port.buyItem(selectedItem.getId(), loggedInAccount.getId());
-//
-//            if (result) {
-//                context.addMessage(null, new FacesMessage(selectedItem.getName() + " succesvol gekocht."));
-//            } else {
-//                context.addMessage(null, new FacesMessage("Onvoldoende resources."));
-//            }
-//            System.out.println("Result buyitem = " + result);
-//        } catch (Exception ex) {
-//            // TODO handle custom exceptions here
-//        }
     }
 }

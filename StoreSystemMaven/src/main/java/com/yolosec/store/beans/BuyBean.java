@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package beans;
+package com.yolosec.store.beans;
 
 import java.io.InputStream;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import service.StoreService;
+import com.yolosec.store.service.StoreService;
 import com.paypal.api.payments.*;
 import com.paypal.core.rest.APIContext;
 import com.paypal.core.rest.OAuthTokenCredential;

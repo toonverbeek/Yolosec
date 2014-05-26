@@ -4,21 +4,97 @@
 <xsd:import namespace="http://webservice/" schemaLocation="http://192.168.24.11/StoreWebservice?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="login">
+<part name="parameters" element="tns:login"/>
+</message>
+<message name="loginResponse">
+<part name="parameters" element="tns:loginResponse"/>
+</message>
+<message name="buyItem">
+<part name="parameters" element="tns:buyItem"/>
+</message>
+<message name="buyItemResponse">
+<part name="parameters" element="tns:buyItemResponse"/>
+</message>
 <message name="registerUser">
 <part name="parameters" element="tns:registerUser"/>
 </message>
 <message name="registerUserResponse">
 <part name="parameters" element="tns:registerUserResponse"/>
 </message>
+<message name="getAllItems">
+<part name="parameters" element="tns:getAllItems"/>
+</message>
+<message name="getAllItemsResponse">
+<part name="parameters" element="tns:getAllItemsResponse"/>
+</message>
+<message name="addResources">
+<part name="parameters" element="tns:addResources"/>
+</message>
+<message name="addResourcesResponse">
+<part name="parameters" element="tns:addResourcesResponse"/>
+</message>
 <portType name="StoreWebservice">
+<operation name="login">
+<input wsam:Action="http://webservice/StoreWebservice/loginRequest" message="tns:login"/>
+<output wsam:Action="http://webservice/StoreWebservice/loginResponse" message="tns:loginResponse"/>
+</operation>
+<operation name="buyItem">
+<input wsam:Action="http://webservice/StoreWebservice/buyItemRequest" message="tns:buyItem"/>
+<output wsam:Action="http://webservice/StoreWebservice/buyItemResponse" message="tns:buyItemResponse"/>
+</operation>
 <operation name="registerUser">
 <input wsam:Action="http://webservice/StoreWebservice/registerUserRequest" message="tns:registerUser"/>
 <output wsam:Action="http://webservice/StoreWebservice/registerUserResponse" message="tns:registerUserResponse"/>
 </operation>
+<operation name="getAllItems">
+<input wsam:Action="http://webservice/StoreWebservice/getAllItemsRequest" message="tns:getAllItems"/>
+<output wsam:Action="http://webservice/StoreWebservice/getAllItemsResponse" message="tns:getAllItemsResponse"/>
+</operation>
+<operation name="addResources">
+<input wsam:Action="http://webservice/StoreWebservice/addResourcesRequest" message="tns:addResources"/>
+<output wsam:Action="http://webservice/StoreWebservice/addResourcesResponse" message="tns:addResourcesResponse"/>
+</operation>
 </portType>
 <binding name="StoreWebservicePortBinding" type="tns:StoreWebservice">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="login">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="buyItem">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="registerUser">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getAllItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="addResources">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
