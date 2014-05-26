@@ -49,7 +49,7 @@ public class Chat extends GameObjectImpl implements Runnable {
     private WebTarget allMessagesTarget;
     private WebTarget sendMessageTarget;
     private WebTarget loginTarget;
-    private static String webserviceHostIP = "localhost:8080";
+    private static String webserviceHostIP = "145.93.218.167:8080";
     private int maxCharactersPerMessage = 40;
     private int maxMessagesInBox = 10;
     private String message = "test";

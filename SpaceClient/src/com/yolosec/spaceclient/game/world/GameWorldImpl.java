@@ -121,11 +121,11 @@ public class GameWorldImpl implements DrawableComponent {
             } else if (gObject instanceof Inventory) {
                 Inventory inventory = (Inventory) gObject;
                 if (!inventory.isAuctionHouse()) {
-                    //System.out.println("--[GameWorldImpl]Set player Inventory");
-                    //SpaceClient.playerInventory = inventory;
+                    System.out.println("--[GameWorldImpl]Set player Inventory");
+                    SpaceClient.playerInventory = inventory;
                 } else {
-                    //SpaceClient.auctionhouseInventory = inventory;
-                    //System.out.println("--[GameWorldImpl]Set auctionhouse Inventory");
+                    SpaceClient.auctionhouseInventory = inventory;
+                    System.out.println("--[GameWorldImpl]Set auctionhouse Inventory");
                 }
             } else if (gObject instanceof Planet) {
                 Planet planet = (Planet) gObject;

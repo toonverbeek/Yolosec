@@ -92,9 +92,7 @@ public class Communicator {
                     } else if (gp instanceof InventoryReply) {
                         InventoryReply ir = (InventoryReply) gp;
                         Inventory inventory = new Inventory(ir);
-                        if (gameObjects.contains(inventory)) {
-                            gameObjects.remove(inventory);
-                        }
+
                         gameObjects.add(inventory);
                     }
                 }
@@ -119,15 +117,16 @@ public class Communicator {
                 } else if (gp instanceof InventoryReply) {
                     InventoryReply ir = (InventoryReply) gp;
                     Inventory inventory = new Inventory(ir);
-                    if (gameObjects.contains(inventory)) {
-                        gameObjects.remove(inventory);
-                    }
+//                    if (gameObjects.contains(inventory)) {
+//                        gameObjects.remove(inventory);
+//                    }
+                    gameObjects.add(inventory);
                     System.out.println("--Communicator inventory");
                 }
             }
         }
 
-        System.out.println("After retrieve data : " + gameObjects.size());
+        //System.out.println("After retrieve data : " + gameObjects.size());
         return gameObjects;
     }
 
