@@ -108,7 +108,8 @@ public class ItemDAO_JPAImpl implements ItemDAO {
             em.flush();
             em.getTransaction().commit();
         } catch (Exception ex) {
-            em.close();
+            em.getTransaction().rollback();
+            em.flush();
             throw ex;
         }
     }

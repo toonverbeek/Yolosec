@@ -8,8 +8,13 @@ package gui;
 import com.ptsesd.groepb.shared.Item;
 import dao.ItemDAO;
 import dao.ItemDAO_JPAImpl;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.eclipse.persistence.exceptions.DatabaseException;
 
 /**
  *
@@ -18,12 +23,18 @@ import javax.swing.table.TableModel;
 public class ItemsOverview extends javax.swing.JFrame {
 
     private ItemDAO itemDAO;
+
     /**
      * Creates new form ItemsOverview
+     *
+     * @param em
      */
-    public ItemsOverview() {
+    public ItemsOverview(EntityManager em) {
         initComponents();
-        //itemDAO = new ItemDAO_JPAImpl();
+        itemDAO = new ItemDAO_JPAImpl(em);
+        this.setVisible(true);
+        refreshTable();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
     }
 
     /**
@@ -42,18 +53,19 @@ public class ItemsOverview extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         btn_addItem = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        cb_isForSale = new javax.swing.JCheckBox();
         txt_name = new javax.swing.JTextField();
         txt_description = new javax.swing.JTextField();
-        spr_ownerId = new javax.swing.JSpinner();
         spn_value = new javax.swing.JSpinner();
         cb_resourceType = new javax.swing.JComboBox();
         cb_image = new javax.swing.JComboBox();
+        cb_id = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,14 +76,14 @@ public class ItemsOverview extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Owner Id", "Name", "Description", "Value", "Resource Type", "Image", "Is For Sale"
+                "Id", "Name", "Description", "Value", "Resource Type", "Image"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -129,21 +141,33 @@ public class ItemsOverview extends javax.swing.JFrame {
 
         jLabel1.setText("Name");
 
-        jLabel2.setText("Owner Id");
-
         jLabel3.setText("Description");
 
         jLabel4.setText("Value");
 
         jLabel5.setText("Resource Type");
 
-        jLabel6.setText("Image:");
+        jLabel6.setText("Image");
 
-        cb_isForSale.setText("Is For Sale");
-
-        cb_resourceType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_resourceType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "normal", "magic", "rare" }));
 
         cb_image.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Id");
+
+        jButton1.setText("Remove Item");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Edit item");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -151,36 +175,42 @@ public class ItemsOverview extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(59, 59, 59)
+                        .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(14, 14, 14)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(14, 14, 14))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cb_resourceType, 0, 284, Short.MAX_VALUE)
                             .addComponent(txt_description)
-                            .addComponent(spn_value))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(spn_value)
+                            .addComponent(cb_image, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addComponent(btn_addItem))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(cb_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(spr_ownerId, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cb_isForSale))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)
-                                .addComponent(jLabel6)
-                                .addGap(45, 45, 45)
-                                .addComponent(cb_image, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                            .addComponent(jButton2)
+                            .addComponent(jButton1))))
+                .addGap(307, 307, 307))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,14 +218,9 @@ public class ItemsOverview extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel6)
                     .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cb_isForSale)
-                    .addComponent(spr_ownerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -203,14 +228,19 @@ public class ItemsOverview extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(spn_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_addItem)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(cb_resourceType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addComponent(spn_value, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cb_image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cb_resourceType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_addItem))
+                .addGap(11, 11, 11))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -237,66 +267,125 @@ public class ItemsOverview extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
+        // TODO add your handling code here:
+        refreshTable();
+    }//GEN-LAST:event_btn_refreshActionPerformed
+
     private void btn_addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addItemActionPerformed
         // TODO add your handling code here:
         if (!"".equals(txt_name.getText()) && !"".equals(txt_description.getText())) {
-            //Item itemToAdd = new Item((long) spr_ownerId.getValue(), txt_name.getText(), txt_description.getText(), cb_image.getSelectedItem().toString(), (float) spn_value.getValue(), cb_resourceType.getSelectedItem().toString(), cb_isForSale.isSelected());
-            //itemDAO.create(itemToAdd);
-        }else{
-            
+            Item itemToAdd = new Item(txt_name.getText(), txt_description.getText(), cb_image.getSelectedItem().toString(), new Float((Integer) spn_value.getValue()), cb_resourceType.getSelectedItem().toString());
+            itemDAO.create(itemToAdd);
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Insert all required fields");
         }
     }//GEN-LAST:event_btn_addItemActionPerformed
-
-    private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
+    
+    //Remove button
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        setupTable();
-    }//GEN-LAST:event_btn_refreshActionPerformed
-
-    private void setupTable(){
-        TableModel tm = tbl_items.getModel();
-        
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+        if (cb_id.getSelectedItem() != null) {
+            Item find = itemDAO.find((Long) cb_id.getSelectedItem());
+            if (find != null) {
+                try{
+                    itemDAO.remove(find);
+                } catch(PersistenceException ex){
+                    JOptionPane.showMessageDialog(null, "Item could not be deleted, make sure no one owns this item");
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            refreshTable();
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ItemsOverview().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    //Modify button
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (cb_id.getSelectedItem() != null){
+            Item find = itemDAO.find((Long) cb_id.getSelectedItem());
+            
+            if(!"".equals(txt_name.getText()) && txt_name.getText() != null && (txt_name.getText() == null ? find.getName() != null : !txt_name.getText().equals(find.getName()))){
+                find.setName(txt_name.getText());
             }
-        });
+            
+            if(!"".equals(txt_description.getText()) && txt_description.getText() != null && (txt_description.getText() == null ? find.getName() != null : !txt_description.getText().equals(find.getName()))){
+                find.setDescription(txt_description.getText());
+            }
+            
+            if(cb_image.getSelectedItem().toString() == null ? find.getImage() != null : !cb_image.getSelectedItem().toString().equals(find.getImage())){
+                find.setImage(cb_image.getSelectedItem().toString());
+            }
+            
+            if(cb_resourceType.getSelectedItem().toString() == null ? find.getResource_type() != null : !cb_resourceType.getSelectedItem().toString().equals(find.getResource_type())){
+                find.setResource_type(cb_resourceType.getSelectedItem().toString());
+            }
+            
+            Float aFloat = new Float((Integer) spn_value.getValue());
+            if(aFloat != find.getValue()){
+                find.setValue(aFloat);
+            }
+            
+            itemDAO.edit(find);
+            refreshTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Item not found");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) tbl_items.getModel();
+        model.setRowCount(0);
+        cb_id.removeAllItems();
+
+        List<Item> findAll = itemDAO.findAll();
+        for (Item item : findAll) {
+            cb_id.addItem(item.getId());
+            model.addRow(new Object[]{item.getId(), item.getName(), item.getDescription(), item.getValue(), item.getResource_type(), item.getImage()});
+        }
     }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[], EntityManager) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ItemsOverview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ItemsOverview().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_addItem;
     private javax.swing.JButton btn_refresh;
+    private javax.swing.JComboBox cb_id;
     private javax.swing.JComboBox cb_image;
-    private javax.swing.JCheckBox cb_isForSale;
     private javax.swing.JComboBox cb_resourceType;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -307,7 +396,6 @@ public class ItemsOverview extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner spn_value;
-    private javax.swing.JSpinner spr_ownerId;
     private javax.swing.JTable tbl_items;
     private javax.swing.JTextField txt_description;
     private javax.swing.JTextField txt_name;

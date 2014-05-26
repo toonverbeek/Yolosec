@@ -38,7 +38,6 @@ public abstract class GameserverGateway {
             @Override
             public void onMessage(Message msg) {
                 try {
-                    System.out.println("GOT MESSAGE OMG " + msg.getBody(String.class));
                     TextMessage tMsg = (TextMessage) msg;
                     ItemComm itemRequest = ItemSerializer.jsonToItem(tMsg.getText());
                     processRequest(itemRequest);

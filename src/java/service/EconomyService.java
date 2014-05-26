@@ -35,7 +35,7 @@ public class EconomyService implements Serializable {
                     List<ItemComm> inventory = ah.getInventory(request.getSpaceshipId());
                     reply = new InventoryReply(InventoryReply.class.getSimpleName(), request.getSpaceshipId(), inventory, request.isAuctionHouse());
                 }
-                System.out.println("---[EconomyService] inventoryItems: " + reply.getItems().size() + " is auctionhouse "+ reply.isAuctionHouse());
+                System.out.println("--- [ECONOMYSERVICE] inventoryItems: " + reply.getItems().size() + " is auctionhouse "+ reply.isAuctionHouse());
                 inventoryGateway.sendReply(reply);
 
             }
@@ -68,7 +68,7 @@ public class EconomyService implements Serializable {
             public void processRequest(ItemComm incomingItem) {
                 switch (incomingItem.getRequestType().toString()) {
                     case "BUY":
-                        System.out.println("BUY");
+                        System.out.println("--- [ECONOMYSERVICE] BUY REQUEST");
                         if (ah.buyItem(incomingItem)) {
                             InventoryReply invReply = new InventoryReply(InventoryReply.class.getSimpleName(), incomingItem.getRequestorId(), ah.getInventory(incomingItem.getRequestorId()), false);
                             //return the auction house items
@@ -77,7 +77,7 @@ public class EconomyService implements Serializable {
                         }
                         break;
                     case "SELL":
-                        System.out.println("SELL");
+                        System.out.println("--- [ECONOMYSERVICE] SELL REQUEST");
                         if (ah.sellItem(incomingItem)) {
                             InventoryReply invReply = new InventoryReply(InventoryReply.class.getSimpleName(), incomingItem.getRequestorId(), ah.getInventory(incomingItem.getRequestorId()), false);
                             //return the auction house items
@@ -86,7 +86,7 @@ public class EconomyService implements Serializable {
                         }
                         break;
                     case "CANCEL":
-                        System.out.println("CANCEL");
+                        System.out.println("--- [ECONOMYSERVICE] CANCEL REQUEST");
                         if (ah.cancelItem(incomingItem)) {
                             InventoryReply invReply = new InventoryReply(InventoryReply.class.getSimpleName(), incomingItem.getRequestorId(), ah.getInventory(incomingItem.getRequestorId()), false);
                             //return the auction house items
@@ -95,7 +95,7 @@ public class EconomyService implements Serializable {
                         }
                         break;
                     default:
-                        System.out.println("derp");
+                        System.out.println("--- [ECONOMYSERVICE] Invalid message type: ");
                         break;
                 }
             }

@@ -55,14 +55,16 @@ public class UserDAO_Impl implements UserDAO {
     
     @Override
     public User find(String username) {
-        TypedQuery<User> createQuery = em.createQuery("SELECT u FROM user u WHERE u.username = ?1", User.class);
+        TypedQuery<User> createQuery = em.createQuery("SELECT u FROM User u WHERE u.username = ?1", User.class);
         createQuery.setParameter(1, username);
         return createQuery.getSingleResult();
     }
 
     @Override
     public boolean login(String username, String password) {
-        TypedQuery<User> createQuery = em.createQuery("SELECT u FROM user u WHERE u.username = ?1 AND u.password = ?2", User.class);
+        TypedQuery<User> createQuery = em.createQuery("SELECT u FROM User u WHERE u.username = ?1 AND u.password = ?2", User.class);
+        createQuery.setParameter(1, username);
+        createQuery.setParameter(2, password);
         try {
             User singleResult = createQuery.getSingleResult();
             if (singleResult != null) {
@@ -73,10 +75,4 @@ public class UserDAO_Impl implements UserDAO {
         }
         return false;
     }
-
-    @Override
-    public boolean buyItem(String username, long itemId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

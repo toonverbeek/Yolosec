@@ -19,8 +19,6 @@ public interface UserDAO {
     public boolean edit(User user);
     
     public boolean login(String username, String password);
-    
-    public boolean buyItem(String username, long itemId);
 
     public User find(long userId);
     

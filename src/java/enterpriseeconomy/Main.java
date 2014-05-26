@@ -5,6 +5,7 @@
  */
 package enterpriseeconomy;
 
+import gui.ItemsOverview;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,7 +39,12 @@ public class Main {
         em = factory.createEntityManager();
         while (true) {
             try {
-                System.out.println("Enter command: ");
+                System.out.println("--------------------------------");
+                System.out.println("---[MAIN] Start economy service [s]");
+                System.out.println("---[MAIN] Start web service [w]");
+                System.out.println("---[MAIN] Start gui economy [g]");
+                System.out.println("--------------------------------");
+                System.out.println("---[MAIN] Enter command: ");
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 String input = br.readLine();
                 if (input.equals("s")) {
@@ -49,14 +55,13 @@ public class Main {
                     System.out.println("---[MAIN] STARTING WEBSERVICE");
                     System.out.println(String.format("---[MAIN] WEBSERVICE URL %s", url));
                     Endpoint.publish(url, new StoreWebservice(em));
+                } else if (input.equals("g")) {
+                    System.out.println("---[MAIN] STARTING GUI APPLICATION");
+                    ItemsOverview view = new ItemsOverview(em);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            System.out.println("STARTING APPLICATION");
-            // TODO code application logic here
-
         }
     }
 }
