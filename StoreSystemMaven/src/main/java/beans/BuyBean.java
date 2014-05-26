@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.yolosec.store.beans;
+package beans;
 
 import java.io.InputStream;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.yolosec.store.service.StoreService;
+import service.StoreService;
 import com.paypal.api.payments.*;
 import com.paypal.core.rest.APIContext;
 import com.paypal.core.rest.OAuthTokenCredential;
 import com.paypal.core.rest.PayPalRESTException;
+import domain.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -118,7 +119,7 @@ public class BuyBean {
                     } else {
                         priceitem = price2 / order_amount2 + "";
                     }
-                    items.add(new Item(order_amount, "SpaceCoin(s)", priceitem, "EUR"));
+                    items.add(new Item(order_amount, "Resources", priceitem, "EUR"));
 
                     ItemList items2 = new ItemList();
                     items2.setItems(items);
@@ -141,8 +142,8 @@ public class BuyBean {
 
                     RedirectUrls redirectUrls = new RedirectUrls();
                     String guid = UUID.randomUUID().toString().replaceAll("-", "");
-                    redirectUrls.setCancelUrl("http://localhost:8080/StoreSystemMaven/faces/buyPage.xhtml?guid=" + guid);
-                    redirectUrls.setReturnUrl("http://localhost:8080/StoreSystemMaven/faces/confirmationPage.xhtml?guid=" + guid);
+                    redirectUrls.setCancelUrl("http://localhost:44823/StoreSystemMaven/faces/buyPage.xhtml?guid=" + guid);
+                    redirectUrls.setReturnUrl("http://localhost:44823/StoreSystemMaven/faces/confirmationPage.xhtml?guid=" + guid);
                     payment.setRedirectUrls(redirectUrls);
                     Payment createdPayment = payment.create(context);
 
@@ -158,6 +159,10 @@ public class BuyBean {
                     responseURL = Payment.getLastResponse();
                     urls.add(responseURL);
                     storeService.addPayment(guid, createdPayment.getId());
+
+                    storeService.addResourceToLoggedInUser(new Resource("Common", Integer.parseInt(order_amount)));
+                    storeService.addResourceToLoggedInUser(new Resource("Magic", Integer.parseInt(order_amount)));
+                    storeService.addResourceToLoggedInUser(new Resource("Rare", Integer.parseInt(order_amount)));
                 } catch (PayPalRESTException ex) {
                     Logger.getLogger(BuyBean.class.getName()).log(Level.SEVERE, null, ex);
                 }

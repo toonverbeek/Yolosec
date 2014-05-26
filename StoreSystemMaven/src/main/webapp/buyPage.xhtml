@@ -12,7 +12,7 @@
             <p:growl id="messages" />  
             <p:toolbar styleClass="toolbar">  
                 <p:toolbarGroup align="left" >  
-                    <p:button value="Buy SpaceCoins" icon="ui-icon-cart" outcome="buyPage"  styleClass="selected"/>
+                    <p:button value="Buy Resources" icon="ui-icon-cart" outcome="buyPage"  styleClass="selected"/>
                 </p:toolbarGroup>  
                 <p:separator />  
                 <p:toolbarGroup align="left" styleClass="buttons">  
@@ -39,35 +39,35 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panel id="panel" header="Buy SpaceCoins" >  
+            <p:panel id="panel" header="Buy Resources" >  
                 <p:messages id="messages" autoUpdate="true"/> 
                 <p:outputPanel id="customPanel">
-                    <h:outputLabel value="Select amount space coins"/>
+                    <h:outputLabel value="Select amount of Resources"/>
 
                     <p:selectOneRadio value="#{buyBean.selectedAmount}" id="customRadio" layout="custom">  
-                        <f:selectItem itemLabel="1 SpaceCoin" itemValue="1" />  
-                        <f:selectItem itemLabel="10 SpaceCoins" itemValue="2" />  
-                        <f:selectItem itemLabel="100 SpaceCoins" itemValue="3" />  
-                        <f:selectItem itemLabel="1000 SpaceCoins" itemValue="4" />  
+                        <f:selectItem itemLabel="1 Resource" itemValue="1" />  
+                        <f:selectItem itemLabel="10 Resources" itemValue="2" />  
+                        <f:selectItem itemLabel="100 Resources" itemValue="3" />  
+                        <f:selectItem itemLabel="1000 Resources" itemValue="4" />  
                     </p:selectOneRadio>  
 
                     <h:panelGrid columns="3">  
                         <p:radioButton id="opt1" for="customRadio" itemIndex="0"/>  
-                        <h:outputLabel for="opt1" value="1 SpaceCoin" />
+                        <h:outputLabel for="opt1" value="1 Resources" />
                         <h:outputLabel value="0.10 euro" />
 
                         <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>  
-                        <h:outputLabel for="opt2" value="10 SpaceCoin" /> 
+                        <h:outputLabel for="opt2" value="10 Resources" /> 
                         <h:outputLabel value="0.90 euro" />
 
 
                         <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>  
-                        <h:outputLabel for="opt3" value="100 SpaceCoin" />
+                        <h:outputLabel for="opt3" value="100 Resources" />
                         <h:outputLabel value="9.00 euro" />
 
 
                         <p:radioButton id="opt4" for="customRadio" itemIndex="3"/>  
-                        <h:outputLabel for="opt4" value="1000 SpaceCoin" />
+                        <h:outputLabel for="opt4" value="1000 Resources" />
                         <h:outputLabel value="90.00 euro" />
 
                     </h:panelGrid>  

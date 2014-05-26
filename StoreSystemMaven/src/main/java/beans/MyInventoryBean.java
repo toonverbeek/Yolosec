@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.yolosec.store.beans;
+package beans;
 
-import domain.Item;
+import webservice.Item;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import com.yolosec.store.service.StoreService;
+import service.StoreService;
 
 /**
  *

@@ -10,11 +10,23 @@
 <message name="loginResponse">
 <part name="parameters" element="tns:loginResponse"/>
 </message>
-<message name="buyItem">
-<part name="parameters" element="tns:buyItem"/>
+<message name="getAllItems">
+<part name="parameters" element="tns:getAllItems"/>
 </message>
-<message name="buyItemResponse">
-<part name="parameters" element="tns:buyItemResponse"/>
+<message name="getAllItemsResponse">
+<part name="parameters" element="tns:getAllItemsResponse"/>
+</message>
+<message name="getResourcesForUser">
+<part name="parameters" element="tns:getResourcesForUser"/>
+</message>
+<message name="getResourcesForUserResponse">
+<part name="parameters" element="tns:getResourcesForUserResponse"/>
+</message>
+<message name="getItemsForUser">
+<part name="parameters" element="tns:getItemsForUser"/>
+</message>
+<message name="getItemsForUserResponse">
+<part name="parameters" element="tns:getItemsForUserResponse"/>
 </message>
 <message name="registerUser">
 <part name="parameters" element="tns:registerUser"/>
@@ -22,11 +34,11 @@
 <message name="registerUserResponse">
 <part name="parameters" element="tns:registerUserResponse"/>
 </message>
-<message name="getAllItems">
-<part name="parameters" element="tns:getAllItems"/>
+<message name="buyItem">
+<part name="parameters" element="tns:buyItem"/>
 </message>
-<message name="getAllItemsResponse">
-<part name="parameters" element="tns:getAllItemsResponse"/>
+<message name="buyItemResponse">
+<part name="parameters" element="tns:buyItemResponse"/>
 </message>
 <message name="addResources">
 <part name="parameters" element="tns:addResources"/>
@@ -39,17 +51,25 @@
 <input wsam:Action="http://webservice/StoreWebservice/loginRequest" message="tns:login"/>
 <output wsam:Action="http://webservice/StoreWebservice/loginResponse" message="tns:loginResponse"/>
 </operation>
-<operation name="buyItem">
-<input wsam:Action="http://webservice/StoreWebservice/buyItemRequest" message="tns:buyItem"/>
-<output wsam:Action="http://webservice/StoreWebservice/buyItemResponse" message="tns:buyItemResponse"/>
+<operation name="getAllItems">
+<input wsam:Action="http://webservice/StoreWebservice/getAllItemsRequest" message="tns:getAllItems"/>
+<output wsam:Action="http://webservice/StoreWebservice/getAllItemsResponse" message="tns:getAllItemsResponse"/>
+</operation>
+<operation name="getResourcesForUser">
+<input wsam:Action="http://webservice/StoreWebservice/getResourcesForUserRequest" message="tns:getResourcesForUser"/>
+<output wsam:Action="http://webservice/StoreWebservice/getResourcesForUserResponse" message="tns:getResourcesForUserResponse"/>
+</operation>
+<operation name="getItemsForUser">
+<input wsam:Action="http://webservice/StoreWebservice/getItemsForUserRequest" message="tns:getItemsForUser"/>
+<output wsam:Action="http://webservice/StoreWebservice/getItemsForUserResponse" message="tns:getItemsForUserResponse"/>
 </operation>
 <operation name="registerUser">
 <input wsam:Action="http://webservice/StoreWebservice/registerUserRequest" message="tns:registerUser"/>
 <output wsam:Action="http://webservice/StoreWebservice/registerUserResponse" message="tns:registerUserResponse"/>
 </operation>
-<operation name="getAllItems">
-<input wsam:Action="http://webservice/StoreWebservice/getAllItemsRequest" message="tns:getAllItems"/>
-<output wsam:Action="http://webservice/StoreWebservice/getAllItemsResponse" message="tns:getAllItemsResponse"/>
+<operation name="buyItem">
+<input wsam:Action="http://webservice/StoreWebservice/buyItemRequest" message="tns:buyItem"/>
+<output wsam:Action="http://webservice/StoreWebservice/buyItemResponse" message="tns:buyItemResponse"/>
 </operation>
 <operation name="addResources">
 <input wsam:Action="http://webservice/StoreWebservice/addResourcesRequest" message="tns:addResources"/>
@@ -67,7 +87,25 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="buyItem">
+<operation name="getAllItems">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getResourcesForUser">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getItemsForUser">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -85,7 +123,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="getAllItems">
+<operation name="buyItem">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

@@ -12,7 +12,7 @@
             <p:growl id="messages" />  
             <p:toolbar styleClass="toolbar">  
                 <p:toolbarGroup align="left" >  
-                    <p:button value="Buy SpaceCoins" icon="ui-icon-cart" outcome="buyPage"/>
+                    <p:button value="Buy Resources" icon="ui-icon-cart" outcome="buyPage"/>
                 </p:toolbarGroup>  
                 <p:separator />  
                 <p:toolbarGroup align="left" styleClass="buttons">  
@@ -53,17 +53,8 @@
                     <p:panel header="#{item.name}" style="text-align:center">  
                         <h:panelGrid columns="1" style="width:100%" > 
                             <h:column>
-                                <h:dataTable value="#{item.resources}" var="res" width="100%" >
-                                    <h:column>
-                                        <f:facet name="header">Resource Type</f:facet>
-                                        <h:outputText value="#{res.type}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Amount</f:facet>
-                                        <h:outputText value="#{res.amount}"/>
-
-                                    </h:column>
-                                </h:dataTable>
+                                <p:outputLabel value="#{item.resourceType} : #{item.value}"   styleClass="resources"/>
+    
                             </h:column>
                             <h:column>
                                 <p:graphicImage value="/images/items/spaceship.png" width="100px" height="100px"/>  

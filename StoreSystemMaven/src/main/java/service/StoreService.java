@@ -1,11 +1,11 @@
-package com.yolosec.store.service;
+package service;
 
 import annotations.AccountJPAImpl;
 import annotations.ItemJPAImpl;
 import dao.ItemDAO;
 import dao.UserDAO;
 import domain.Account;
-import domain.Item;
+import webservice.Item;
 import domain.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class StoreService implements Serializable {
     private Account loggedInAccount;
 
     Map<String, String> map = new HashMap<String, String>();
-    private String loggedInUsername;
+    private static String loggedInUsername;
 
     public StoreService() {
     }
@@ -56,7 +56,8 @@ public class StoreService implements Serializable {
      * @return
      */
     public List<Item> getMockupItems() {
-        return itemDAO.findAll();
+//        return itemDAO.findAll();
+        return null;
     }
 
     /**
@@ -94,7 +95,8 @@ public class StoreService implements Serializable {
      * @return
      */
     public Collection<Item> getItemsFromUser(Account user) {
-        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
+//        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
+        return null;
     }
 
     /**
@@ -127,7 +129,8 @@ public class StoreService implements Serializable {
      * @return
      */
     public Collection<Item> getItemsWithName(Account user, String name) {
-        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
+//        return this.userDAO.find(user.getUsername()).getSpaceShipItems();
+        return null;
     }
 
     /**
@@ -138,7 +141,8 @@ public class StoreService implements Serializable {
      * @return
      */
     public Item getItemWithId(Account user, long id) {
-        return user.getSpaceship().findItem(id);
+//        return user.getSpaceship().findItem(id);
+        return null;
     }
 
     /**
@@ -171,48 +175,49 @@ public class StoreService implements Serializable {
     }
 
     public boolean login(String username, String password) {
-        this.loggedInUsername = username;
-
+        boolean result = false;
         try { // Call Web Service Operation
             webservice.StoreWebservice port = service.getStoreWebservicePort();
-            boolean result = port.login(username, password);
+            result = port.login(username, password);
             System.out.println("Result login = " + result);
-        } catch (Exception ex) {
-            // TODO handle custom exceptions here
-        }
-
-        return false;
-    }
-
-    public List<Item> getMyItems() {
-
-//
-//        try { // Call Web Service Operation
-//            webservice.Webservice port = service.getWebservicePort();
-//            // TODO initialize WS operation arguments here
-//            webservice.Account arg0 = new webservice.Account();
-//            // TODO process result here
-//            return port.getResourcesForUser(arg0);
-//        } catch (Exception ex) {
-//            // TODO handle custom exceptions here
-//            ex.printStackTrace();
-//        }
-        return null;
-    }
-
-    public List<webservice.Item> getAllItems() {
-
-        try { // Call Web Service Operation
-            webservice.StoreWebservice port = service.getStoreWebservicePort();
-            // TODO process result here
-            java.util.List<webservice.Item> result = port.getAllItems();
-            System.out.println("Result = " + result);
-            return result;
+            this.loggedInUsername = username;
+            System.out.println("loggedInUserName: " + this.loggedInUsername);
         } catch (Exception ex) {
             // TODO handle custom exceptions here
             ex.printStackTrace();
         }
-        return null;
+
+        return result;
+    }
+
+    public List<Item> getMyItems() {
+        java.util.List<webservice.Item> result = null;
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO initialize WS operation arguments here
+            // TODO process result here
+            result = port.getItemsForUser(loggedInUsername);
+            System.out.println("Result getMyItems = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public List<webservice.Item> getAllItems() {
+        java.util.List<webservice.Item> result = null;
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO process result here
+            result = port.getAllItems();
+            System.out.println("Result = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+        return result;
     }
 
     public boolean addResourceToLoggedInUser(Resource resource) {
@@ -227,19 +232,6 @@ public class StoreService implements Serializable {
             // TODO handle custom exceptions here
             ex.printStackTrace();
         }
-
-        if (result) {
-            //not convenient to have resources in a collection. better split resources?
-            for (Resource r : this.loggedInAccount.getResources()) {
-                if (r.getType().equals("Common") && resource.getType().equals("Common")) {
-                    r.setAmount(r.getAmount() + resource.getAmount());
-                } else if (r.getType().equals("Magic") && resource.getType().equals("Magic")) {
-                    r.setAmount(r.getAmount() + resource.getAmount());
-                } else if (r.getType().equals("Rare") && resource.getType().equals("Rare")) {
-                    r.setAmount(r.getAmount() + resource.getAmount());
-                }
-            }
-        }
         return result;
     }
 
@@ -253,34 +245,51 @@ public class StoreService implements Serializable {
         try { // Call Web Service Operation
             webservice.StoreWebservice port = service.getStoreWebservicePort();
             // TODO initialize WS operation arguments here
+            System.out.println("Buying item with username: " + this.loggedInUsername + ", item: " + selectedItem.getId());
             result = port.buyItem(this.loggedInUsername, selectedItem.getId());
-            System.out.println("Result = " + result);
+            System.out.println("Result buyItem = " + result);
         } catch (Exception ex) {
             // TODO handle custom exceptions here
+            ex.printStackTrace();
         }
 
         if (result) {
-            //substract money from user
-            Collection<Resource> totalcost = selectedItem.getResources();
-            Resource userCommmon = null, userMagic = null, userRare = null;
-            for (Resource r : this.loggedInAccount.getResources()) {
-                if (r.getType().equals("Common")) {
-                    userCommmon = r;
-                } else if (r.getType().equals("Magic")) {
-                    userMagic = r;
-                } else if (r.getType().equals("Rare")) {
-                    userRare = r;
-                }
-            }
-            for (Resource r : totalcost) {
-                if (r.getType().equals("Common")) {
-                    userCommmon.setAmount(userCommmon.getAmount() - r.getAmount());
-                } else if (r.getType().equals("Magic")) {
-                    userMagic.setAmount(userMagic.getAmount() - r.getAmount());
-                } else if (r.getType().equals("Rare")) {
-                    userRare.setAmount(userRare.getAmount() - r.getAmount());
-                }
-            }
+            context.addMessage(null, new FacesMessage(selectedItem.getName() + " succesvol gekocht."));
+        } else {
+            context.addMessage(null, new FacesMessage("Er is iets fout gegaan. Probeer het later opnieuw."));
         }
+//
+//        if (result) {
+//            //substract money from user
+//            float totalcost = selectedItem.getValue();
+//            Resource userCommmon = null, userMagic = null, userRare = null;
+//            for (Resource r : this.loggedInAccount.getResources()) {
+//                if (r.getType().equals("Common")) {
+//                    userCommmon = r;
+//                    userCommmon.setAmount(userCommmon.getAmount() - r.getAmount());
+//                } else if (r.getType().equals("Magic")) {
+//                    userMagic = r;
+//                    userMagic.setAmount(userMagic.getAmount() - r.getAmount());
+//                } else if (r.getType().equals("Rare")) {
+//                    userRare = r;
+//                    userRare.setAmount(userRare.getAmount() - r.getAmount());
+//                }
+//            }
+//        }
+    }
+
+    public List<Float> getUserResources() {
+        List<Float> result = null;
+        try { // Call Web Service Operation
+            webservice.StoreWebservice port = service.getStoreWebservicePort();
+            // TODO initialize WS operation arguments here
+            // TODO process result here
+            result = port.getResourcesForUser(loggedInUsername);
+            System.out.println("Result  getUserResources = " + result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+            ex.printStackTrace();
+        }
+        return result;
     }
 }

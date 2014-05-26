@@ -12,6 +12,14 @@
 
 <xs:element name="getAllItemsResponse" type="tns:getAllItemsResponse"/>
 
+<xs:element name="getItemsForUser" type="tns:getItemsForUser"/>
+
+<xs:element name="getItemsForUserResponse" type="tns:getItemsForUserResponse"/>
+
+<xs:element name="getResourcesForUser" type="tns:getResourcesForUser"/>
+
+<xs:element name="getResourcesForUserResponse" type="tns:getResourcesForUserResponse"/>
+
 <xs:element name="login" type="tns:login"/>
 
 <xs:element name="loginResponse" type="tns:loginResponse"/>
@@ -59,11 +67,13 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="getAllItems">
-<xs:sequence/>
+<xs:complexType name="getItemsForUser">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="getAllItemsResponse">
+<xs:complexType name="getItemsForUserResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:item" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
@@ -77,6 +87,28 @@
 <xs:element name="name" type="xs:string" minOccurs="0"/>
 <xs:element name="resource_type" type="xs:string" minOccurs="0"/>
 <xs:element name="value" type="xs:float"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllItems">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getAllItemsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:item" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getResourcesForUser">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getResourcesForUserResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:float" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
