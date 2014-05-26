@@ -58,4 +58,14 @@ public class ItemSerializer {
         ResourceMessage resMessage = (ResourceMessage) gson.fromJson(json, ResourceMessage.class);
         return resMessage;
     }
+    
+    public static String insertUserMessageToJson(InsertUserMessage message){
+        String json = gson.toJson(message);
+        return json;
+    }
+    
+    public static InsertUserMessage jsonToInsertUserMessage(String json){
+        InsertUserMessage resMessage = (InsertUserMessage) gson.fromJson(json, InsertUserMessage.class);
+        return resMessage;
+    }
 }
