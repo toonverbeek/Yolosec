@@ -23,6 +23,8 @@ public interface ItemDAO {
 
     void edit(Item item);
     
+    boolean edit(User user);
+    
     void edit(UserItem item);
     
     List<UserItem> findAllUserItem(); 

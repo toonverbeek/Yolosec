@@ -44,6 +44,20 @@ public class ItemDAO_JPAImpl implements ItemDAO {
             throw ex;
         }
     }
+    
+    @Override
+    public boolean edit(User user){
+        try {
+            em.getTransaction().begin();
+            em.merge(user);
+            em.flush();
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception ex) {
+            em.close();
+            return false;
+        }
+    }
 
     @Override
     public void edit(Item item) {
@@ -158,13 +172,16 @@ public class ItemDAO_JPAImpl implements ItemDAO {
             String resourceType = item.getResource_type();
             float value = item.getValue();
             UserItem userItem = find(item);
+            
             if (null != resourceType) {
                 switch (resourceType) {
                     case "normal":
                         int resource_normal = user.getResource_normal();
                         if ((resource_normal - value) > 0) {
-                            resource_normal += value;
+                            resource_normal -= value;
                             userItem.setUser(user);
+                            user.setResource_normal(resource_normal);
+                            edit(user);
                             edit(userItem);
                             return true;
                         } else {
@@ -173,8 +190,10 @@ public class ItemDAO_JPAImpl implements ItemDAO {
                     case "magic":
                         int resource_magic = user.getResource_magic();
                         if ((resource_magic - value) > 0) {
-                            resource_magic += value;
+                            resource_magic -= value;
                             userItem.setUser(user);
+                            user.setResource_magic(resource_magic);
+                            edit(user);
                             edit(userItem);
                             return true;
                         } else {
@@ -183,9 +202,12 @@ public class ItemDAO_JPAImpl implements ItemDAO {
                     case "rare":
                         int resource_rare = user.getResource_rare();
                         if ((resource_rare - value) > 0) {
-                            resource_rare += value;
+                            resource_rare -= value;
                             userItem.setUser(user);
+                            user.setResource_rare(resource_rare);
+                            edit(user);
                             edit(userItem);
+                            
                             return true;
                         } else {
                             return false;

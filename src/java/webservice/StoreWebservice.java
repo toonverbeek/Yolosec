@@ -92,7 +92,7 @@ public class StoreWebservice {
         User find = userDAO.find(username);
         if (null != resourceType) {
             switch (resourceType) {
-                case "normal":
+                case "Common":
                     int resource_normal = find.getResource_normal();
 
                     resource_normal += value;
@@ -100,7 +100,7 @@ public class StoreWebservice {
                     userDAO.edit(find);
                     return true;
 
-                case "magic":
+                case "Magic":
                     int resource_magic = find.getResource_magic();
 
                     resource_magic += value;
@@ -108,7 +108,7 @@ public class StoreWebservice {
                     userDAO.edit(find);
                     return true;
 
-                case "rare":
+                case "Rare":
                     int resource_rare = find.getResource_rare();
 
                     resource_rare += value;
