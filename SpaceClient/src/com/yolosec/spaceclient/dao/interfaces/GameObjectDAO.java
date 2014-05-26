@@ -10,13 +10,12 @@ import java.util.List;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
-import com.yolosec.spaceclient.observing.Node;
 
 /**
  *
  * @author Toon
  */
-public interface GameObjectDAO extends Node<GameWorldImpl> {
+public interface GameObjectDAO {
 
     List<GameObjectImpl> getGameObjects();
 

@@ -7,14 +7,13 @@ package com.yolosec.spaceclient.game.world;
 
 import com.yolosec.spaceclient.dao.interfaces.GameObjectDAO;
 import com.yolosec.spaceclient.dao.interfaces.GameObject;
-import com.yolosec.spaceclient.observing.NodeImpl;
 import java.awt.Rectangle;
 
 /**
  * The abstract implementation for GameObject
  * @author Toon
  */
-public abstract class GameObjectImpl extends NodeImpl<GameObjectDAO> implements GameObject {
+public abstract class GameObjectImpl implements GameObject {
 
     /**
      * 

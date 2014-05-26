@@ -1,6 +1,7 @@
 package com.yolosec.spaceclient.gui;
 
 //import com.ptsesd.groepb.shared.jms.MessagingGateway;
+import com.yolosec.spaceclient.communication.SocketShutdownHook;
 import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.User;
 import org.newdawn.slick.GameContainer;
@@ -14,7 +15,6 @@ public class SpaceClient extends StateBasedGame {
     private static final int STATE_MAINMENU = 1;
     public static final int STATE_PLANET = 2;
 
-    private static final int FPS = 60;
     public static int screenHeight;
     public static int screenWidth;
     public static Inventory playerInventory;
@@ -32,6 +32,9 @@ public class SpaceClient extends StateBasedGame {
     public SpaceClient(String gamename, User user) {
         super(gamename);
         this.user = user;
+        
+        //add shutdown hook
+        Runtime.getRuntime().addShutdownHook(new SocketShutdownHook());
     }
 
     /**

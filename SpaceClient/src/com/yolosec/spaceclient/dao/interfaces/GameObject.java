@@ -6,12 +6,10 @@
 
 package com.yolosec.spaceclient.dao.interfaces;
 
-import com.yolosec.spaceclient.observing.Node;
-
 /**
  *
  * @author Toon
  */
-public interface GameObject extends Node<GameObjectDAO> {
+public interface GameObject {
     
 }

@@ -10,7 +10,6 @@ import com.ptsesd.groepb.shared.PlanetsComm;
 import com.yolosec.spaceclient.dao.GameObjectDAOImpl;
 import com.yolosec.spaceclient.dao.interfaces.DrawableComponent;
 import com.yolosec.spaceclient.dao.interfaces.GameObject;
-import com.yolosec.spaceclient.dao.interfaces.GameWorld;
 import com.yolosec.spaceclient.game.player.Inventory;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.player.User;
@@ -21,7 +20,6 @@ import com.yolosec.spaceclient.gui.Minimap;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
-import com.yolosec.spaceclient.observing.NodeImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,7 @@ import org.newdawn.slick.tiled.TiledMap;
  *
  * @author Toon
  */
-public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableComponent, GameWorld {
+public class GameWorldImpl implements DrawableComponent {
 
     /**
      * The TiledMap that will define the location of the GameObjects and
