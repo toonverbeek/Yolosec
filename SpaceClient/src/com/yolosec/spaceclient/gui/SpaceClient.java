@@ -80,6 +80,6 @@ public class SpaceClient extends StateBasedGame {
     public void initStatesList(GameContainer container) throws SlickException {
         this.addState(new GameState(user));
         this.addState(new MainMenuState());
-        this.addState(new PlanetState(user.getSpaceship().getId()));
+        this.addState(new PlanetState(user.getSpaceship()));
     }
 }

@@ -24,7 +24,7 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class Viewport extends GameObjectImpl implements DrawableComponent {
 
-    private final Spaceship spaceship;
+    public static Spaceship spaceship;
     public static Vector2f viewportPos;
 
     //vectors
@@ -37,12 +37,13 @@ public class Viewport extends GameObjectImpl implements DrawableComponent {
     public static final int TILESIZE = 32;
 
     public Viewport(Spaceship player, TiledMap tileMap) {
-        this.spaceship = player;
+        Viewport.spaceship = player;
+        System.out.println("Viewport player1: " + player.getId());
+        System.out.println("Viewport player2: " + Viewport.spaceship.getId());
         this.tileMap = tileMap;
         Viewport.tilemapHeight = tileMap.getHeight() * TILESIZE;
         Viewport.tilemapWidth = tileMap.getWidth() * TILESIZE;
-        Viewport.viewportPos = new Vector2f(1, 1);
-        spaceship.setPosition(new Vector2f(1, 1));
+        Viewport.viewportPos = new Vector2f(player.getPosition().x - (screenWidth/2), player.getPosition().y - (screenHeight/2));
     }
 
     public Spaceship getSpaceship() {

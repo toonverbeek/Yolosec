@@ -7,6 +7,7 @@ package com.yolosec.spaceclient.game.player;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.ptsesd.groepb.shared.AuctionHouseRequestType;
+import com.ptsesd.groepb.shared.Item;
 import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
@@ -21,33 +22,48 @@ import java.util.Map;
  */
 public class Inventory extends GameObjectImpl {
 
-    private int spaceshipId;
-    private ArrayList<Item> items;
+    private long spaceshipId;
+    private ArrayList<ItemComm> items;
+    private boolean isAuctionHouse;
 
     public Inventory(InventoryReply ir) {
         this.spaceshipId = ir.getSpaceshipId();
+        this.isAuctionHouse = ir.isAuctionHouse();
         items = new ArrayList<>();
-        for(Object item : ir.getItems()){
-            Map itemlist = (LinkedTreeMap) item;
-            Long itemid = ((Double) itemlist.get("itemId")).longValue();
-            int sellerId = ((Double)itemlist.get("sellerId")).intValue();
-            int resourceAmount = ((Double)itemlist.get("resourceAmount")).intValue();
-            String resourceType = (String)itemlist.get("resourceType");
-            AuctionHouseRequestType requestType = AuctionHouseRequestType.valueOf((String)itemlist.get("requestType"));
-            
-            Item itemToAdd = new Item(itemid, sellerId, resourceAmount, resourceType, requestType);
-            items.add(itemToAdd);
+        for (Object item : ir.getItems()) {
+            Map itemlist2 = (LinkedTreeMap) item;
+            if (itemlist2 != null) {
+                Map itemlist = (Map) itemlist2.get("item");
+                Long itemid = ((Double) itemlist.get("id")).longValue();
+                String name = (String) itemlist.get("name");
+                String description = (String) itemlist.get("description");
+                String image = (String) itemlist.get("image");
+                float value = ((Double) itemlist.get("value")).floatValue();
+                String resourceType = (String) itemlist.get("resource_type");
+                Item itemToAdd = new Item(itemid, name, description, image, value, resourceType);
+                AuctionHouseRequestType requestType = null;
+                if (isAuctionHouse) {
+                    requestType = (AuctionHouseRequestType.valueOf((String) itemlist2.get("requestType")));
+                    System.out.println("AUCTIONHOUSE: " + requestType);
+                }
+                ItemComm ic = new ItemComm(itemToAdd, spaceshipId, requestType);
+                items.add(ic);
+            }
         }
     }
 
-    public int getSpaceshipId() {
+    public long getSpaceshipId() {
         return spaceshipId;
     }
 
-    public ArrayList<Item> getItems() {
+    public ArrayList<ItemComm> getItems() {
         return items;
     }
-    
+
+    public boolean isAuctionHouse() {
+        return isAuctionHouse;
+    }
+
     @Override
     public Rectangle getRectangle() {
         return new Rectangle();

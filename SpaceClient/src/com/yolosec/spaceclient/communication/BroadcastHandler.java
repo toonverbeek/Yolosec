@@ -9,13 +9,15 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.ptsesd.groepb.shared.AsteroidComm;
 import com.ptsesd.groepb.shared.AuctionHouseRequestType;
+import com.ptsesd.groepb.shared.Item;
+import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.LoginComm;
 import com.ptsesd.groepb.shared.Serializer;
 import com.ptsesd.groepb.shared.SpaceshipComm;
+import com.ptsesd.groepb.shared.jms.ItemSerializer;
 import com.ptsesd.groepb.shared.socket.AuctionRequest;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
-import com.yolosec.spaceclient.game.player.Item;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
@@ -53,6 +55,7 @@ public class BroadcastHandler implements Runnable {
             reader.setLenient(true);
 
             while (true) {
+                //System.out.println("---[BroadcastHandler] run");
                 handleData(reader);
             }
         } catch (Exception ex) {
@@ -113,6 +116,7 @@ public class BroadcastHandler implements Runnable {
             retrievedObjectList = Communicator.retrieveData(reader);
             if (retrievedObjectList != null) {
                 //GameObject sToAdd = Serializer.desirializePacket(gson.toJsonTree(retrievedJson));
+                //System.out.println("---[BroadcastHandler] retrieve list");
                 callbackOwner.drawAfterDataReadFromSocketFromServer(retrievedObjectList);
             }
         } catch (IOException ex) {
@@ -120,11 +124,12 @@ public class BroadcastHandler implements Runnable {
         }
     }
 
-    public void sendItem(Item item) {
+    public void sendItem(Item item, long spacshipComm, AuctionHouseRequestType requestType) {
         String json = "";
         if (item != null) {
-            AuctionRequest request = new AuctionRequest(AuctionRequest.class.getSimpleName(), item.getSellerId(),item.getItemId(), item.getRequestType());
-            json = Serializer.serializeAuctionRequestAsGamePacktet(request);
+            ItemComm ic = new ItemComm(item, spacshipComm, requestType);
+            AuctionRequest ar = new AuctionRequest(AuctionRequest.class.getSimpleName(),(int) spacshipComm, item.getId(), requestType);
+            json = ItemSerializer.auctionRequestToJson(ar);
         }
         if (!json.equals("")) {
             Communicator.sendData(json);

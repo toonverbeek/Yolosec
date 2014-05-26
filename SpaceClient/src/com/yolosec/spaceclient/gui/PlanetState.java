@@ -6,14 +6,14 @@
 package com.yolosec.spaceclient.gui;
 
 import com.ptsesd.groepb.shared.AuctionHouseRequestType;
+import com.ptsesd.groepb.shared.Item;
+import com.ptsesd.groepb.shared.ItemComm;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 import com.yolosec.spaceclient.communication.BroadcastHandler;
 import com.yolosec.spaceclient.dao.interfaces.DrawCallback;
 import com.yolosec.spaceclient.game.player.Inventory;
-import com.yolosec.spaceclient.game.player.Item;
+import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.GameObjectImpl;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.input.Keyboard;
@@ -67,20 +67,22 @@ public class PlanetState extends BasicGameState implements DrawCallback {
     private Shape auctionhousePageBase;
     private ArrayList<Shape> auctionhousePageBorders;
 
-    private ArrayList<Item> sellItems;
-    private ArrayList<Item> buyItems;
-    private ArrayList<Item> cancelItems;
+    private ArrayList<ItemComm> sellItems;
+    private ArrayList<ItemComm> buyItems;
+    private ArrayList<ItemComm> cancelItems;
 
     private Shape auctionhouseButtonBase;
     private ArrayList<Shape> sellButtons;
     private ArrayList<Shape> buyButtons;
     private BroadcastHandler handler;
     private boolean newState = true;
+    private final Spaceship spaceship;
 
     //private static final Rec
     //---------------------------------------------------------------------------------------------------------------
-    public PlanetState(int spaceshipId) {
-        this.spaceshipid = spaceshipId;
+    public PlanetState(Spaceship s) {//int spaceshipId) {
+        this.spaceshipid = s.getId();
+        this.spaceship = s;
     }
 
     @Override
@@ -196,6 +198,17 @@ public class PlanetState extends BasicGameState implements DrawCallback {
         } else if (sellView) {
             drawSellView(g);
         }
+
+        //draw resources
+        String common = " Common " + spaceship.getResources()[0];
+        int CommonX = SpaceClient.screenWidth - g.getFont().getWidth(common);
+        String magic = " Magic " + spaceship.getResources()[1];
+        int MagicX = CommonX - g.getFont().getWidth(magic);
+        String rare = " Rare " + spaceship.getResources()[2];
+        int RareX = MagicX - g.getFont().getWidth(rare);
+        g.drawString(common, CommonX, 0);
+        g.drawString(magic, MagicX, 0);
+        g.drawString(rare, RareX, 0);
     }
 
     /**
@@ -206,7 +219,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
     private void drawInventory(Graphics g) {
         if (inventory != null) {
             int itemslot = 0;
-            for (Item item : inventory.getItems()) {
+            for (ItemComm item : inventory.getItems()) {
                 switch (itemslot) {
                     case 0:
                         drawInventorySlot(g, itemslot, Color.red, item);
@@ -258,10 +271,11 @@ public class PlanetState extends BasicGameState implements DrawCallback {
      * @param color
      * @param item
      */
-    private void drawInventorySlot(Graphics g, int slotid, Color color, Item item) {
+    private void drawInventorySlot(Graphics g, int slotid, Color color, ItemComm item) {
         g.setColor(color);
         g.draw(new Ellipse(inventorySlots[slotid].getCenterX(), inventorySlots[slotid].getCenterY(), 10, 10));
-        g.drawString(item.getResourceAmount() + "", inventorySlots[slotid].getX(), inventorySlots[slotid].getY());
+        g.drawString(item.getItem().getValue() + "", inventorySlots[slotid].getX(), inventorySlots[slotid].getY());
+        g.setColor(Color.white);
     }
 
     private void drawCommonEntries(Graphics g) {
@@ -312,7 +326,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
 
             for (int i = currentPage; i <= currentPage + ITEMSPERPAGE; i++) {
                 if ((i + (currentPage * ITEMSPERPAGE)) < cancelItems.size()) {
-                    Item item = cancelItems.get((int) (i + (currentPage * ITEMSPERPAGE)));
+                    ItemComm item = cancelItems.get((int) (i + (currentPage * ITEMSPERPAGE)));
                     Shape btn = sellButtons.get((int) (i + (currentPage * ITEMSPERPAGE)));//i);
                     Shape border = auctionhouseItemBorders.get((int) (i + (currentPage * ITEMSPERPAGE)));//i);
 
@@ -324,8 +338,8 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                     float btnY = btn.getY() + borderMargin;
 
 //                    draw itemname, price, btn text
-                    g.drawString(item.getItemId() + "", itemnameX, itemnameY);
-                    g.drawString(item.getResourceAmount() + " - " + item.getResourceType(), priceX, priceY);
+                    g.drawString(item.getItem().getName() + "", itemnameX, itemnameY);
+                    g.drawString(item.getItem().getValue() + " - " + item.getItem().getResource_type(), priceX, priceY);
                     g.drawString("cancel", btnX, btnY);
                 } else {
                     isCancelDone = true;
@@ -333,7 +347,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                 if (isCancelDone) {
                     double id = ((i + (currentPage * ITEMSPERPAGE)) - cancelItems.size());
                     if (id < sellItems.size()) {
-                        Item item = sellItems.get((int) id);
+                        ItemComm item = sellItems.get((int) id);
                         Shape btn = sellButtons.get((int) (i + (currentPage * ITEMSPERPAGE)));
 
                         double borderId = (i + (currentPage * ITEMSPERPAGE));
@@ -347,8 +361,8 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                         float btnY = btn.getY() + borderMargin;
 
                         //draw itemname, price, btn text
-                        g.drawString(item.getItemId() + "", itemnameX, itemnameY);
-                        g.drawString(item.getResourceAmount() + " - " + item.getResourceType(), priceX, priceY);
+                        g.drawString(item.getItem().getName() + "", itemnameX, itemnameY);
+                        g.drawString(item.getItem().getValue() + " - " + item.getItem().getResource_type(), priceX, priceY);
                         g.drawString("sell", btnX, btnY);
                     }
                 }
@@ -380,7 +394,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
 
             for (int i = currentPage; i <= currentPage + ITEMSPERPAGE; i++) {
                 if ((i + (currentPage * ITEMSPERPAGE)) < buyItems.size()) {
-                    Item item = buyItems.get((int) (i + (currentPage * ITEMSPERPAGE)));
+                    ItemComm item = buyItems.get((int) (i + (currentPage * ITEMSPERPAGE)));
                     Shape btn = buyButtons.get((int) (i + (currentPage * ITEMSPERPAGE)));//i);
                     Shape border = auctionhouseItemBorders.get((int) (i + (currentPage * ITEMSPERPAGE)));//i);
 
@@ -392,8 +406,8 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                     float btnY = btn.getY() + borderMargin;
 
                     //draw itemname, price, btn text
-                    g.drawString(item.getItemId() + "", itemnameX, itemnameY);
-                    g.drawString(item.getResourceAmount() + " - " + item.getResourceType(), priceX, priceY);
+                    g.drawString(item.getItem().getName() + "", itemnameX, itemnameY);
+                    g.drawString(item.getItem().getValue() + " - " + item.getItem().getResource_type(), priceX, priceY);
                     g.drawString("buy", btnX, btnY);
                     buyItemId++;
                 }
@@ -406,14 +420,20 @@ public class PlanetState extends BasicGameState implements DrawCallback {
         if (game.getCurrentState() == this) {
             if (!inventorycalled) {
                 handler = new BroadcastHandler(this);
-                handler.sendInventoryRequest(new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipid));
-                handler.sendInventoryRequest(new InventoryRequest(InventoryRequest.class.getSimpleName(), -1));
+                handler.sendInventoryRequest(new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipid, false));
+                handler.sendInventoryRequest(new InventoryRequest(InventoryRequest.class.getSimpleName(), spaceshipid, true));
                 inventorycalled = true;
+                System.out.println("---[PlanetState] Inventory called");
             }
         }
+        if (this.inventory != SpaceClient.playerInventory) {
+            System.out.println("---[PlanetState] New Inventory");
+        }
         this.inventory = SpaceClient.playerInventory;
+        if (this.auctionhouseInventory != SpaceClient.auctionhouseInventory) {
+            System.out.println("---[PlanetState] New auctionhouse inventory");
+        }
         this.auctionhouseInventory = SpaceClient.auctionhouseInventory;
-
         updateAuctionView();
         Input input = container.getInput();
         checkMouseInput(input, game);
@@ -430,7 +450,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                 sellItems = new ArrayList<>();
                 buyItems = new ArrayList<>();
                 cancelItems = new ArrayList<>();
-                for (Item item : auctionhouseInventory.getItems()) {
+                for (ItemComm item : auctionhouseInventory.getItems()) {
                     if (item.getRequestType() == AuctionHouseRequestType.BUY) {
                         itemCount++;
                         buyItems.add(item);
@@ -441,7 +461,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                 sellItems = new ArrayList<>();
                 buyItems = new ArrayList<>();
                 cancelItems = new ArrayList<>();
-                for (Item item : auctionhouseInventory.getItems()) {
+                for (ItemComm item : auctionhouseInventory.getItems()) {
                     if (item.getRequestType() == AuctionHouseRequestType.SELL) {
                         itemCount++;
                         sellItems.add(item);
@@ -467,7 +487,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
         double totalItems = 0;
         double itemPosition = 1;
 
-        for (Item i : buyItems) {
+        for (ItemComm i : buyItems) {
             totalItems++;
 
             float borderY = (float) ((auctionhouseItemBase.getY() + auctionhouseItemBase.getHeight() - borderMargin) * (itemPosition)) + (2 * borderMargin);
@@ -498,7 +518,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
         double totalItems = 0;
         double itemPosition = 1;
 
-        for (Item i : cancelItems) {
+        for (ItemComm i : cancelItems) {
             float borderY = (float) ((auctionhouseItemBase.getY() + auctionhouseItemBase.getHeight() - borderMargin) * (itemPosition)) + (2 * borderMargin);
             Shape autionItemBorder = new Rectangle(auctionhouseItemBase.getX(), borderY, auctionhouseItemBase.getWidth(), auctionhouseItemBase.getHeight());
             auctionhouseItemBorders.add(autionItemBorder);
@@ -513,7 +533,7 @@ public class PlanetState extends BasicGameState implements DrawCallback {
             itemPosition++;
             totalItems++;
         }
-        for (Item i : sellItems) {
+        for (ItemComm i : sellItems) {
             float borderY = (float) ((auctionhouseItemBase.getY() + auctionhouseItemBase.getHeight() - borderMargin) * (itemPosition)) + (2 * borderMargin);
             Shape autionItemBorder = new Rectangle(auctionhouseItemBase.getX(), borderY, auctionhouseItemBase.getWidth(), auctionhouseItemBase.getHeight());
             auctionhouseItemBorders.add(autionItemBorder);
@@ -563,6 +583,10 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                 buyView = false;
                 this.sellView = false;
                 currentPage = 0;
+                inventory = null;
+                auctionhouseInventory = null;
+                inventorycalled = false;
+                System.out.println("To game state");
             } else if (inBounds(mousePosition, buyButton)) {
                 this.buyView = true;
                 this.sellView = false;
@@ -585,11 +609,14 @@ public class PlanetState extends BasicGameState implements DrawCallback {
             if (Keyboard.getEventKey() == Keyboard.KEY_F3) {
                 if (Keyboard.getEventKeyState()) {
                     if (game.getCurrentStateID() == SpaceClient.STATE_PLANET) {
-                        System.out.println("To game state");
-                        game.enterState(SpaceClient.STATE_GAME);
                         buyView = false;
                         this.sellView = false;
                         currentPage = 0;
+                        inventory = null;
+                        auctionhouseInventory = null;
+                        inventorycalled = false;
+                        game.enterState(SpaceClient.STATE_GAME);
+                        System.out.println("To game state");
                     }
                 }
             }
@@ -615,11 +642,33 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                         //and the mouse pointer is in bounds of the butten
                         if (inBounds(mousePosition, s)) {
                             //cancel btn pressed
-                            Item buyItem = buyItems.get((int) id);
-                            if (handler != null) {
-                                //cancel item to sell
-                                handler.sendItem(buyItem);
-                                System.out.println("BUY: " + buyItem.getItemId());
+                            ItemComm buyItem = buyItems.get((int) id);
+
+                            boolean canBuy = false;
+                            String sellItemResource = buyItem.getItem().getResource_type();
+                            float value = buyItem.getItem().getValue();
+                            switch (sellItemResource) {
+                                case "normal":
+                                    if(spaceship.getResources()[0] >= value)
+                                        canBuy = true;
+                                    break;
+                                case "magic":
+                                    if(spaceship.getResources()[1] >= value)
+                                        canBuy = true;
+                                    break;
+                                case "rare":
+                                    if(spaceship.getResources()[2] >= value)
+                                        canBuy = true;
+                                    break;
+                            }
+                            if (canBuy) {
+                                if (handler != null) {
+                                    //cancel item to sell
+                                    handler.sendItem(buyItem.getItem(), spaceshipid, AuctionHouseRequestType.BUY);
+                                    System.out.println("BUY: " + buyItem.getItem().getId());
+                                }
+                            }else{
+                                System.out.println("NO BUY!!");
                             }
                         }
                     }
@@ -647,30 +696,30 @@ public class PlanetState extends BasicGameState implements DrawCallback {
                         //and the mouse pointer is in bounds of the butten
                         if (inBounds(mousePosition, s)) {
                             //cancel btn pressed
-                            Item cancelItem = cancelItems.get((int) id);
+                            ItemComm cancelItem = cancelItems.get((int) id);
                             if (handler != null) {
                                 //cancel item to sell
-                                handler.sendItem(cancelItem);
-                                System.out.println("CANCEL: " + cancelItem.getItemId());
+                                handler.sendItem(cancelItem.getItem(), spaceshipid, AuctionHouseRequestType.CANCEL);
+                                System.out.println("Cancel: " + cancelItem.getItem().getId());
                             }
                         }
 
-                    } else {
-                        isCancelDone = true;
                     }
-                    if (isCancelDone) {
-                        double id2 = ((i + (currentPage * ITEMSPERPAGE)) - cancelItems.size());
-                        if (id2 < sellItems.size()) {
-                            Shape s = sellButtons.get((int) (i + (currentPage * ITEMSPERPAGE)));
-                            //and the mouse pointer is in bounds of the butten
-                            if (inBounds(mousePosition, s)) {
-                                //cancel btn pressed
-                                Item sellItem = sellItems.get((int) id2);
-                                if (handler != null) {
-                                    //cancel item to sell
-                                    handler.sendItem(sellItem);
-                                    System.out.println("SELL: " + sellItem.getItemId());
-                                }
+                } else {
+                    isCancelDone = true;
+                }
+                if (isCancelDone) {
+                    double id2 = ((i + (currentPage * ITEMSPERPAGE)) - cancelItems.size());
+                    if (id2 < sellItems.size()) {
+                        Shape s = sellButtons.get((int) (i + (currentPage * ITEMSPERPAGE)));
+                        //and the mouse pointer is in bounds of the butten
+                        if (inBounds(mousePosition, s)) {
+                            //cancel btn pressed
+                            ItemComm sellItem = sellItems.get((int) id2);
+                            if (handler != null) {
+                                //cancel item to sell
+                                handler.sendItem(sellItem.getItem(), spaceshipid, AuctionHouseRequestType.SELL);
+                                System.out.println("Sell: " + sellItem.getItem().getId());
                             }
                         }
                     }

@@ -60,6 +60,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
      */
     private List<GameObjectImpl> gameObjects = new ArrayList<>();
     private List<Planet> planets = new ArrayList<>();
+    private List<Spaceship> spaceships = new ArrayList<>();
     private HashMap<String, AngelCodeFont> fontSet;
     private final Minimap minimap;
     private Chat chat;
@@ -78,11 +79,11 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
      */
     public GameWorldImpl(SpaceClient client, User player) throws SlickException {
         this.client = client;
+        tileMap = new TiledMap("/map_space.tmx");
+        this.playerViewport = new Viewport(player.getSpaceship(), tileMap);
         System.out.println("Constructin gameworldimpl");
         this.gameObjectDAO = new GameObjectDAOImpl();
-        tileMap = new TiledMap("/map_space.tmx");
 
-        this.playerViewport = new Viewport(player.getSpaceship(), tileMap);
         minimap = new Minimap(screenWidth - 200 - 1, 1, 200 - 1, 200);
         chat = new Chat(1 + (int) (screenWidth * 0.25), (int) (screenHeight * 0.75), (int) (screenWidth * 0.50) - 1, (int) (screenHeight * 0.25), player);
         chatThread = new Thread(chat);
@@ -98,10 +99,15 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
         playerViewport.update(gc);
         gameObjectDAO.sendData(playerViewport.getSpaceship());
         gameObjects.clear();
+        spaceships.clear();
         gameObjects.addAll(gameObjectDAO.getGameObjects());
+        //spaceships.addAll(gameObjectDAO.getSpaceships());
         for (Planet p : planets) {
             gameObjects.add(p);
         }
+//        for(Spaceship s : spaceships){
+//            s.update(gc);
+//        }
         for (GameObjectImpl gObject : gameObjects) {
             if (gObject instanceof Asteroid) {
                 Asteroid ast = (Asteroid) gObject;
@@ -110,16 +116,18 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                     //if asteroid is being mined, start sending updates to server 
                     //gameObjectDAO.sendData(ast);
                 }
-            } else if (gObject instanceof Spaceship) {
+            }  else if (gObject instanceof Spaceship) {
                 Spaceship spaceship = (Spaceship) gObject;
                 spaceship.update(gc);
                 //check planet collision && input key
             } else if (gObject instanceof Inventory) {
                 Inventory inventory = (Inventory) gObject;
-                if (inventory.getSpaceshipId() > 0) {
-                    SpaceClient.playerInventory = inventory;
+                if (!inventory.isAuctionHouse()) {
+                    //System.out.println("--[GameWorldImpl]Set player Inventory");
+                    //SpaceClient.playerInventory = inventory;
                 } else {
-                    SpaceClient.auctionhouseInventory = inventory;
+                    //SpaceClient.auctionhouseInventory = inventory;
+                    //System.out.println("--[GameWorldImpl]Set auctionhouse Inventory");
                 }
             } else if (gObject instanceof Planet) {
                 Planet planet = (Planet) gObject;
@@ -158,7 +166,7 @@ public class GameWorldImpl extends NodeImpl<GameObject> implements DrawableCompo
                 Asteroid ast = (Asteroid) gObject;
                 ast.setResourceFont(resourceFont);
                 ast.render(g, false);
-            } else if (gObject instanceof Spaceship) {
+            }  else if (gObject instanceof Spaceship) {
                 Spaceship spaceship2 = (Spaceship) gObject;
                 spaceship2.render(g, false);
             } else if (gObject instanceof Planet) {

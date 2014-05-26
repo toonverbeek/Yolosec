@@ -16,8 +16,10 @@ import com.yolosec.spaceclient.game.world.Asteroid;
 import com.yolosec.spaceclient.game.world.GameWorldImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.world.Planet;
+import com.yolosec.spaceclient.game.world.Viewport;
 import com.yolosec.spaceclient.gui.SpaceClient;
 import com.yolosec.spaceclient.observing.NodeImpl;
+import java.util.AbstractList;
 import java.util.Iterator;
 
 /**
@@ -29,7 +31,12 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
     /**
      * Holds the GameObjects that are currently relevant for the GameWorld.
      */
-    private List<GameObjectImpl> gameObjects;
+    private List<GameObjectImpl> totalObjects;
+//    private List<GameObjectImpl> asteroidsObjects;
+//    private List<Spaceship> spaceShipObjects;
+//    private List<GameObjectImpl> inventoryObjects;
+//    private List<GameObjectImpl> planetsObjects;
+    private int ownSpaceshipId;
 
     /**
      * Used for communication with the GameServer.
@@ -46,7 +53,11 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
         broadcastHandler = new BroadcastHandler(this);
         broadcastHandlerThread = new Thread(broadcastHandler);
         broadcastHandlerThread.start();
-        this.gameObjects = new ArrayList<>();
+        this.totalObjects = new ArrayList<>();
+//        this.asteroidsObjects = new ArrayList<>();
+//        this.spaceShipObjects = new ArrayList<>();
+//        this.inventoryObjects = new ArrayList<>();
+//        this.planetsObjects = new ArrayList<>();
     }
 
     /**
@@ -60,7 +71,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public List<GameObjectImpl> getGameObjects() {
-        return gameObjects;
+        return totalObjects;
     }
 
     @Override
@@ -70,14 +81,17 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
 
     @Override
     public void drawAfterDataReadFromSocketFromServer(List<GameObjectImpl> objects) {
-        filterGameObjects(objects);
+        //filterGameObjects(objects);
+        //System.out.println("---[GameObjectDAOImpl] drawAfterDataReadFromSocketFromServer");
+        //spaceShipObjects.clear();
+        //inventoryObjects.clear();
         for (GameObjectImpl goi : objects) {
             if (goi instanceof Asteroid) {
                 Asteroid ast = (Asteroid) goi;
                 Asteroid existing = asteroidExists(ast);
                 if (existing == null) {
                     //System.out.println("adding new asteroid");
-                    gameObjects.add(goi);
+                    totalObjects.add(goi);
                 } else {
                     //update resource amount of asteroid
                     //check of resource amount has changed
@@ -93,41 +107,58 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
                 Spaceship spa = (Spaceship) goi;
                 Spaceship existing = spaceshipExists(spa);
                 if (existing == null) {
-                    gameObjects.add(goi);
+                    if (spa.getId() == Viewport.spaceship.getId()) {
+                        int[] newResources = new int[3];
+                        int temp = 0;
+                        for (int rs : spa.getResources()) {
+                            //if the new resource is higher then the current change the resource
+                            if (rs > Viewport.spaceship.getResources()[temp]) {
+                                newResources[temp] = rs;
+                            } else {
+                                newResources[temp] = Viewport.spaceship.getResources()[temp];
+                            }
+                            temp++;
+                        }
+                        Viewport.spaceship.setResources(newResources);
+                    } else {
+                        totalObjects.add(spa);
+                    }
                 } else {
                     //update position from spaceship
                     existing.setPosition(spa.getPosition());
                     existing.setResources(spa.getResources());
+                    //System.out.println("--[GameObjesDAOImpl] old resources: " + existing.getResources()[0] + " -- new resources: " + spa.getResources()[0]);
                 }
             }
             if (goi instanceof Inventory) {
                 Inventory inv = (Inventory) goi;
-                Inventory existing = inventoryExists(inv);
-                if (existing == null) {
-                    if (inv.getSpaceshipId() > 0) {
-                        SpaceClient.playerInventory = inv;
-                    } else {
-                        SpaceClient.auctionhouseInventory = inv;
-                    }
-                    gameObjects.add(goi);
+                if (!inv.isAuctionHouse()) {
+                    SpaceClient.playerInventory = inv;
+                    //System.out.println("--[GameObjectDAOImpl] Set player inventory");
+                } else {
+                    SpaceClient.auctionhouseInventory = inv;
+                    System.out.println("Auctionhouse items size: " + SpaceClient.auctionhouseInventory.getItems().size());
+                    //System.out.println("--[GameObjectDAOImpl] Set auctionhouse inventory");
                 }
+                totalObjects.add(goi);
             }
 
             if (goi instanceof Planet) {
-                gameObjects.add(goi);
+                totalObjects.add(goi);
             }
         }
+
     }
 
     private void filterGameObjects(List<GameObjectImpl> objects) {
         //new object
-        Iterator it = gameObjects.iterator();
-        System.out.println("Size game objects while filtering: " + gameObjects.size());
+        Iterator it = totalObjects.iterator();
+        //System.out.println("Size game objects while filtering: " + totalObjects.size());
         while (it.hasNext()) {
             GameObjectImpl object = (GameObjectImpl) it.next();
             if (object instanceof Asteroid) {
                 it.remove();
-                System.out.println("Removed asteroid");
+                //System.out.println("Removed asteroid");
             }
         }
     }
@@ -142,7 +173,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
      */
     private Spaceship spaceshipExists(Spaceship ship) {
         int id = ship.getId();
-        for (GameObjectImpl goimpl : gameObjects) {
+        for (GameObjectImpl goimpl : totalObjects) {
             if (goimpl instanceof Spaceship) {
                 Spaceship compareShip = (Spaceship) goimpl;
                 if (compareShip.getId() == id) {
@@ -164,7 +195,7 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
         float astX = ast.getXPosition();
         float astY = ast.getYPosition();
 
-        for (GameObjectImpl goimpl : gameObjects) {
+        for (GameObjectImpl goimpl : totalObjects) {
             if (goimpl instanceof Asteroid) {
                 Asteroid compareAst = (Asteroid) goimpl;
                 if (compareAst.getXPosition() == astX && compareAst.getYPosition() == astY) {
@@ -175,23 +206,10 @@ public class GameObjectDAOImpl extends NodeImpl<GameWorldImpl> implements GameOb
         return null;
     }
 
-    private Inventory inventoryExists(Inventory in) {
-
-        for (GameObjectImpl goimpl : gameObjects) {
-            if (goimpl instanceof Inventory) {
-                Inventory inventory = (Inventory) goimpl;
-                if (inventory.getSpaceshipId() == in.getSpaceshipId()) {
-                    return inventory;
-                }
-            }
-        }
-        return null;
-    }
-
     @Override
     public List<Spaceship> getSpaceships() {
         List<Spaceship> spaceships = new ArrayList<>();
-        for (GameObjectImpl gObject : gameObjects) {
+        for (GameObjectImpl gObject : totalObjects) {
             if (gObject instanceof Spaceship) {
                 spaceships.add((Spaceship) gObject);
             }

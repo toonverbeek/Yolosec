@@ -12,6 +12,7 @@ import com.yolosec.spaceclient.communication.Communicator;
 import com.yolosec.spaceclient.dao.GameObjectDAOImpl;
 import com.yolosec.spaceclient.game.player.Spaceship;
 import com.yolosec.spaceclient.game.player.User;
+import com.yolosec.spaceclient.game.world.Viewport;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenHeight;
 import static com.yolosec.spaceclient.gui.SpaceClient.screenWidth;
 import java.io.IOException;
@@ -143,7 +144,8 @@ public class LoginForm extends javax.swing.JFrame {
 
     /**
      * Gets the username and password from the associated input fields and c
-     * constructs a new loginComm object and sends it to the server as Json in a new thread.
+     * constructs a new loginComm object and sends it to the server as Json in a
+     * new thread.
      */
     private void handleLogin() {
         String username = jtf_username.getText();
@@ -208,9 +210,10 @@ public class LoginForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Listens for a login response from the server. If the value returned by the server (of type
-     * SpaceshipComm) is not null, a new Spaceship object is constructed as well
-     * as a new user. The gamescreen is then launched alongside the gameworld.
+     * Listens for a login response from the server. If the value returned by
+     * the server (of type SpaceshipComm) is not null, a new Spaceship object is
+     * constructed as well as a new user. The gamescreen is then launched
+     * alongside the gameworld.
      */
     class LoginListener implements Runnable {
 
@@ -225,10 +228,16 @@ public class LoginForm extends javax.swing.JFrame {
                 if (spaceshipComm != null && spaceshipComm.getId() != -1) {
                     AppGameContainer appgc;
                     Spaceship s = new Spaceship(spaceshipComm);
+                    Viewport.spaceship = s;
+                    System.out.println("--set yolosec spaceship");
                     User user = new User(s, jtf_username.getText());
                     SpaceClient client = new SpaceClient("Yolosec", user);
                     appgc = new AppGameContainer(client);
-                    
+
+                    for (int r : s.getResources()) {
+                        System.out.println(r);
+                    }
+                    System.out.println("----------");
                     screenHeight = appgc.getScreenHeight();
                     screenWidth = appgc.getScreenWidth();
                     appgc.setDisplayMode(screenWidth, screenHeight, true);
