@@ -84,10 +84,18 @@ public class Communicator {
                         gameObjects.add(spaceship);
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
-                        gameObjects.add(new Asteroid(ac));
+                        Asteroid a = new Asteroid(ac);
+                        if (gameObjects.contains(a)) {
+                            gameObjects.remove(a);
+                        }
+                        gameObjects.add(a);
                     } else if (gp instanceof InventoryReply) {
                         InventoryReply ir = (InventoryReply) gp;
-                        gameObjects.add(new Inventory(ir));
+                        Inventory inventory = new Inventory(ir);
+                        if (gameObjects.contains(inventory)) {
+                            gameObjects.remove(inventory);
+                        }
+                        gameObjects.add(inventory);
                     }
                 }
             } else {
@@ -104,10 +112,16 @@ public class Communicator {
                 } else if (gp instanceof AsteroidComm) {
                     AsteroidComm ac = (AsteroidComm) gp;
                     Asteroid a = new Asteroid(ac);
+                    if (gameObjects.contains(a)) {
+                        gameObjects.remove(a);
+                    }
                     gameObjects.add(a);
                 } else if (gp instanceof InventoryReply) {
                     InventoryReply ir = (InventoryReply) gp;
-                    gameObjects.add(new Inventory(ir));
+                    Inventory inventory = new Inventory(ir);
+                    if (gameObjects.contains(inventory)) {
+                        gameObjects.remove(inventory);
+                    }
                     System.out.println("--Communicator inventory");
                 }
             }

@@ -84,6 +84,7 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
         //System.out.println("---[GameObjectDAOImpl] drawAfterDataReadFromSocketFromServer");
         //spaceShipObjects.clear();
         //inventoryObjects.clear();
+        totalObjects.clear();
         for (GameObjectImpl goi : objects) {
             if (goi instanceof Asteroid) {
                 Asteroid ast = (Asteroid) goi;
@@ -158,6 +159,8 @@ public class GameObjectDAOImpl implements GameObjectDAO, DrawCallback {
             if (object instanceof Asteroid) {
                 it.remove();
                 //System.out.println("Removed asteroid");
+            }else if(object instanceof Spaceship){
+                it.remove();
             }
         }
     }
