@@ -39,13 +39,14 @@ import java.util.List;
 public class Communicator {
 
     private static Socket socket;
-    private static PrintWriter writer;
+    public static PrintWriter writer;
     private static BufferedReader reader;
     private static Gson gson = new Gson();
     private static ArrayList<GameObjectImpl> gameObjects = new ArrayList<>();
+    private static ArrayList<GameObjectImpl> addedObjects = new ArrayList<>();
 
     public static final String IP_ADDRESS = "192.168.24.11";
-    private static JsonReader jreader;
+    public static JsonReader jreader;
 
     public static void sendData(String json) {
         writer.println(json);
@@ -60,8 +61,8 @@ public class Communicator {
      * datastream. The incoming data is segregated per type and a corresponding
      * "COMM"(communication) class is constructed using this data. The COMM
      * class is finally added to a list and returned to the caller.
-     *
-     * @param jreader which listens for a stream on the socket.
+     *     
+* @param jreader which listens for a stream on the socket.
      * @return the list of COMM objects which were constructed with data read
      * from the socket.
      * @throws Exception
@@ -76,7 +77,11 @@ public class Communicator {
                 for (GamePacket gp : packets) {
                     if (gp instanceof SpaceshipComm) {
                         SpaceshipComm sc = (SpaceshipComm) gp;
-                        gameObjects.add(new Spaceship(sc));
+                        Spaceship spaceship = new Spaceship(sc);
+                        if (gameObjects.contains(spaceship)) {
+                            gameObjects.remove(spaceship);
+                        }
+                        gameObjects.add(spaceship);
                     } else if (gp instanceof AsteroidComm) {
                         AsteroidComm ac = (AsteroidComm) gp;
                         gameObjects.add(new Asteroid(ac));
@@ -107,15 +112,15 @@ public class Communicator {
                 }
             }
         }
-        
-        System.out.println("After retrieve data : "  + gameObjects.size());
+
+        System.out.println("After retrieve data : " + gameObjects.size());
         return gameObjects;
     }
 
     /**
      * Sends a login request as json to the socket output stream.
-     *
-     * @param json the json to be sent.
+     *     
+* @param json the json to be sent.
      */
     public static void sendLogin(String json) {
         writer.println(json);
@@ -123,8 +128,8 @@ public class Communicator {
 
     /**
      * Initiates the socket and thus the connection the server.
-     *
-     * @return true if the connection was successful, false otherwise.
+     *     
+* @return true if the connection was successful, false otherwise.
      * @throws SocketException
      */
     public static boolean initiate() throws SocketException {
@@ -150,8 +155,8 @@ public class Communicator {
 
     /**
      * Listens for a response to a login request.
-     *
-     * @return the SpaceShipComm object that belongs to the login request, null
+     *     
+* @return the SpaceShipComm object that belongs to the login request, null
      * if an exception occurred.
      * @throws Exception
      */
