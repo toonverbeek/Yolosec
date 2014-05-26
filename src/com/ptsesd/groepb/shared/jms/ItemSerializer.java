@@ -8,6 +8,7 @@ package com.ptsesd.groepb.shared.jms;
 
 import com.google.gson.Gson;
 import com.ptsesd.groepb.shared.ItemComm;
+import com.ptsesd.groepb.shared.socket.AuctionRequest;
 import com.ptsesd.groepb.shared.socket.InventoryReply;
 import com.ptsesd.groepb.shared.socket.InventoryRequest;
 
@@ -66,6 +67,11 @@ public class ItemSerializer {
     
     public static InsertUserMessage jsonToInsertUserMessage(String json){
         InsertUserMessage resMessage = (InsertUserMessage) gson.fromJson(json, InsertUserMessage.class);
+        return resMessage;
+    }
+
+    public static String auctionRequestToJson(AuctionRequest ar) {
+        String resMessage = gson.toJson(ar);
         return resMessage;
     }
 }
